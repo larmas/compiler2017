@@ -15,7 +15,6 @@ alpha [a-zA-z]
 digit [0-9]
 
 %%
-"main"    {return MAIN;}
 "boolean" {return BOOLEAN;}
 "else"    {return ELSE;}
 "false"   {return FALSE;}
@@ -42,7 +41,7 @@ digit [0-9]
 
 {digit}{digit}*         {
                             yylval.i = atoi(yytext);
-                            //printf("INT : %d\n",atoi(yytext));
+                            printf("INT : %d\n",atoi(yytext));
                             return INT_LITERAL;
                         }
 
@@ -59,12 +58,18 @@ digit [0-9]
                                 printf("%s\n",yytext);
                                 return *yytext;
                             }
+(\n|\t|" ")*                {
+                                printf("%s\n","-------");
+                            }
 
-.|\n                          ; /* ignore all the rest */
 
-"/*"(.|\n)*"*/" ;
 
-"//".*\n  ;
+"//".*\n  ; /* Ignore rest of line */
+
+.       {
+            printf("%s%s%s%i\n","Simbolo no valido: ",yytext," en la linea ",yylineno);
+            exit(1);
+        }
 
 %%
 

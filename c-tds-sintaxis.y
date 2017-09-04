@@ -10,7 +10,6 @@ List *list;
 
 %token<s> ID
 %token<i> INT_LITERAL
-%token<i> MAIN
 %token<i> BOOLEAN
 %token<i> ELSE
 %token<i> FALSE
@@ -50,7 +49,7 @@ program: list_var_decl list_method_decl
 ;
 
 list_var_decl: var_decl
-             |  var_decl list_var_decl
+            |  list_var_decl var_decl
 ;
 
 list_method_decl: method_decl
@@ -66,7 +65,9 @@ AuxId: ID';'
 ;
 
 method_decl: type ID '(' ')' block
-           | type ID '('TypeID')' block
+           | type ID '('TypeID')' block {
+                                            printf("%s\n","Declaracion de metodo...");
+                                        }
            | VOID ID '(' ')' block
            | VOID ID '('TypeID')' block
 ;
@@ -75,10 +76,14 @@ TypeID: type ID
       | type ID','TypeID
 ;
 
-block: '{'var_decl statament'}'
-     | '{'statament'}'
-     | '{'var_decl'}'
+block: '{'list_var_decl list_statament'}'
+     | '{'list_statament'}'
+     | '{'list_var_decl'}'
      | '{''}'
+;
+
+list_statament: statament
+            | statament list_statament 
 ;
 
 type: INT
@@ -88,9 +93,9 @@ type: INT
 
 statament: ID ASIGN expr';'
          | method_call';'
-         | IF'('expr')' block ELSE block
-         | IF'('expr')' block
-         | WHILE '('expr')' block
+         | IF '(' expr ')' block ELSE block
+         | IF '(' expr ')' block
+         | WHILE '(' expr ')' block
          | RETURN expr';'
          | RETURN';'
          | ';'

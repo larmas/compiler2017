@@ -47,29 +47,28 @@ extern int yydebug;
   {
     ID = 258,
     INT_LITERAL = 259,
-    MAIN = 260,
-    BOOLEAN = 261,
-    ELSE = 262,
-    FALSE = 263,
-    IF = 264,
-    INT = 265,
-    RETURN = 266,
-    TRUE = 267,
-    VOID = 268,
-    WHILE = 269,
-    MAS = 270,
-    MENOS = 271,
-    MULT = 272,
-    DIV = 273,
-    MOD = 274,
-    MAYOR = 275,
-    MENOR = 276,
-    ASIGN = 277,
-    IGUAL = 278,
-    AND = 279,
-    OR = 280,
-    NOT = 281,
-    UMINUS = 282
+    BOOLEAN = 260,
+    ELSE = 261,
+    FALSE = 262,
+    IF = 263,
+    INT = 264,
+    RETURN = 265,
+    TRUE = 266,
+    VOID = 267,
+    WHILE = 268,
+    MAS = 269,
+    MENOS = 270,
+    MULT = 271,
+    DIV = 272,
+    MOD = 273,
+    MAYOR = 274,
+    MENOR = 275,
+    ASIGN = 276,
+    IGUAL = 277,
+    AND = 278,
+    OR = 279,
+    NOT = 280,
+    UMINUS = 281
   };
 #endif
 
@@ -81,7 +80,7 @@ union YYSTYPE
 #line 9 "c-tds-sintaxis.y" /* yacc.c:1915  */
  int i; char *s; struct Node *treeN; 
 
-#line 85 "c-tds-sintaxis.tab.h" /* yacc.c:1915  */
+#line 84 "c-tds-sintaxis.tab.h" /* yacc.c:1915  */
 };
 
 typedef union YYSTYPE YYSTYPE;

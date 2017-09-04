@@ -21,7 +21,7 @@ List *list;
 %token<i> INT
 %token<i> RETURN
 %token<i> TRUE
-%token<i> VOID 
+%token<i> VOID
 %token<i> WHILE
 %token<i> MAS
 %token<i> MENOS
@@ -35,12 +35,12 @@ List *list;
 %token<i> AND
 %token<i> OR
 
-%type<treeN> expr
+
 
 %left '+'
 %left '*'
 
-%% 
+%%
 
 program: var_decl method_decl
        | method_decl
@@ -52,18 +52,18 @@ program: var_decl method_decl
 var_decl: type ID';'
         | type ID',' AuxId
 
-AuxId: ID';' 
-     | ID',' AuxId      
+AuxId: ID';'
+     | ID',' AuxId
 
 
 
 method_decl: type ID '(' ')' block
            | type ID '('TypeID')' block
-           | void ID '(' ')' block
-           | void ID '('TypeID')' block
+           | VOID ID '(' ')' block
+           | VOID ID '('TypeID')' block
 
 TypeID: type ID
-      | type ID','TypeID           
+      | type ID','TypeID
 
 
 
@@ -81,40 +81,40 @@ type: INT
 
 
 statament: ID ASIGN expr';'
-         | method_call';'  
+         | method_call';'
          | IF'('expr')' block ELSE block
-         | IF'('expr')' block 
+         | IF'('expr')' block
          | WHILE expr block
          | RETURN expr';'
          | RETURN
          | ';'
          | block
-  
 
 
 
-method_call: ID '(' ')'  
+
+method_call: ID '(' ')'
            | ID '('expr')'
            | ID '('expr AuxExpr')'
 
 AuxExpr: ','expr
-       | ','expr AuxExpr               
+       | ','expr AuxExpr
 
 
 
-expr: ID 
+expr: ID
     | method_call
     | literal
     | expr bin_op expr
     | MENOS expr
     | '!' expr
-    | '('expr')'   
+    | '('expr')'
 
 
 
 bin_op: arith_op
       | rel_op
-      | cond_op     
+      | cond_op
 
 
 
@@ -122,8 +122,8 @@ arith_op: MAS
         | MENOS
         | MULT
         | DIV
-        | MOD       
-        
+        | MOD
+
 
 
 rel_op: MENOR
@@ -133,7 +133,7 @@ rel_op: MENOR
 
 
 cond_op: AND
-       | OR              
+       | OR
 
 
 
@@ -143,9 +143,9 @@ literal: INT_LITERAL
 
 
 bool_literal: TRUE
-            | FALSE       
+            | FALSE
 
-       
+
 
 
 %%

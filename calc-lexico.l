@@ -39,7 +39,7 @@ digit [0-9]
 
 
 
-{digit}{digit}*         {               {
+{digit}{digit}*         {             
                             yylval.i = atoi(yytext);
                             //printf("INT : %d\n",atoi(yytext));
                             return INT_LITERAL;
@@ -54,7 +54,7 @@ digit [0-9]
                                         return ID;
                                     }
 
-[;,()!{}]                   {  
+[;,()!{}]                   {
                                 printf("%s\n",yytext);
                                 return *yytext;
                             }

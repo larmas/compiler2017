@@ -62,6 +62,10 @@ digit [0-9]
 
 .|\n                          ; /* ignore all the rest */
 
+"/*"(.|\n)*"*/" ;
+
+"//".*\n  ;
+
 %%
 
 void yyerror(){

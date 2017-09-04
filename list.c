@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "treeN.c"
+#include "tree.c"
 
 typedef struct list {
   Node *node;

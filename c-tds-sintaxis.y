@@ -8,11 +8,8 @@ List *list;
 
 %union { int i; char *s; struct Node *treeN; }
 
-
-
 %token<s> ID
 %token<i> INT_LITERAL
-
 %token<i> MAIN
 %token<i> BOOLEAN
 %token<i> ELSE
@@ -34,118 +31,104 @@ List *list;
 %token<i> IGUAL
 %token<i> AND
 %token<i> OR
+%token<i> NOT
 
-
-
-%left '+'
-%left '*'
+%left OR
+%left AND
+%nonassoc IGUAL
+%nonassoc MENOR MAYOR
+%left MAS MENOS
+%left MULT DIV MOD
+%right UMINUS
 
 %%
 
-program: var_decl method_decl
-       | method_decl
-       | var_decl
+program: list_var_decl list_method_decl
+       | list_method_decl
+       | list_var_decl
        |
+;
 
+list_var_decl: var_decl
+             |  var_decl list_var_decl
+;
 
+list_method_decl: method_decl
+                | method_decl list_method_decl
+;
 
 var_decl: type ID';'
         | type ID',' AuxId
+;
 
 AuxId: ID';'
      | ID',' AuxId
-
-
+;
 
 method_decl: type ID '(' ')' block
            | type ID '('TypeID')' block
            | VOID ID '(' ')' block
            | VOID ID '('TypeID')' block
+;
 
 TypeID: type ID
       | type ID','TypeID
-
-
+;
 
 block: '{'var_decl statament'}'
      | '{'statament'}'
      | '{'var_decl'}'
      | '{''}'
-
-
+;
 
 type: INT
     | BOOLEAN
 
-
-
+;
 
 statament: ID ASIGN expr';'
          | method_call';'
          | IF'('expr')' block ELSE block
          | IF'('expr')' block
-         | WHILE expr block
+         | WHILE '('expr')' block
          | RETURN expr';'
-         | RETURN
+         | RETURN';'
          | ';'
          | block
-
-
-
+;
 
 method_call: ID '(' ')'
-           | ID '('expr')'
-           | ID '('expr AuxExpr')'
+           | ID '('AuxExpr')'
+;
 
-AuxExpr: ','expr
-       | ','expr AuxExpr
-
-
+AuxExpr:  expr
+        | expr',' AuxExpr
+;
 
 expr: ID
     | method_call
     | literal
-    | expr bin_op expr
-    | MENOS expr
-    | '!' expr
+    | expr MAS expr
+    | expr MULT expr
+    | expr MENOS expr
+    | expr DIV expr
+    | expr MOD expr
+    | expr MENOR expr
+    | expr MAYOR expr
+    | expr IGUAL expr
+    | expr AND expr
+    | expr OR expr
+    | MENOS expr %prec UMINUS
+    | NOT expr %prec UMINUS
     | '('expr')'
-
-
-
-bin_op: arith_op
-      | rel_op
-      | cond_op
-
-
-
-arith_op: MAS
-        | MENOS
-        | MULT
-        | DIV
-        | MOD
-
-
-
-rel_op: MENOR
-      | MAYOR
-      | IGUAL
-
-
-
-cond_op: AND
-       | OR
-
-
+;
 
 literal: INT_LITERAL
        | bool_literal
-
-
+;
 
 bool_literal: TRUE
             | FALSE
-
-
-
+;
 
 %%

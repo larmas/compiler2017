@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "calc-sintaxis.tab.h"
+#include "c-tds-sintaxis.tab.h"
 
 %}
 
@@ -33,13 +33,14 @@ digit [0-9]
 "<"   {return MENOR;}
 ">"   {return MAYOR;}
 "="   {return ASIGN;}
-"=="   {return IGUAL;}
-"&&"   {return AND;}
-"||"   {return OR;}
+"=="  {return IGUAL;}
+"&&"  {return AND;}
+"||"  {return OR;}
+'!'   {return NOT;}
 
 
 
-{digit}{digit}*         {             
+{digit}{digit}*         {
                             yylval.i = atoi(yytext);
                             //printf("INT : %d\n",atoi(yytext));
                             return INT_LITERAL;
@@ -47,14 +48,14 @@ digit [0-9]
 
 
 
-{alpha}({alpha}|{digit}|MENOS)*     {
+{alpha}({alpha}|{digit}|'_')*     {
                                         yylval.s=(char *) malloc(sizeof(yytext)*yyleng);
                                         strcpy(yylval.s,yytext);
                                         printf("ID : %s\n",yytext);
                                         return ID;
                                     }
 
-[;,()!{}]                   {
+[;,(){}]                   {
                                 printf("%s\n",yytext);
                                 return *yytext;
                             }

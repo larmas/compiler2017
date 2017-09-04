@@ -1,0 +1,1618 @@
+Terminals unused in grammar
+
+   MAIN
+
+
+State 7 conflicts: 2 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: list_var_decl list_method_decl
+    2        | list_method_decl
+    3        | list_var_decl
+    4        | %empty
+
+    5 list_var_decl: var_decl
+    6              | var_decl list_var_decl
+
+    7 list_method_decl: method_decl
+    8                 | method_decl list_method_decl
+
+    9 var_decl: type ID ';'
+   10         | type ID ',' AuxId
+
+   11 AuxId: ID ';'
+   12      | ID ',' AuxId
+
+   13 method_decl: type ID '(' ')' block
+   14            | type ID '(' TypeID ')' block
+   15            | VOID ID '(' ')' block
+   16            | VOID ID '(' TypeID ')' block
+
+   17 TypeID: type ID
+   18       | type ID ',' TypeID
+
+   19 block: '{' var_decl statament '}'
+   20      | '{' statament '}'
+   21      | '{' var_decl '}'
+   22      | '{' '}'
+
+   23 type: INT
+   24     | BOOLEAN
+
+   25 statament: ID ASIGN expr ';'
+   26          | method_call ';'
+   27          | IF '(' expr ')' block ELSE block
+   28          | IF '(' expr ')' block
+   29          | WHILE '(' expr ')' block
+   30          | RETURN expr ';'
+   31          | RETURN ';'
+   32          | ';'
+   33          | block
+
+   34 method_call: ID '(' ')'
+   35            | ID '(' AuxExpr ')'
+
+   36 AuxExpr: expr
+   37        | expr ',' AuxExpr
+
+   38 expr: ID
+   39     | method_call
+   40     | literal
+   41     | expr MAS expr
+   42     | expr MULT expr
+   43     | expr MENOS expr
+   44     | expr DIV expr
+   45     | expr MOD expr
+   46     | expr MENOR expr
+   47     | expr MAYOR expr
+   48     | expr IGUAL expr
+   49     | expr AND expr
+   50     | expr OR expr
+   51     | MENOS expr
+   52     | NOT expr
+   53     | '(' expr ')'
+
+   54 literal: INT_LITERAL
+   55        | bool_literal
+
+   56 bool_literal: TRUE
+   57             | FALSE
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 13 14 15 16 27 28 29 34 35 53
+')' (41) 13 14 15 16 27 28 29 34 35 53
+',' (44) 10 12 18 37
+';' (59) 9 11 25 26 30 31 32
+'{' (123) 19 20 21 22
+'}' (125) 19 20 21 22
+error (256)
+ID (258) 9 10 11 12 13 14 15 16 17 18 25 34 35 38
+INT_LITERAL (259) 54
+MAIN (260)
+BOOLEAN (261) 24
+ELSE (262) 27
+FALSE (263) 57
+IF (264) 27 28
+INT (265) 23
+RETURN (266) 30 31
+TRUE (267) 56
+VOID (268) 15 16
+WHILE (269) 29
+MAS (270) 41
+MENOS (271) 43 51
+MULT (272) 42
+DIV (273) 44
+MOD (274) 45
+MAYOR (275) 47
+MENOR (276) 46
+ASIGN (277) 25
+IGUAL (278) 48
+AND (279) 49
+OR (280) 50
+NOT (281) 52
+UMINUS (282)
+
+
+Nonterminals, with rules where they appear
+
+$accept (34)
+    on left: 0
+program (35)
+    on left: 1 2 3 4, on right: 0
+list_var_decl (36)
+    on left: 5 6, on right: 1 3 6
+list_method_decl (37)
+    on left: 7 8, on right: 1 2 8
+var_decl (38)
+    on left: 9 10, on right: 5 6 19 21
+AuxId (39)
+    on left: 11 12, on right: 10 12
+method_decl (40)
+    on left: 13 14 15 16, on right: 7 8
+TypeID (41)
+    on left: 17 18, on right: 14 16 18
+block (42)
+    on left: 19 20 21 22, on right: 13 14 15 16 27 28 29 33
+type (43)
+    on left: 23 24, on right: 9 10 13 14 17 18
+statament (44)
+    on left: 25 26 27 28 29 30 31 32 33, on right: 19 20
+method_call (45)
+    on left: 34 35, on right: 26 39
+AuxExpr (46)
+    on left: 36 37, on right: 35 37
+expr (47)
+    on left: 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53, on right:
+    25 27 28 29 30 36 37 41 42 43 44 45 46 47 48 49 50 51 52 53
+literal (48)
+    on left: 54 55, on right: 40
+bool_literal (49)
+    on left: 56 57, on right: 55
+
+
+State 0
+
+    0 $accept: . program $end
+
+    BOOLEAN  shift, and go to state 1
+    INT      shift, and go to state 2
+    VOID     shift, and go to state 3
+
+    $default  reduce using rule 4 (program)
+
+    program           go to state 4
+    list_var_decl     go to state 5
+    list_method_decl  go to state 6
+    var_decl          go to state 7
+    method_decl       go to state 8
+    type              go to state 9
+
+
+State 1
+
+   24 type: BOOLEAN .
+
+    $default  reduce using rule 24 (type)
+
+
+State 2
+
+   23 type: INT .
+
+    $default  reduce using rule 23 (type)
+
+
+State 3
+
+   15 method_decl: VOID . ID '(' ')' block
+   16            | VOID . ID '(' TypeID ')' block
+
+    ID  shift, and go to state 10
+
+
+State 4
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 11
+
+
+State 5
+
+    1 program: list_var_decl . list_method_decl
+    3        | list_var_decl .
+
+    BOOLEAN  shift, and go to state 1
+    INT      shift, and go to state 2
+    VOID     shift, and go to state 3
+
+    $default  reduce using rule 3 (program)
+
+    list_method_decl  go to state 12
+    method_decl       go to state 8
+    type              go to state 13
+
+
+State 6
+
+    2 program: list_method_decl .
+
+    $default  reduce using rule 2 (program)
+
+
+State 7
+
+    5 list_var_decl: var_decl .
+    6              | var_decl . list_var_decl
+
+    BOOLEAN  shift, and go to state 1
+    INT      shift, and go to state 2
+
+    BOOLEAN   [reduce using rule 5 (list_var_decl)]
+    INT       [reduce using rule 5 (list_var_decl)]
+    $default  reduce using rule 5 (list_var_decl)
+
+    list_var_decl  go to state 14
+    var_decl       go to state 7
+    type           go to state 15
+
+
+State 8
+
+    7 list_method_decl: method_decl .
+    8                 | method_decl . list_method_decl
+
+    BOOLEAN  shift, and go to state 1
+    INT      shift, and go to state 2
+    VOID     shift, and go to state 3
+
+    $default  reduce using rule 7 (list_method_decl)
+
+    list_method_decl  go to state 16
+    method_decl       go to state 8
+    type              go to state 13
+
+
+State 9
+
+    9 var_decl: type . ID ';'
+   10         | type . ID ',' AuxId
+   13 method_decl: type . ID '(' ')' block
+   14            | type . ID '(' TypeID ')' block
+
+    ID  shift, and go to state 17
+
+
+State 10
+
+   15 method_decl: VOID ID . '(' ')' block
+   16            | VOID ID . '(' TypeID ')' block
+
+    '('  shift, and go to state 18
+
+
+State 11
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 12
+
+    1 program: list_var_decl list_method_decl .
+
+    $default  reduce using rule 1 (program)
+
+
+State 13
+
+   13 method_decl: type . ID '(' ')' block
+   14            | type . ID '(' TypeID ')' block
+
+    ID  shift, and go to state 19
+
+
+State 14
+
+    6 list_var_decl: var_decl list_var_decl .
+
+    $default  reduce using rule 6 (list_var_decl)
+
+
+State 15
+
+    9 var_decl: type . ID ';'
+   10         | type . ID ',' AuxId
+
+    ID  shift, and go to state 20
+
+
+State 16
+
+    8 list_method_decl: method_decl list_method_decl .
+
+    $default  reduce using rule 8 (list_method_decl)
+
+
+State 17
+
+    9 var_decl: type ID . ';'
+   10         | type ID . ',' AuxId
+   13 method_decl: type ID . '(' ')' block
+   14            | type ID . '(' TypeID ')' block
+
+    ';'  shift, and go to state 21
+    ','  shift, and go to state 22
+    '('  shift, and go to state 23
+
+
+State 18
+
+   15 method_decl: VOID ID '(' . ')' block
+   16            | VOID ID '(' . TypeID ')' block
+
+    BOOLEAN  shift, and go to state 1
+    INT      shift, and go to state 2
+    ')'      shift, and go to state 24
+
+    TypeID  go to state 25
+    type    go to state 26
+
+
+State 19
+
+   13 method_decl: type ID . '(' ')' block
+   14            | type ID . '(' TypeID ')' block
+
+    '('  shift, and go to state 23
+
+
+State 20
+
+    9 var_decl: type ID . ';'
+   10         | type ID . ',' AuxId
+
+    ';'  shift, and go to state 21
+    ','  shift, and go to state 22
+
+
+State 21
+
+    9 var_decl: type ID ';' .
+
+    $default  reduce using rule 9 (var_decl)
+
+
+State 22
+
+   10 var_decl: type ID ',' . AuxId
+
+    ID  shift, and go to state 27
+
+    AuxId  go to state 28
+
+
+State 23
+
+   13 method_decl: type ID '(' . ')' block
+   14            | type ID '(' . TypeID ')' block
+
+    BOOLEAN  shift, and go to state 1
+    INT      shift, and go to state 2
+    ')'      shift, and go to state 29
+
+    TypeID  go to state 30
+    type    go to state 26
+
+
+State 24
+
+   15 method_decl: VOID ID '(' ')' . block
+
+    '{'  shift, and go to state 31
+
+    block  go to state 32
+
+
+State 25
+
+   16 method_decl: VOID ID '(' TypeID . ')' block
+
+    ')'  shift, and go to state 33
+
+
+State 26
+
+   17 TypeID: type . ID
+   18       | type . ID ',' TypeID
+
+    ID  shift, and go to state 34
+
+
+State 27
+
+   11 AuxId: ID . ';'
+   12      | ID . ',' AuxId
+
+    ';'  shift, and go to state 35
+    ','  shift, and go to state 36
+
+
+State 28
+
+   10 var_decl: type ID ',' AuxId .
+
+    $default  reduce using rule 10 (var_decl)
+
+
+State 29
+
+   13 method_decl: type ID '(' ')' . block
+
+    '{'  shift, and go to state 31
+
+    block  go to state 37
+
+
+State 30
+
+   14 method_decl: type ID '(' TypeID . ')' block
+
+    ')'  shift, and go to state 38
+
+
+State 31
+
+   19 block: '{' . var_decl statament '}'
+   20      | '{' . statament '}'
+   21      | '{' . var_decl '}'
+   22      | '{' . '}'
+
+    ID       shift, and go to state 39
+    BOOLEAN  shift, and go to state 1
+    IF       shift, and go to state 40
+    INT      shift, and go to state 2
+    RETURN   shift, and go to state 41
+    WHILE    shift, and go to state 42
+    ';'      shift, and go to state 43
+    '{'      shift, and go to state 31
+    '}'      shift, and go to state 44
+
+    var_decl     go to state 45
+    block        go to state 46
+    type         go to state 15
+    statament    go to state 47
+    method_call  go to state 48
+
+
+State 32
+
+   15 method_decl: VOID ID '(' ')' block .
+
+    $default  reduce using rule 15 (method_decl)
+
+
+State 33
+
+   16 method_decl: VOID ID '(' TypeID ')' . block
+
+    '{'  shift, and go to state 31
+
+    block  go to state 49
+
+
+State 34
+
+   17 TypeID: type ID .
+   18       | type ID . ',' TypeID
+
+    ','  shift, and go to state 50
+
+    $default  reduce using rule 17 (TypeID)
+
+
+State 35
+
+   11 AuxId: ID ';' .
+
+    $default  reduce using rule 11 (AuxId)
+
+
+State 36
+
+   12 AuxId: ID ',' . AuxId
+
+    ID  shift, and go to state 27
+
+    AuxId  go to state 51
+
+
+State 37
+
+   13 method_decl: type ID '(' ')' block .
+
+    $default  reduce using rule 13 (method_decl)
+
+
+State 38
+
+   14 method_decl: type ID '(' TypeID ')' . block
+
+    '{'  shift, and go to state 31
+
+    block  go to state 52
+
+
+State 39
+
+   25 statament: ID . ASIGN expr ';'
+   34 method_call: ID . '(' ')'
+   35            | ID . '(' AuxExpr ')'
+
+    ASIGN  shift, and go to state 53
+    '('    shift, and go to state 54
+
+
+State 40
+
+   27 statament: IF . '(' expr ')' block ELSE block
+   28          | IF . '(' expr ')' block
+
+    '('  shift, and go to state 55
+
+
+State 41
+
+   30 statament: RETURN . expr ';'
+   31          | RETURN . ';'
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    ';'          shift, and go to state 62
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 65
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 42
+
+   29 statament: WHILE . '(' expr ')' block
+
+    '('  shift, and go to state 68
+
+
+State 43
+
+   32 statament: ';' .
+
+    $default  reduce using rule 32 (statament)
+
+
+State 44
+
+   22 block: '{' '}' .
+
+    $default  reduce using rule 22 (block)
+
+
+State 45
+
+   19 block: '{' var_decl . statament '}'
+   21      | '{' var_decl . '}'
+
+    ID      shift, and go to state 39
+    IF      shift, and go to state 40
+    RETURN  shift, and go to state 41
+    WHILE   shift, and go to state 42
+    ';'     shift, and go to state 43
+    '{'     shift, and go to state 31
+    '}'     shift, and go to state 69
+
+    block        go to state 46
+    statament    go to state 70
+    method_call  go to state 48
+
+
+State 46
+
+   33 statament: block .
+
+    $default  reduce using rule 33 (statament)
+
+
+State 47
+
+   20 block: '{' statament . '}'
+
+    '}'  shift, and go to state 71
+
+
+State 48
+
+   26 statament: method_call . ';'
+
+    ';'  shift, and go to state 72
+
+
+State 49
+
+   16 method_decl: VOID ID '(' TypeID ')' block .
+
+    $default  reduce using rule 16 (method_decl)
+
+
+State 50
+
+   18 TypeID: type ID ',' . TypeID
+
+    BOOLEAN  shift, and go to state 1
+    INT      shift, and go to state 2
+
+    TypeID  go to state 73
+    type    go to state 26
+
+
+State 51
+
+   12 AuxId: ID ',' AuxId .
+
+    $default  reduce using rule 12 (AuxId)
+
+
+State 52
+
+   14 method_decl: type ID '(' TypeID ')' block .
+
+    $default  reduce using rule 14 (method_decl)
+
+
+State 53
+
+   25 statament: ID ASIGN . expr ';'
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 74
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 54
+
+   34 method_call: ID '(' . ')'
+   35            | ID '(' . AuxExpr ')'
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+    ')'          shift, and go to state 75
+
+    method_call   go to state 64
+    AuxExpr       go to state 76
+    expr          go to state 77
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 55
+
+   27 statament: IF '(' . expr ')' block ELSE block
+   28          | IF '(' . expr ')' block
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 78
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 56
+
+   34 method_call: ID . '(' ')'
+   35            | ID . '(' AuxExpr ')'
+   38 expr: ID .
+
+    '('  shift, and go to state 54
+
+    $default  reduce using rule 38 (expr)
+
+
+State 57
+
+   54 literal: INT_LITERAL .
+
+    $default  reduce using rule 54 (literal)
+
+
+State 58
+
+   57 bool_literal: FALSE .
+
+    $default  reduce using rule 57 (bool_literal)
+
+
+State 59
+
+   56 bool_literal: TRUE .
+
+    $default  reduce using rule 56 (bool_literal)
+
+
+State 60
+
+   51 expr: MENOS . expr
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 79
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 61
+
+   52 expr: NOT . expr
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 80
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 62
+
+   31 statament: RETURN ';' .
+
+    $default  reduce using rule 31 (statament)
+
+
+State 63
+
+   53 expr: '(' . expr ')'
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 81
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 64
+
+   39 expr: method_call .
+
+    $default  reduce using rule 39 (expr)
+
+
+State 65
+
+   30 statament: RETURN expr . ';'
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+
+    MAS    shift, and go to state 82
+    MENOS  shift, and go to state 83
+    MULT   shift, and go to state 84
+    DIV    shift, and go to state 85
+    MOD    shift, and go to state 86
+    MAYOR  shift, and go to state 87
+    MENOR  shift, and go to state 88
+    IGUAL  shift, and go to state 89
+    AND    shift, and go to state 90
+    OR     shift, and go to state 91
+    ';'    shift, and go to state 92
+
+
+State 66
+
+   40 expr: literal .
+
+    $default  reduce using rule 40 (expr)
+
+
+State 67
+
+   55 literal: bool_literal .
+
+    $default  reduce using rule 55 (literal)
+
+
+State 68
+
+   29 statament: WHILE '(' . expr ')' block
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 93
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 69
+
+   21 block: '{' var_decl '}' .
+
+    $default  reduce using rule 21 (block)
+
+
+State 70
+
+   19 block: '{' var_decl statament . '}'
+
+    '}'  shift, and go to state 94
+
+
+State 71
+
+   20 block: '{' statament '}' .
+
+    $default  reduce using rule 20 (block)
+
+
+State 72
+
+   26 statament: method_call ';' .
+
+    $default  reduce using rule 26 (statament)
+
+
+State 73
+
+   18 TypeID: type ID ',' TypeID .
+
+    $default  reduce using rule 18 (TypeID)
+
+
+State 74
+
+   25 statament: ID ASIGN expr . ';'
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+
+    MAS    shift, and go to state 82
+    MENOS  shift, and go to state 83
+    MULT   shift, and go to state 84
+    DIV    shift, and go to state 85
+    MOD    shift, and go to state 86
+    MAYOR  shift, and go to state 87
+    MENOR  shift, and go to state 88
+    IGUAL  shift, and go to state 89
+    AND    shift, and go to state 90
+    OR     shift, and go to state 91
+    ';'    shift, and go to state 95
+
+
+State 75
+
+   34 method_call: ID '(' ')' .
+
+    $default  reduce using rule 34 (method_call)
+
+
+State 76
+
+   35 method_call: ID '(' AuxExpr . ')'
+
+    ')'  shift, and go to state 96
+
+
+State 77
+
+   36 AuxExpr: expr .
+   37        | expr . ',' AuxExpr
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+
+    MAS    shift, and go to state 82
+    MENOS  shift, and go to state 83
+    MULT   shift, and go to state 84
+    DIV    shift, and go to state 85
+    MOD    shift, and go to state 86
+    MAYOR  shift, and go to state 87
+    MENOR  shift, and go to state 88
+    IGUAL  shift, and go to state 89
+    AND    shift, and go to state 90
+    OR     shift, and go to state 91
+    ','    shift, and go to state 97
+
+    $default  reduce using rule 36 (AuxExpr)
+
+
+State 78
+
+   27 statament: IF '(' expr . ')' block ELSE block
+   28          | IF '(' expr . ')' block
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+
+    MAS    shift, and go to state 82
+    MENOS  shift, and go to state 83
+    MULT   shift, and go to state 84
+    DIV    shift, and go to state 85
+    MOD    shift, and go to state 86
+    MAYOR  shift, and go to state 87
+    MENOR  shift, and go to state 88
+    IGUAL  shift, and go to state 89
+    AND    shift, and go to state 90
+    OR     shift, and go to state 91
+    ')'    shift, and go to state 98
+
+
+State 79
+
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+   51     | MENOS expr .
+
+    $default  reduce using rule 51 (expr)
+
+
+State 80
+
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+   52     | NOT expr .
+
+    $default  reduce using rule 52 (expr)
+
+
+State 81
+
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+   53     | '(' expr . ')'
+
+    MAS    shift, and go to state 82
+    MENOS  shift, and go to state 83
+    MULT   shift, and go to state 84
+    DIV    shift, and go to state 85
+    MOD    shift, and go to state 86
+    MAYOR  shift, and go to state 87
+    MENOR  shift, and go to state 88
+    IGUAL  shift, and go to state 89
+    AND    shift, and go to state 90
+    OR     shift, and go to state 91
+    ')'    shift, and go to state 99
+
+
+State 82
+
+   41 expr: expr MAS . expr
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 100
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 83
+
+   43 expr: expr MENOS . expr
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 101
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 84
+
+   42 expr: expr MULT . expr
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 102
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 85
+
+   44 expr: expr DIV . expr
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 103
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 86
+
+   45 expr: expr MOD . expr
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 104
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 87
+
+   47 expr: expr MAYOR . expr
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 105
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 88
+
+   46 expr: expr MENOR . expr
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 106
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 89
+
+   48 expr: expr IGUAL . expr
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 107
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 90
+
+   49 expr: expr AND . expr
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 108
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 91
+
+   50 expr: expr OR . expr
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    expr          go to state 109
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 92
+
+   30 statament: RETURN expr ';' .
+
+    $default  reduce using rule 30 (statament)
+
+
+State 93
+
+   29 statament: WHILE '(' expr . ')' block
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+
+    MAS    shift, and go to state 82
+    MENOS  shift, and go to state 83
+    MULT   shift, and go to state 84
+    DIV    shift, and go to state 85
+    MOD    shift, and go to state 86
+    MAYOR  shift, and go to state 87
+    MENOR  shift, and go to state 88
+    IGUAL  shift, and go to state 89
+    AND    shift, and go to state 90
+    OR     shift, and go to state 91
+    ')'    shift, and go to state 110
+
+
+State 94
+
+   19 block: '{' var_decl statament '}' .
+
+    $default  reduce using rule 19 (block)
+
+
+State 95
+
+   25 statament: ID ASIGN expr ';' .
+
+    $default  reduce using rule 25 (statament)
+
+
+State 96
+
+   35 method_call: ID '(' AuxExpr ')' .
+
+    $default  reduce using rule 35 (method_call)
+
+
+State 97
+
+   37 AuxExpr: expr ',' . AuxExpr
+
+    ID           shift, and go to state 56
+    INT_LITERAL  shift, and go to state 57
+    FALSE        shift, and go to state 58
+    TRUE         shift, and go to state 59
+    MENOS        shift, and go to state 60
+    NOT          shift, and go to state 61
+    '('          shift, and go to state 63
+
+    method_call   go to state 64
+    AuxExpr       go to state 111
+    expr          go to state 77
+    literal       go to state 66
+    bool_literal  go to state 67
+
+
+State 98
+
+   27 statament: IF '(' expr ')' . block ELSE block
+   28          | IF '(' expr ')' . block
+
+    '{'  shift, and go to state 31
+
+    block  go to state 112
+
+
+State 99
+
+   53 expr: '(' expr ')' .
+
+    $default  reduce using rule 53 (expr)
+
+
+State 100
+
+   41 expr: expr . MAS expr
+   41     | expr MAS expr .
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+
+    MULT  shift, and go to state 84
+    DIV   shift, and go to state 85
+    MOD   shift, and go to state 86
+
+    $default  reduce using rule 41 (expr)
+
+
+State 101
+
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   43     | expr MENOS expr .
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+
+    MULT  shift, and go to state 84
+    DIV   shift, and go to state 85
+    MOD   shift, and go to state 86
+
+    $default  reduce using rule 43 (expr)
+
+
+State 102
+
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   42     | expr MULT expr .
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+
+    $default  reduce using rule 42 (expr)
+
+
+State 103
+
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   44     | expr DIV expr .
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+
+    $default  reduce using rule 44 (expr)
+
+
+State 104
+
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   45     | expr MOD expr .
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+
+    $default  reduce using rule 45 (expr)
+
+
+State 105
+
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   47     | expr MAYOR expr .
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+
+    MAS    shift, and go to state 82
+    MENOS  shift, and go to state 83
+    MULT   shift, and go to state 84
+    DIV    shift, and go to state 85
+    MOD    shift, and go to state 86
+
+    MAYOR  error (nonassociative)
+    MENOR  error (nonassociative)
+
+    $default  reduce using rule 47 (expr)
+
+
+State 106
+
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   46     | expr MENOR expr .
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+
+    MAS    shift, and go to state 82
+    MENOS  shift, and go to state 83
+    MULT   shift, and go to state 84
+    DIV    shift, and go to state 85
+    MOD    shift, and go to state 86
+
+    MAYOR  error (nonassociative)
+    MENOR  error (nonassociative)
+
+    $default  reduce using rule 46 (expr)
+
+
+State 107
+
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   48     | expr IGUAL expr .
+   49     | expr . AND expr
+   50     | expr . OR expr
+
+    MAS    shift, and go to state 82
+    MENOS  shift, and go to state 83
+    MULT   shift, and go to state 84
+    DIV    shift, and go to state 85
+    MOD    shift, and go to state 86
+    MAYOR  shift, and go to state 87
+    MENOR  shift, and go to state 88
+
+    IGUAL  error (nonassociative)
+
+    $default  reduce using rule 48 (expr)
+
+
+State 108
+
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   49     | expr AND expr .
+   50     | expr . OR expr
+
+    MAS    shift, and go to state 82
+    MENOS  shift, and go to state 83
+    MULT   shift, and go to state 84
+    DIV    shift, and go to state 85
+    MOD    shift, and go to state 86
+    MAYOR  shift, and go to state 87
+    MENOR  shift, and go to state 88
+    IGUAL  shift, and go to state 89
+
+    $default  reduce using rule 49 (expr)
+
+
+State 109
+
+   41 expr: expr . MAS expr
+   42     | expr . MULT expr
+   43     | expr . MENOS expr
+   44     | expr . DIV expr
+   45     | expr . MOD expr
+   46     | expr . MENOR expr
+   47     | expr . MAYOR expr
+   48     | expr . IGUAL expr
+   49     | expr . AND expr
+   50     | expr . OR expr
+   50     | expr OR expr .
+
+    MAS    shift, and go to state 82
+    MENOS  shift, and go to state 83
+    MULT   shift, and go to state 84
+    DIV    shift, and go to state 85
+    MOD    shift, and go to state 86
+    MAYOR  shift, and go to state 87
+    MENOR  shift, and go to state 88
+    IGUAL  shift, and go to state 89
+    AND    shift, and go to state 90
+
+    $default  reduce using rule 50 (expr)
+
+
+State 110
+
+   29 statament: WHILE '(' expr ')' . block
+
+    '{'  shift, and go to state 31
+
+    block  go to state 113
+
+
+State 111
+
+   37 AuxExpr: expr ',' AuxExpr .
+
+    $default  reduce using rule 37 (AuxExpr)
+
+
+State 112
+
+   27 statament: IF '(' expr ')' block . ELSE block
+   28          | IF '(' expr ')' block .
+
+    ELSE  shift, and go to state 114
+
+    $default  reduce using rule 28 (statament)
+
+
+State 113
+
+   29 statament: WHILE '(' expr ')' block .
+
+    $default  reduce using rule 29 (statament)
+
+
+State 114
+
+   27 statament: IF '(' expr ')' block ELSE . block
+
+    '{'  shift, and go to state 31
+
+    block  go to state 115
+
+
+State 115
+
+   27 statament: IF '(' expr ')' block ELSE block .
+
+    $default  reduce using rule 27 (statament)

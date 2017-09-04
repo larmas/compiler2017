@@ -1,0 +1,5 @@
+var x = 9;
+var y = 3;
+var z = 5;
+var w = 2;
+y*z+w*x;

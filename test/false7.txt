@@ -1,0 +1,19 @@
+//ERROR POR FALTA DE EXPRESION
+
+int x, y;
+y = 5;
+
+void main(){    
+	boolean cond;
+	x = 0;
+	
+	cond = false;
+
+	while (){
+		x = x+1;
+
+		if (x > y){
+			cond = true;
+		}
+	}
+}

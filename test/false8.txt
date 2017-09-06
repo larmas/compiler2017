@@ -1,0 +1,19 @@
+// ERROR DE ASIGNACION NULA
+
+int x, y;
+y = 5;
+
+void main(){    
+	boolean cond;
+	x = ;
+	
+	cond = false;
+
+	while (!(cond == true)){
+		x = x+1;
+
+		if (x > y){
+			cond = true;
+		}
+	}
+}

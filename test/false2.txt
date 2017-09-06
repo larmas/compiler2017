@@ -1,0 +1,18 @@
+// USO DE PALABRA RESERVADA EN NOMBRE DE IDENTIFICADOR
+
+int x, void;
+
+void main(){    
+	boolean cond;
+	x = 0;
+	
+	cond = false;
+
+	while (!(cond == true)){
+		x = x+1;
+
+		if (x == y){
+			cond = true;
+		}
+	}
+}

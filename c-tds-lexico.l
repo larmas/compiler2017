@@ -36,7 +36,7 @@ digit [0-9]
 "=="  {return IGUAL;}
 "&&"  {return AND;}
 "||"  {return OR;}
-'!'   {return NOT;}
+"!"  {return NOT;}
 
 
 

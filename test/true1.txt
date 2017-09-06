@@ -1,0 +1,20 @@
+
+int resta( int a, int b ){	
+	return(a-b);
+}
+
+void main(){
+	int cont1, cont2, result;
+	cont1 = 10;
+	cont2 = 5;
+
+	/*
+		comentariooossss.........comentariooossss.........
+		8a212 el carlo /51*
+
+	*/
+
+	result = resta( cont1, cont2 );
+}
+
+

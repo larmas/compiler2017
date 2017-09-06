@@ -16,27 +16,28 @@ alpha [a-zA-z]
 digit [0-9]
 
 %%
-"boolean" {return BOOLEAN;}
-"else"    {return ELSE;}
-"false"   {return FALSE;}
-"if"      {return IF;}
-"int"     {return INT;}
-"return"  {return RETURN;}
-"true"    {return TRUE;}
-"void"    {return VOID;}
-"while"   {return WHILE;}
-"+"   {return MAS;}
-"-"   {return MENOS;}
-"*"   {return MULT;}
-"/"   {return DIV;}
-"%"   {return MOD;}
-"<"   {return MENOR;}
-">"   {return MAYOR;}
-"="   {return ASIGN;}
-"=="  {return IGUAL;}
-"&&"  {return AND;}
-"||"  {return OR;}
-'!'   {return NOT;}
+
+"boolean"   {return BOOLEAN;}
+"else"      {return ELSE;}
+"false"     {return FALSE;}
+"if"        {return IF;}
+"int"       {return INT;}
+"return"    {return RETURN;}
+"true"      {return TRUE;}
+"void"      {return VOID;}
+"while"     {return WHILE;}
+"+"         {return MAS;}
+"-"         {return MENOS;}
+"*"         {return MULT;}
+"/"         {return DIV;}
+"%"         {return MOD;}
+"<"         {return MENOR;}
+">"         {return MAYOR;}
+"="         {return ASIGN;}
+"=="        {return IGUAL;}
+"&&"        {return AND;}
+"||"        {return OR;}
+'!'         {return NOT;}
 
 
 

@@ -77,7 +77,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 9 "c-tds-sintaxis.y" /* yacc.c:1915  */
+#line 11 "c-tds-sintaxis.y" /* yacc.c:1915  */
  int i; char *s; struct Node *treeN; 
 
 #line 84 "c-tds-sintaxis.tab.h" /* yacc.c:1915  */

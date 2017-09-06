@@ -731,7 +731,8 @@ YY_DECL
     
 #line 18 "c-tds-lexico.l"
 
-#line 735 "lex.yy.c"
+
+#line 736 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -826,112 +827,112 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 19 "c-tds-lexico.l"
+#line 20 "c-tds-lexico.l"
 {return BOOLEAN;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 20 "c-tds-lexico.l"
+#line 21 "c-tds-lexico.l"
 {return ELSE;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 21 "c-tds-lexico.l"
+#line 22 "c-tds-lexico.l"
 {return FALSE;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 22 "c-tds-lexico.l"
+#line 23 "c-tds-lexico.l"
 {return IF;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 23 "c-tds-lexico.l"
+#line 24 "c-tds-lexico.l"
 {return INT;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 24 "c-tds-lexico.l"
+#line 25 "c-tds-lexico.l"
 {return RETURN;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 25 "c-tds-lexico.l"
+#line 26 "c-tds-lexico.l"
 {return TRUE;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 26 "c-tds-lexico.l"
+#line 27 "c-tds-lexico.l"
 {return VOID;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 27 "c-tds-lexico.l"
+#line 28 "c-tds-lexico.l"
 {return WHILE;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 28 "c-tds-lexico.l"
+#line 29 "c-tds-lexico.l"
 {return MAS;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 29 "c-tds-lexico.l"
+#line 30 "c-tds-lexico.l"
 {return MENOS;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 30 "c-tds-lexico.l"
+#line 31 "c-tds-lexico.l"
 {return MULT;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 31 "c-tds-lexico.l"
+#line 32 "c-tds-lexico.l"
 {return DIV;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 32 "c-tds-lexico.l"
+#line 33 "c-tds-lexico.l"
 {return MOD;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 33 "c-tds-lexico.l"
+#line 34 "c-tds-lexico.l"
 {return MENOR;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 34 "c-tds-lexico.l"
+#line 35 "c-tds-lexico.l"
 {return MAYOR;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 35 "c-tds-lexico.l"
+#line 36 "c-tds-lexico.l"
 {return ASIGN;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 36 "c-tds-lexico.l"
+#line 37 "c-tds-lexico.l"
 {return IGUAL;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 37 "c-tds-lexico.l"
+#line 38 "c-tds-lexico.l"
 {return AND;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 38 "c-tds-lexico.l"
+#line 39 "c-tds-lexico.l"
 {return OR;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 39 "c-tds-lexico.l"
+#line 40 "c-tds-lexico.l"
 {return NOT;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 43 "c-tds-lexico.l"
+#line 44 "c-tds-lexico.l"
 {
                             yylval.i = atoi(yytext);
                             printf("INT : %d\n",atoi(yytext));
@@ -940,7 +941,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 51 "c-tds-lexico.l"
+#line 52 "c-tds-lexico.l"
 {
                                         yylval.s=(char *) malloc(sizeof(yytext)*yyleng);
                                         strcpy(yylval.s,yytext);
@@ -950,7 +951,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 58 "c-tds-lexico.l"
+#line 59 "c-tds-lexico.l"
 {
                                 printf("%s\n",yytext);
                                 return *yytext;
@@ -959,46 +960,46 @@ YY_RULE_SETUP
 case 25:
 /* rule 25 can match eol */
 YY_RULE_SETUP
-#line 62 "c-tds-lexico.l"
+#line 63 "c-tds-lexico.l"
 {
-                                
+
                             }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 67 "c-tds-lexico.l"
+#line 68 "c-tds-lexico.l"
 BEGIN(comment);
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 68 "c-tds-lexico.l"
-/* eat anything that's not a '*' */
+#line 69 "c-tds-lexico.l"
+
 	YY_BREAK
 case 28:
-YY_RULE_SETUP
-#line 69 "c-tds-lexico.l"
-/* eat up '*'s not followed by '/'s */
-	YY_BREAK
-case 29:
-/* rule 29 can match eol */
 YY_RULE_SETUP
 #line 70 "c-tds-lexico.l"
 
 	YY_BREAK
-case 30:
+case 29:
+/* rule 29 can match eol */
 YY_RULE_SETUP
 #line 71 "c-tds-lexico.l"
+
+	YY_BREAK
+case 30:
+YY_RULE_SETUP
+#line 72 "c-tds-lexico.l"
 BEGIN(INITIAL);
 	YY_BREAK
 case 31:
 /* rule 31 can match eol */
 YY_RULE_SETUP
-#line 73 "c-tds-lexico.l"
+#line 74 "c-tds-lexico.l"
 ; /* Ignore rest of line */
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 75 "c-tds-lexico.l"
+#line 76 "c-tds-lexico.l"
 {
             printf("%s%s%s%i\n","Simbolo no valido: ",yytext," en la linea ",yylineno);
             exit(1);
@@ -1006,10 +1007,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 80 "c-tds-lexico.l"
+#line 81 "c-tds-lexico.l"
 ECHO;
 	YY_BREAK
-#line 1013 "lex.yy.c"
+#line 1014 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(comment):
 	yyterminate();
@@ -2019,7 +2020,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 80 "c-tds-lexico.l"
+#line 81 "c-tds-lexico.l"
 
 
 

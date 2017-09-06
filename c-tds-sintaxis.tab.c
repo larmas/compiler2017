@@ -68,9 +68,11 @@
 #include <stdio.h>
 #include "list.c"
 
+//extern int yylineno;
+
 List *list;
 
-#line 74 "c-tds-sintaxis.tab.c" /* yacc.c:339  */
+#line 76 "c-tds-sintaxis.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -137,10 +139,10 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 9 "c-tds-sintaxis.y" /* yacc.c:355  */
+#line 11 "c-tds-sintaxis.y" /* yacc.c:355  */
  int i; char *s; struct Node *treeN; 
 
-#line 144 "c-tds-sintaxis.tab.c" /* yacc.c:355  */
+#line 146 "c-tds-sintaxis.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -157,7 +159,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 161 "c-tds-sintaxis.tab.c" /* yacc.c:358  */
+#line 163 "c-tds-sintaxis.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -457,8 +459,8 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    45,    45,    46,    47,    48,    51,    52,    55,    56,
-      59,    60,    63,    64,    67,    68,    71,    72,    75,    76,
+       0,    47,    47,    48,    49,    50,    53,    54,    57,    58,
+      61,    62,    65,    66,    69,    70,    71,    72,    75,    76,
       79,    80,    81,    82,    85,    86,    89,    90,    94,    95,
       96,    97,    98,    99,   100,   101,   102,   105,   106,   109,
      110,   113,   114,   115,   116,   117,   118,   119,   120,   121,
@@ -1335,16 +1337,8 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 15:
-#line 68 "c-tds-sintaxis.y" /* yacc.c:1661  */
-    {
-                                            printf("%s\n","Declaracion de metodo...");
-                                        }
-#line 1344 "c-tds-sintaxis.tab.c" /* yacc.c:1661  */
-    break;
-
-
-#line 1348 "c-tds-sintaxis.tab.c" /* yacc.c:1661  */
+      
+#line 1342 "c-tds-sintaxis.tab.c" /* yacc.c:1661  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires

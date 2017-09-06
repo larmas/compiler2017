@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "list.c"
 
+//extern int yylineno;
+
 List *list;
 %}
 
@@ -65,9 +67,7 @@ AuxId: ID';'
 ;
 
 method_decl: type ID '(' ')' block
-           | type ID '('TypeID')' block {
-                                            printf("%s\n","Declaracion de metodo...");
-                                        }
+           | type ID '('TypeID')' block 
            | VOID ID '(' ')' block
            | VOID ID '('TypeID')' block
 ;
@@ -83,7 +83,7 @@ block: '{'list_var_decl list_statament'}'
 ;
 
 list_statament: statament
-            | statament list_statament 
+            | statament list_statament
 ;
 
 type: INT

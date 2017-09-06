@@ -4,8 +4,9 @@ int inc(int x){
 }
 
 void main(){
-    int y;
-    y = 4;
+    /* int y;
+    y = 4;*/
+    int while = 5;
     if (y) {
         return 1;
     } else {

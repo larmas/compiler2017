@@ -10,6 +10,7 @@
 
 %option noyywrap
 %option yylineno
+%x comment
 
 alpha [a-zA-z]
 digit [0-9]
@@ -59,10 +60,15 @@ digit [0-9]
                                 return *yytext;
                             }
 (\n|\t|" ")*                {
-                                printf("%s\n","-------");
+
                             }
 
 
+"/*"                BEGIN(comment);
+<comment>[^*\n]*
+<comment>"*"+[^*/\n]*
+<comment>\n
+<comment>"*"+"/"    BEGIN(INITIAL);
 
 "//".*\n  ; /* Ignore rest of line */
 

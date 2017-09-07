@@ -1,0 +1,14 @@
+// factorial de un numero
+
+int factorial (int n){
+	if((n == 0)||(n == 1)){ return 1; }
+	else{
+		return(factorial(n-1)*n);
+	}
+}
+
+void main(){
+	int x,y;
+	x = 3;
+	y = factorial(x);
+}

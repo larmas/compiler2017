@@ -1,0 +1,19 @@
+//ERROR POR SOBRA DE ')'
+///El error es en la linea 12 y lo tira en la 4
+int x, y;
+y = 5;
+
+void main(){
+	boolean cond;
+	x = 0;
+
+	cond = false;
+
+	while (!(cond == true))){
+		x = x+1;
+
+		if (x > y){
+			cond = true;
+		}
+	}
+}

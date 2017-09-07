@@ -67,7 +67,7 @@ AuxId: ID';'
 ;
 
 method_decl: type ID '(' ')' block
-           | type ID '('TypeID')' block 
+           | type ID '('TypeID')' block
            | VOID ID '(' ')' block
            | VOID ID '('TypeID')' block
 ;

@@ -17,33 +17,33 @@ digit [0-9]
 
 %%
 
-"boolean"   {return BOOLEAN;}
-"else"      {return ELSE;}
-"false"     {return FALSE;}
-"if"        {return IF;}
-"int"       {return INT;}
-"return"    {return RETURN;}
-"true"      {return TRUE;}
-"void"      {return VOID;}
-"while"     {return WHILE;}
-"+"         {return MAS;}
-"-"         {return MENOS;}
-"*"         {return MULT;}
-"/"         {return DIV;}
-"%"         {return MOD;}
-"<"         {return MENOR;}
-">"         {return MAYOR;}
-"="         {return ASIGN;}
-"=="        {return IGUAL;}
-"&&"        {return AND;}
-"||"        {return OR;}
-'!'         {return NOT;}
+"boolean" {return BOOLEAN;}
+"else"    {return ELSE;}
+"false"   {return FALSE;}
+"if"      {return IF;}
+"int"     {return INT;}
+"return"  {return RETURN;}
+"true"    {return TRUE;}
+"void"    {return VOID;}
+"while"   {return WHILE;}
+"+"   {return MAS;}
+"-"   {return MENOS;}
+"*"   {return MULT;}
+"/"   {return DIV;}
+"%"   {return MOD;}
+"<"   {return MENOR;}
+">"   {return MAYOR;}
+"="   {return ASIGN;}
+"=="  {return IGUAL;}
+"&&"  {return AND;}
+"||"  {return OR;}
+"!"  {return NOT;}
 
 
 
 {digit}{digit}*         {
                             yylval.i = atoi(yytext);
-                            printf("INT : %d\n",atoi(yytext));
+                            //printf("INT : %d\n",atoi(yytext));
                             return INT_LITERAL;
                         }
 
@@ -52,12 +52,12 @@ digit [0-9]
 {alpha}({alpha}|{digit}|'_')*     {
                                         yylval.s=(char *) malloc(sizeof(yytext)*yyleng);
                                         strcpy(yylval.s,yytext);
-                                        printf("ID : %s\n",yytext);
+                                        //printf("ID : %s\n",yytext);
                                         return ID;
                                     }
 
 [;,(){}]                   {
-                                printf("%s\n",yytext);
+                                //printf("%s\n",yytext);
                                 return *yytext;
                             }
 (\n|\t|" ")*                {
@@ -77,7 +77,10 @@ digit [0-9]
             printf("%s%s%s%i\n","Simbolo no valido: ",yytext," en la linea ",yylineno);
             exit(1);
         }
-
+<<EOF>>     {
+                printf("%s%i%s\n", "Compiled successfully, ",yylineno," compiled lines.");
+                return EOF;
+            }
 %%
 
 void yyerror(){

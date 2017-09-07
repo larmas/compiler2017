@@ -1,5 +1,0 @@
-#!/bin/bash
-
-flex c-tds-lexico.l
-bison -v -d c-tds-sintaxis.y
-gcc lex.yy.c c-tds-sintaxis.tab.c

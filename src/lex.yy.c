@@ -1001,20 +1001,15 @@ YY_RULE_SETUP
             exit(1);
         }
 	YY_BREAK
-case YY_STATE_EOF(INITIAL):
-case YY_STATE_EOF(comment):
-#line 80 "c-tds-lexico.l"
-{
-                printf("%s%i%s\n", "Compiled successfully, ",yylineno," compiled lines.");
-                return EOF;
-            }
-	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 84 "c-tds-lexico.l"
+#line 81 "c-tds-lexico.l"
 ECHO;
 	YY_BREAK
-#line 1018 "lex.yy.c"
+#line 1010 "lex.yy.c"
+case YY_STATE_EOF(INITIAL):
+case YY_STATE_EOF(comment):
+	yyterminate();
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2021,7 +2016,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 84 "c-tds-lexico.l"
+#line 81 "c-tds-lexico.l"
 
 
 

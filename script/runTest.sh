@@ -1,9 +1,10 @@
 #!/bin/bash
 # -*- ENCODING: UTF-8 -*-
 
-# Usage $ ./runTest.sh
+# Usage: Situado en la raiz del proyecto correr el comando..
+#  $ ./script/runTest.sh
 
-cd ../src/
+cd src/
 
 DIR=../test/
 SRC=src/

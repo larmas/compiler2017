@@ -77,10 +77,7 @@ digit [0-9]
             printf("%s%s%s%i\n","Simbolo no valido: ",yytext," en la linea ",yylineno);
             exit(1);
         }
-<<EOF>>     {
-                printf("%s%i%s\n", "Compiled successfully, ",yylineno," compiled lines.");
-                return EOF;
-            }
+
 %%
 
 void yyerror(){

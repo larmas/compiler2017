@@ -1,11 +1,11 @@
 // ERROR DE ASIGNACION NULA
-//Tira el error en la linea 4 y deberia ser en la 8
+
 int x, y;
-y = 5;
 
 void main(){
 	boolean cond;
 	x = ;
+	y = 5;
 
 	cond = false;
 

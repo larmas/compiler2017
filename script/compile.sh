@@ -1,9 +1,10 @@
 #!/bin/bash
 
-#Usage $ ./compile.sh
+#Usage: Situado en la raiz del proyecto correr el comando..
+# $ ./compile.sh
 
 #Cambio al directorio src
-cd ../src/
+cd src/
 
 printf "\n-----COMPILE FLEX-----"
 flex c-tds-lexico.l

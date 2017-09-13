@@ -2,37 +2,38 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "list.c"
+#include "structures.c"
 
 //extern int yylineno;
 
 List *list;
 %}
 
-%union { int i; char *s; struct Node *treeN; }
+%union { int i; struct tokenLine *tokenLine; char *s; struct node *treeN; }
 
-%token<s> ID
-%token<i> INT_LITERAL
-%token<i> BOOLEAN
-%token<i> ELSE
-%token<i> FALSE
-%token<i> IF
-%token<i> INT
-%token<i> RETURN
-%token<i> TRUE
-%token<i> VOID
-%token<i> WHILE
-%token<i> MAS
-%token<i> MENOS
-%token<i> MULT
-%token<i> DIV
-%token<i> MOD
-%token<i> MAYOR
-%token<i> MENOR
-%token<i> ASIGN
-%token<i> IGUAL
-%token<i> AND
-%token<i> OR
-%token<i> NOT
+%token<tokenLine> ID
+%token<tokenLine> INT_LITERAL
+%token<tokenLine> BOOLEAN
+%token<tokenLine> ELSE
+%token<tokenLine> FALSE
+%token<tokenLine> IF
+%token<tokenLine> INT
+%token<tokenLine> RETURN
+%token<tokenLine> TRUE
+%token<tokenLine> VOID
+%token<tokenLine> WHILE
+%token<tokenLine> MAS
+%token<tokenLine> MENOS
+%token<tokenLine> MULT
+%token<tokenLine> DIV
+%token<tokenLine> MOD
+%token<tokenLine> MAYOR
+%token<tokenLine> MENOR
+%token<tokenLine> ASIGN
+%token<tokenLine> IGUAL
+%token<tokenLine> AND
+%token<tokenLine> OR
+%token<tokenLine> NOT
 
 %left OR
 %left AND
@@ -95,7 +96,7 @@ statament: ID ASIGN expr';'
          | method_call';'
          | IF '(' expr ')' block ELSE block
          | IF '(' expr ')' block
-         | WHILE '(' expr ')' block
+         | WHILE '(' expr ')' block         {printf("Numero linea: %i\n",$1->noLine);}
          | RETURN expr';'
          | RETURN';'
          | ';'

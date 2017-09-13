@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "c-tds-sintaxis.tab.h"
+#include "structures.c"
 
 %}
 
@@ -25,7 +26,12 @@ digit [0-9]
 "return"  {return RETURN;}
 "true"    {return TRUE;}
 "void"    {return VOID;}
-"while"   {return WHILE;}
+"while"   {//Prueba de token con numero de linea
+            yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+            strcpy(yylval.tokenLine->id, "WHILE");
+            yylval.tokenLine->noLine = yylineno;
+            return WHILE;
+          }
 "+"   {return MAS;}
 "-"   {return MENOS;}
 "*"   {return MULT;}

@@ -9,7 +9,7 @@
 List *list;
 %}
 
-%union { int i; struct tokenLine *tokenLine; char *s; struct node *treeN; }
+%union { int i; struct tokenLine *tokenLine; struct node *treeN; }
 
 %token<tokenLine> ID
 %token<tokenLine> INT_LITERAL

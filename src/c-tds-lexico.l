@@ -18,47 +18,167 @@ digit [0-9]
 
 %%
 
-"boolean" {return BOOLEAN;}
-"else"    {return ELSE;}
-"false"   {return FALSE;}
-"if"      {return IF;}
-"int"     {return INT;}
-"return"  {return RETURN;}
-"true"    {return TRUE;}
-"void"    {return VOID;}
-"while"   {//Prueba de token con numero de linea
-            yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
-            strcpy(yylval.tokenLine->id, "WHILE");
-            yylval.tokenLine->noLine = yylineno;
-            return WHILE;
-          }
-"+"   {return MAS;}
-"-"   {return MENOS;}
-"*"   {return MULT;}
-"/"   {return DIV;}
-"%"   {return MOD;}
-"<"   {return MENOR;}
-">"   {return MAYOR;}
-"="   {return ASIGN;}
-"=="  {return IGUAL;}
-"&&"  {return AND;}
-"||"  {return OR;}
-"!"  {return NOT;}
+"boolean"   {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "BOOLEAN");
+                yylval.tokenLine->noLine = yylineno;
+                return BOOLEAN;
+            }
+
+"else"      {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "ELSE");
+                yylval.tokenLine->noLine = yylineno;
+                return ELSE;
+            }
+
+"false"     {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "FALSE");
+                yylval.tokenLine->noLine = yylineno;
+                return FALSE;
+            }
+
+"if"        {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "IF");
+                yylval.tokenLine->noLine = yylineno;
+                return IF;
+            }
+
+"int"       {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "INT");
+                yylval.tokenLine->noLine = yylineno;
+                return INT;
+            }
+
+"return"    {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "RETURN");
+                yylval.tokenLine->noLine = yylineno;
+                return RETURN;
+            }
+
+"true"      {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "TRUE");
+                yylval.tokenLine->noLine = yylineno;
+                return TRUE;
+            }
+
+"void"      {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "VOID");
+                yylval.tokenLine->noLine = yylineno;
+                return VOID;
+            }
+
+"while"     {//Prueba de token con numero de linea
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "WHILE");
+                yylval.tokenLine->noLine = yylineno;
+                return WHILE;
+            }
+
+"+"         {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "MAS");
+                yylval.tokenLine->noLine = yylineno;
+                return MAS;
+            }
+
+"-"         {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "MENOS");
+                yylval.tokenLine->noLine = yylineno;
+                return MENOS;
+            }
+
+"*"         {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "MULT");
+                yylval.tokenLine->noLine = yylineno;
+                return MULT;
+            }
+
+"/"         {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "DIV");
+                yylval.tokenLine->noLine = yylineno;
+                return DIV;
+            }
+
+"%"         {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "MOD");
+                yylval.tokenLine->noLine = yylineno;
+                return MOD;
+            }
+
+"<"         {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "MENOR");
+                yylval.tokenLine->noLine = yylineno;
+                return MENOR;
+            }
+
+">"         {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "MAYOR");
+                yylval.tokenLine->noLine = yylineno;
+                return MAYOR;
+            }
+
+"="         {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "ASIGN");
+                yylval.tokenLine->noLine = yylineno;
+                return ASIGN;
+            }
+
+"=="        {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "IGUAL");
+                yylval.tokenLine->noLine = yylineno;
+                return IGUAL;
+            }
+
+"&&"        {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "AND");
+                yylval.tokenLine->noLine = yylineno;
+                return AND;
+            }
+
+"||"        {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "OR");
+                yylval.tokenLine->noLine = yylineno;
+                return OR;
+            }
+
+"!"         {
+                yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                strcpy(yylval.tokenLine->id, "NOT");
+                yylval.tokenLine->noLine = yylineno;
+                return NOT;
+            }
+
 
 
 
 {digit}{digit}*         {
                             yylval.i = atoi(yytext);
-                            //printf("INT : %d\n",atoi(yytext));
                             return INT_LITERAL;
                         }
 
 
 
 {alpha}({alpha}|{digit}|'_')*     {
-                                        yylval.s=(char *) malloc(sizeof(yytext)*yyleng);
-                                        strcpy(yylval.s,yytext);
-                                        //printf("ID : %s\n",yytext);
+                                        yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                                        strcpy(yylval.tokenLine->id,yytext);
+                                        yylval.tokenLine->noLine = yylineno;
                                         return ID;
                                     }
 

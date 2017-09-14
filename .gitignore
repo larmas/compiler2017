@@ -4,6 +4,7 @@
 *.tab.h
 *.yy.c
 
+
 # Prerequisites
 *.d
 

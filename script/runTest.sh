@@ -13,5 +13,5 @@ for i in $(ls $DIR)
 do
     printf "\n"
     echo "File: '"$i"'"
-    ./run $DIR/$i
+    ./run.out $DIR/$i
 done

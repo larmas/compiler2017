@@ -11,4 +11,4 @@ flex c-tds-lexico.l
 printf "\n\n-----COMPILE BISON-----"
 bison -v -d c-tds-sintaxis.y
 printf "\n\n-----COMPILE GCC-----\n"
-gcc -o run lex.yy.c c-tds-sintaxis.tab.c
+gcc -o run.out lex.yy.c c-tds-sintaxis.tab.c

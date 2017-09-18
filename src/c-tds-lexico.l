@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-
 #include "c-tds-sintaxis.tab.h"
 #include "structures.c"
 

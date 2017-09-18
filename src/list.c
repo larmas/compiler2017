@@ -3,6 +3,7 @@
 #include <string.h>
 #include "tree.c"
 
+
 typedef struct list {
   Node *node;
   struct list *next;

@@ -6,11 +6,6 @@
 struct node;
 typedef struct node Node;
 
-typedef struct tokenLine{
-    char id[20];
-    int noLine;
-}TokenLine;
-
 //VARIABLE
 typedef struct variable{
   char id[20];
@@ -237,7 +232,7 @@ void dfs(Node *root){
     }
 }*/
 
-int main(int argc, char const *argv[]) {
+/*int main(int argc, char const *argv[]) {
     Node *var1 = newVar("x",0,10,50);  // x:10
     Node *var2 = newVar("y",1,0,50);   // y:false
     showVar(var1);
@@ -252,11 +247,11 @@ int main(int argc, char const *argv[]) {
     Node *op2 = newOp("&&",1,50);      // &&
     showOp(op1);
     showOp(op2);
-/*  Node *func1 = newFunc("suma",0,50);
+  Node *func1 = newFunc("suma",0,50);
     Node *func2 = newFunc("equals",1,50);
 
     showFunc(func1);
     showFunc(func2);
-*/
+
   return 0;
-}
+}*/

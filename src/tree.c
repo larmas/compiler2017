@@ -3,6 +3,9 @@
 #include <ctype.h>
 #include <string.h>
 
+struct node;
+typedef struct node Node;
+
 typedef struct tokenLine{
     char id[20];
     int noLine;
@@ -53,7 +56,6 @@ struct node{
 };
 
 
-
 /*PROTOTIPOS*/
 Node *newVar(char xId[], int xType, int xValue, int xLine);
 Node *newConst(int xType, int xValue, int xLine);
@@ -72,7 +74,7 @@ void insertTree(Node *raiz, Node *leafL, Node *leafR);
 
 
 // Crea un nodo tipo variable (0).
-Node *newVar(char xId[], int xType, int xValue, int xLine){  
+Node *newVar(char xId[], int xType, int xValue, int xLine){
 	  Node *new;
     new = (Node *) malloc(sizeof(Node));
 
@@ -187,7 +189,7 @@ void showOp(Node *a){
         printf("type: integer\n");
     }else{
         printf("type: boolean\n");
-    }        
+    }
 }
 
 
@@ -197,7 +199,7 @@ void showFunc(Node *a){
         printf("type: integer\n");
     }else{
         printf("type: boolean\n");
-    }          
+    }
 }
 
 // Le inserta al nodo 'root', sus hijos izquierdo y derecho

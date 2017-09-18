@@ -130,7 +130,7 @@ void showList(List *l) {
             break;
         case 2:
             showOp(p->node);
-            break;  
+            break;
         default:
             showFunc(p->node);
             break;

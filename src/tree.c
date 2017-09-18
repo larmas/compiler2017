@@ -11,7 +11,6 @@ typedef struct tokenLine{
 //VARIABLE
 typedef struct variable{
   char id[20];
-  int type;   // 0:int, 1:boolean.
   int value;  // constante int o bool(0,1)
 }TVar;
 
@@ -19,7 +18,6 @@ typedef struct variable{
 //FUNCION
 typedef struct funcion{
   char id[20];
-  int type;      // 0:int, 1:boolean.
   //List *param;   // lista de parametros
   //Node AST;
 }TFunc;
@@ -27,7 +25,6 @@ typedef struct funcion{
 
 //CONSTANTE
 typedef struct constante{
-  int type;     // 0:int, 1:boolean.
   int value;    // constante int o bool(0,1)
 }TConst;
 
@@ -35,7 +32,6 @@ typedef struct constante{
 //OPERADOR
 typedef struct operador{
   char id[5];
-  int type; 
 }TOpe;
 
 
@@ -50,8 +46,10 @@ typedef union info{
 typedef struct node{
   int tag; // 0:variable, 1:const, 2:operador, 3:funcion.
   int noline;
+  int type; // 0:int, 1:boolean.
   TInfo *info;
   struct node *left;
+  //struct node *mid;
   struct node *right;
   int mark; //0 no visitado, -1 visitado
 }Node;
@@ -82,10 +80,10 @@ Node *newVar(char xId[], int xType, int xValue, int xLine){
 
     new->mark = 0;
     new->tag = 0;
+    new->type = xType;  // 0:int, 1:boolean
     new->noline = xLine;
 
     strcpy( new->info->var.id , xId );
-    new->info->var.type = xType; 		// 0:int, 1:boolean
     new->info->var.value = xValue;		// constante int o bool(0,1)
 
     printf("----------------\n");
@@ -101,8 +99,8 @@ Node *newConst(int xType, int xValue, int xLine){
     new->mark = 0;
     new->tag = 1;
     new->noline = xLine;
+    new->type = xType;  // 0:int, 1:boolean
 
-    new->info->cons.type = xType;	 // 0:int, 1:boolean
     new->info->cons.value = xValue;   // constante int o bool(0,1)
 
     return new;
@@ -117,10 +115,10 @@ Node *newOp(char xId[], int xType, int xLine){
     new->mark = 0;
     new->tag = 2;
     new->noline = xLine;
+    new->type = xType;  // 0:int, 1:boolean
 
     strcpy( new->info->op.id , xId );
-    new->info->op.type = xType;	     // 0:int, 1:boolean
-
+    
     return new;
 }
 
@@ -132,9 +130,10 @@ Node *newFunc(char xId[], int xType, /*List *xParam, Node *xAST,*/ int xLine){
     new->mark = 0;
     new->tag = 3;
     new->noline = xLine;
+    new->type = xType;  // 0:int, 1:boolean
 
     strcpy( new->info->func.id , xId );
-    new->info->func.type = xType; 		// 0:int, 1:boolean
+    
     //new->info.func.param = xParam;
 	  //new->info->func.AST = xAST;
 
@@ -144,7 +143,7 @@ Node *newFunc(char xId[], int xType, /*List *xParam, Node *xAST,*/ int xLine){
 
 void showVar(Node *a){
     printf("id: %s\n",a->info->var.id);
-    if (a->info->var.type == 0){
+    if (a->type == 0){
         printf("type: integer\n");
         printf("value:%i\n",a->info->var.value);
     }else{
@@ -158,7 +157,7 @@ void showVar(Node *a){
 }
 
 void showConst(Node *a){
-    if (a->info->cons.type == 0){
+    if (a->type == 0){
         printf("type: integer\n");
         printf("value:%i\n",a->info->cons.value);
     }else{
@@ -173,7 +172,7 @@ void showConst(Node *a){
 
 void showOp(Node *a){
     printf("id: %s\n",a->info->op.id);
-    if (a->info->op.type == 0){
+    if (a->type == 0){
         printf("type: integer\n");
     }else{
         printf("type: boolean\n");
@@ -183,7 +182,7 @@ void showOp(Node *a){
 
 void showFunc(Node *a){
      printf("id: %s\n",a->info->func.id);
-    if (a->info->func.type == 0){
+    if (a->type == 0){
         printf("type: integer\n");
     }else{
         printf("type: boolean\n");

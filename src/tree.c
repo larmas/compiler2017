@@ -23,7 +23,7 @@ typedef struct node Node;
 //FUNCION
 typedef struct funcion{
   char id[20];
-  //List *param;   // lista de parametros
+  struct list *param;   // lista de parametros
   Node *AST;
 }TFunc;
 
@@ -60,7 +60,7 @@ struct node{
 Node *newVar(char xId[], int xType, int xValue, int xLine);
 Node *newConst(int xType, int xValue, int xLine);
 Node *newOp(char xId[], int xType, int xLine);
-Node *newFunc(char xId[], int xType, List *xParam, Node *xAST,int xLine);
+Node *newFunc(char xId[], int xType, struct list *xParam, Node *xAST,int xLine);
 
 void showVar(Node *a);
 void showConst(Node *a);
@@ -134,7 +134,7 @@ Node *newOp(char xId[], int xType, int xLine){
 }
 
 // Crea un nodo tipo funcion (3).
-Node *newFunc(char xId[], int xType, List *xParam, Node *xAST, int xLine){  
+Node *newFunc(char xId[], int xType, struct list *xParam, Node *xAST, int xLine){
 	Node *new;
     new = (Node *) malloc(sizeof(Node));
 
@@ -147,7 +147,7 @@ Node *newFunc(char xId[], int xType, List *xParam, Node *xAST, int xLine){
     i =(TInfo *) malloc(sizeof(TInfo));
 
     strcpy( i->func.id , xId );
-    i.func.param = xParam;
+    i->func.param = xParam;
     i->func.AST = xAST;
     new->info = i;
 	  return new;
@@ -246,7 +246,7 @@ int main(int argc, char const *argv[]) {
   showVar(var1);
   showVar(var2);
 
-  Node *cons1 = newConst(1,1,50);    // true 
+  Node *cons1 = newConst(1,1,50);    // true
   Node *cons2 = newConst(0,88,50);   // 88
   showConst(cons1);
   showConst(cons2);

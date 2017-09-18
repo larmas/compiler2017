@@ -3,6 +3,9 @@
 #include <ctype.h>
 #include <string.h>
 
+struct node;
+typedef struct node Node;
+
 typedef struct tokenLine{
     char id[20];
     int noLine;
@@ -18,8 +21,8 @@ typedef struct variable{
 //FUNCION
 typedef struct funcion{
   char id[20];
-  //List *param;   // lista de parametros
-  //Node AST;
+  struct list *param;   // lista de parametros
+  Node *AST;
 }TFunc;
 
 
@@ -43,7 +46,7 @@ typedef union info{
 }TInfo;
 
 
-typedef struct node{
+struct node{
   int tag; // 0:variable, 1:const, 2:operador, 3:funcion.
   int noline;
   int type; // 0:int, 1:boolean.
@@ -52,7 +55,7 @@ typedef struct node{
   //struct node *mid;
   struct node *right;
   int mark; //0 no visitado, -1 visitado
-}Node;
+};
 
 
 /*PROTOTIPOS*/
@@ -74,7 +77,7 @@ void insertTree(Node *raiz, Node *leafL, Node *leafR);
 
 
 // Crea un nodo tipo variable (0).
-Node *newVar(char xId[], int xType, int xValue, int xLine){  
+Node *newVar(char xId[], int xType, int xValue, int xLine){
 	  Node *new;
     new = (Node *) malloc(sizeof(Node));
 
@@ -118,12 +121,12 @@ Node *newOp(char xId[], int xType, int xLine){
     new->type = xType;  // 0:int, 1:boolean
 
     strcpy( new->info->op.id , xId );
-    
+
     return new;
 }
 
 // Crea un nodo tipo funcion (3).
-Node *newFunc(char xId[], int xType, /*List *xParam, Node *xAST,*/ int xLine){  
+Node *newFunc(char xId[], int xType, /*List *xParam, Node *xAST,*/ int xLine){
 	Node *new;
     new = (Node *) malloc(sizeof(Node));
 
@@ -133,7 +136,7 @@ Node *newFunc(char xId[], int xType, /*List *xParam, Node *xAST,*/ int xLine){
     new->type = xType;  // 0:int, 1:boolean
 
     strcpy( new->info->func.id , xId );
-    
+
     //new->info.func.param = xParam;
 	  //new->info->func.AST = xAST;
 
@@ -176,7 +179,7 @@ void showOp(Node *a){
         printf("type: integer\n");
     }else{
         printf("type: boolean\n");
-    }        
+    }
 }
 
 
@@ -186,7 +189,7 @@ void showFunc(Node *a){
         printf("type: integer\n");
     }else{
         printf("type: boolean\n");
-    }          
+    }
 }
 
 
@@ -250,13 +253,13 @@ void dfs(Node *root){
 int main(int argc, char const *argv[]) {
   Node *var1 = newVar("x",0,10,50);  // x:10
   /*Node *var2 = newVar("y",1,0,50);   // y:false
-  Node *cons1 = newConst(1,1,50);    // true 
+  Node *cons1 = newConst(1,1,50);    // true
   Node *cons2 = newConst(0,88,50);   // 88
   Node *op1 = newOp("*",0,50);       // *
   Node *op2 = newOp("&&",1,50);      // &&
   Node *func1 = newFunc("suma",0,50);
   Node *func2 = newFunc("equals",1,50);
-  
+
   showVar(var1);
   showVar(var2);
   showConst(cons1);

@@ -12,11 +12,11 @@ typedef struct list {
 List *newList(List *l, Node *p);
 void insertLast(List *l, Node *dato);
 void insertFirst(List **l, Node *dato);
-Node *findElem(List *l, char _id[]);
+Node *findElem(List *l, char _id[],int tag);
 void deleteList(List **l);
 void showList(List *l);
 int longList(List *l);
-List *deleteElem(List *l, char _id[]);
+List *deleteElem(List *l, char _id[],int tag);
 
 
 // Inicializa la lista con un nodo
@@ -51,28 +51,34 @@ void insertFirst(List **l, Node *dato) {
 }
 
 
-// Retorna el elemento si fue en contrado en la lista (busca por id)
-Node *findElem(List *l, char _id[]) {
+// Retorna el elemento si fue en contrado en la lista, busca por ID. (0:Busqueda de variable, otherwise:Busqueda de funcion)
+Node *findElem(List *l, char _id[], int tag ) {
     int cond;
-    if (l == NULL){
+    if (l == NULL){  // elemento no encontrado
         return NULL;
     }
-    cond = strcmp(l->node->id,_id);
-    if (cond == 0) {
+
+    if(tag == 0) {cond = strcmp(l->node->info->var.id,_id);}  // 0:variable
+    else {cond = strcmp(l->node->info->func.id,_id);}         // else:funcion
+
+    if (cond == 0) {  // encontrado!
   	    return (l->node);
     }else{
-        return ( findElem(l->next,_id) );
+        return ( findElem(l->next,_id,tag) );
     }
     return NULL;
 }
 
 
-// Elimina el elemento si se encuentra en la lista
-List *deleteElem(List *l, char _id[]) {
+// Elimina el elemento si se encuentra en la lista, busca por ID. (0:Busqueda de variable, otherwise:Busqueda de funcion)
+List *deleteElem(List *l, char _id[], int tag) {
     int cond;
     if (l == NULL)
         return l;
-    cond = strcmp(l->node->id,_id);
+
+    if(tag == 0) {cond = strcmp(l->node->info->var.id, _id);}  // 0:variable
+    else {cond = strcmp(l->node->info->func.id, _id);}         // else:funcion
+
     if (cond == 0) {
         List *q;
         q = l->next;
@@ -80,7 +86,7 @@ List *deleteElem(List *l, char _id[]) {
         l = q;
         return l;
     }else
-        l->next = deleteElem(l->next,_id);
+        l->next = deleteElem(l->next,_id,tag);
     return l;
 }
 
@@ -115,12 +121,24 @@ void showList(List *l) {
     List *p;
     p = l;
     while (p != NULL) {
-        printf("tag:%i\n",p->node->tag);
-        printf("id:%s\n",p->node->id);
-        printf("value: %i\n\n",p->node->value);
+        switch ( p->node->tag ) {
+        case 0:
+            showVar(p->node);
+            break;
+        case 1:
+            showConst(p->node);
+            break;
+        case 2:
+            showOp(p->node);
+            break;  
+        default:
+            showFunc(p->node);
+            break;
+        }
         p = p->next;
     }
 }
+
 
   /*int main(int argc, char const *argv[]) {
   Node *root;

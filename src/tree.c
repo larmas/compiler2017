@@ -15,25 +15,24 @@ typedef struct variable{
 }TVar;
 
 
+struct node;
+typedef struct node Node;
 //FUNCION
 typedef struct funcion{
   char id[20];
   //List *param;   // lista de parametros
-  //Node AST;
+  Node *AST;
 }TFunc;
-
 
 //CONSTANTE
 typedef struct constante{
   int value;    // constante int o bool(0,1)
 }TConst;
 
-
 //OPERADOR
 typedef struct operador{
   char id[5];
 }TOpe;
-
 
 typedef union info{
   TVar var;         // variable
@@ -42,25 +41,24 @@ typedef union info{
   TOpe op;          // operador
 }TInfo;
 
-
-typedef struct node{
-  int tag; // 0:variable, 1:const, 2:operador, 3:funcion.
+struct node{
+  int tag;            // 0:variable, 1:const, 2:operador, 3:funcion.
   int noline;
-  int type; // 0:int, 1:boolean.
+  int type;           // 0:int, 1:boolean.
   TInfo *info;
   struct node *left;
-  //struct node *mid;
+  struct node *mid;
   struct node *right;
-  int mark; //0 no visitado, -1 visitado
-}Node;
+  int mark;           //0 no visitado, -1 visitado
+};
+
 
 
 /*PROTOTIPOS*/
-//Node *newNode(int xTag, char xId[], int xValue);
 Node *newVar(char xId[], int xType, int xValue, int xLine);
 Node *newConst(int xType, int xValue, int xLine);
 Node *newOp(char xId[], int xType, int xLine);
-Node *newFunc(char xId[], int xType, /*List *xParam, Node *xAST,*/int xLine);
+Node *newFunc(char xId[], int xType, List *xParam, Node *xAST,int xLine);
 
 void showVar(Node *a);
 void showConst(Node *a);
@@ -83,10 +81,13 @@ Node *newVar(char xId[], int xType, int xValue, int xLine){
     new->type = xType;  // 0:int, 1:boolean
     new->noline = xLine;
 
-    strcpy( new->info->var.id , xId );
-    new->info->var.value = xValue;		// constante int o bool(0,1)
+    TInfo *i;
+    i =(TInfo *) malloc(sizeof(TInfo));
 
-    printf("----------------\n");
+    strcpy( i->var.id , xId );
+    i->var.value = xValue;		// constante int o bool(0,1)
+
+    new->info = i;
     return new;
 }
 
@@ -101,8 +102,12 @@ Node *newConst(int xType, int xValue, int xLine){
     new->noline = xLine;
     new->type = xType;  // 0:int, 1:boolean
 
-    new->info->cons.value = xValue;   // constante int o bool(0,1)
+    TInfo *i;
+    i =(TInfo *) malloc(sizeof(TInfo));
 
+    i->cons.value = xValue;   // constante int o bool(0,1)
+
+    new->info = i;
     return new;
 }
 
@@ -117,13 +122,17 @@ Node *newOp(char xId[], int xType, int xLine){
     new->noline = xLine;
     new->type = xType;  // 0:int, 1:boolean
 
-    strcpy( new->info->op.id , xId );
-    
+    TInfo *i;
+    i =(TInfo *) malloc(sizeof(TInfo));
+
+    strcpy( i->op.id , xId );
+
+    new->info = i;
     return new;
 }
 
 // Crea un nodo tipo funcion (3).
-Node *newFunc(char xId[], int xType, /*List *xParam, Node *xAST,*/ int xLine){  
+Node *newFunc(char xId[], int xType, List *xParam, Node *xAST, int xLine){  
 	Node *new;
     new = (Node *) malloc(sizeof(Node));
 
@@ -132,12 +141,14 @@ Node *newFunc(char xId[], int xType, /*List *xParam, Node *xAST,*/ int xLine){
     new->noline = xLine;
     new->type = xType;  // 0:int, 1:boolean
 
-    strcpy( new->info->func.id , xId );
-    
-    //new->info.func.param = xParam;
-	  //new->info->func.AST = xAST;
+    TInfo *i;
+    i =(TInfo *) malloc(sizeof(TInfo));
 
-	return new;
+    strcpy( i->func.id , xId );
+    i.func.param = xParam;
+    i->func.AST = xAST;
+    new->info = i;
+	  return new;
 }
 
 
@@ -189,26 +200,6 @@ void showFunc(Node *a){
     }          
 }
 
-
-/*/ Crea un nuevo nodo con toda la informacion pasada
-Node *newNode(int xTag, char xId[], int xValue){
-    Node *new;
-    new = (Node *) malloc(sizeof(Node));
-    new->mark = 0;
-    new->tag = xTag;
-    if(xId!=NULL)
-        for (int i = 0; i < sizeof(new->id); i++) {
-            new->id[i] = xId[i];
-        }
-    if(xValue!=NULL)
-        new->value = xValue;
-    else
-        new->value = NULL;
-    return new;
-}*/
-
-
-
 // Le inserta al nodo 'root', sus hijos izquierdo y derecho
 void insertTree(Node *root, Node *leafL, Node *leafR){
     root->left = leafL;
@@ -248,21 +239,24 @@ void dfs(Node *root){
 }*/
 
 int main(int argc, char const *argv[]) {
-  Node *var1 = newVar("x",0,10,50);  // x:10
-  /*Node *var2 = newVar("y",1,0,50);   // y:false
-  Node *cons1 = newConst(1,1,50);    // true 
-  Node *cons2 = newConst(0,88,50);   // 88
-  Node *op1 = newOp("*",0,50);       // *
-  Node *op2 = newOp("&&",1,50);      // &&
-  Node *func1 = newFunc("suma",0,50);
-  Node *func2 = newFunc("equals",1,50);
-  
+ /* Node *var1 = newVar("x",0,10,50);  // x:10
+  Node *var2 = newVar("y",1,0,50);   // y:false
   showVar(var1);
   showVar(var2);
+
+  Node *cons1 = newConst(1,1,50);    // true 
+  Node *cons2 = newConst(0,88,50);   // 88
   showConst(cons1);
   showConst(cons2);
+
+  Node *op1 = newOp("*",0,50);       // *
+  Node *op2 = newOp("&&",1,50);      // &&
   showOp(op1);
   showOp(op2);
+
+  Node *func1 = newFunc("suma",0,50);
+  Node *func2 = newFunc("equals",1,50);
+
   showFunc(func1);
   showFunc(func2);
 */

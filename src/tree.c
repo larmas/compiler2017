@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 
+
 struct node;
 typedef struct node Node;
 
@@ -67,16 +68,14 @@ void insertTree(Node *raiz, Node *leafL, Node *leafR);
 
 // Crea un nodo tipo variable (0).
 Node *newVar(char xId[], int xType, int xValue, int xLine){
-	  Node *new;
-    new = (Node *) malloc(sizeof(Node));
+	Node *new = (Node *) malloc(sizeof(Node));
 
     new->mark = 0;
     new->tag = 0;
     new->type = xType;  // 0:int, 1:boolean
     new->noline = xLine;
 
-    TInfo *i;
-    i =(TInfo *) malloc(sizeof(TInfo));
+    TInfo *i = (TInfo *) malloc(sizeof(TInfo));
 
     strcpy( i->var.id , xId );
     i->var.value = xValue;		// constante int o bool(0,1)
@@ -85,10 +84,9 @@ Node *newVar(char xId[], int xType, int xValue, int xLine){
     return new;
 }
 
-
 // Crea un nodo tipo constante (1).
 Node *newConst(int xType, int xValue, int xLine){
-	  Node *new;
+	Node *new;
     new = (Node *) malloc(sizeof(Node));
 
     new->mark = 0;
@@ -104,7 +102,6 @@ Node *newConst(int xType, int xValue, int xLine){
     new->info = i;
     return new;
 }
-
 
 // Crea un nodo tipo operador (2).
 Node *newOp(char xId[], int xType, int xLine){

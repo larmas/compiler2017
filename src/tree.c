@@ -172,6 +172,8 @@ void insertTree(Node *root, Node *leafL, Node *leafM, Node *leafR){
 /* Muestreo de datos */
 
 void showVar(Node *a){
+  printf("\n");
+  if(a != NULL){
     printf("\n");
     printf("id: %s\n",a->info->var.id);
     if (a->type == 0){
@@ -185,11 +187,13 @@ void showVar(Node *a){
           printf("value: true\n");
         }
     }
+  } else { printf("Node NULL\n"); } 
 }
 
 
 void showConst(Node *a){
-    printf("\n");
+  printf("\n");
+  if(a != NULL){  
     if (a->type == 0){
         printf("type: integer\n");
         printf("value:%i\n",a->info->cons.value);
@@ -201,28 +205,33 @@ void showConst(Node *a){
           printf("value: true\n");
         }
     }
+  } else { printf("Node NULL\n"); } 
 }
 
 
 void showOp(Node *a){
-    printf("\n");
+  printf("\n");
+  if(a != NULL){
     printf("id: %s\n",a->info->op.id);
     if (a->type == 0){
         printf("type: integer\n");
     }else{
         printf("type: boolean\n");
     }
+  } else { printf("Node NULL\n"); } 
 }
 
 
 void showFunc(Node *a){
-    printf("\n");  
+  printf("\n");
+  if(a != NULL){  
     printf("id: %s\n",a->info->func.id);
     if (a->type == 0){
         printf("type: integer\n");
     }else{
         printf("type: boolean\n");
     }
+  } else { printf("Node NULL\n"); } 
 }
 
 /*

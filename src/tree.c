@@ -37,6 +37,7 @@ typedef union info{
   TOpe op;          // operador
 }TInfo;
 
+//NODO
 struct node{
   int tag;            // 0:variable, 1:const, 2:operador, 3:funcion.
   int noline;
@@ -60,7 +61,7 @@ void showConst(Node *a);
 void showOp(Node *a);
 void showConst(Node *a);
 
-void insertTree(Node *raiz, Node *leafL, Node *leafR);
+void insertTree(Node *raiz, Node *leafL, Node *leafM, Node *leafR);
 //void preorden(Node *raiz);
 //void mark(Node *node);
 //void dfs(Node *root);
@@ -74,76 +75,97 @@ Node *newVar(char xId[], int xType, int xValue, int xLine){
     new->tag = 0;
     new->type = xType;  // 0:int, 1:boolean
     new->noline = xLine;
+    new->left = NULL;
+    new->mid = NULL;
+    new->right = NULL;
 
     TInfo *i = (TInfo *) malloc(sizeof(TInfo));
 
     strcpy( i->var.id , xId );
     i->var.value = xValue;		// constante int o bool(0,1)
-
     new->info = i;
     return new;
 }
 
 // Crea un nodo tipo constante (1).
 Node *newConst(int xType, int xValue, int xLine){
-	Node *new;
-    new = (Node *) malloc(sizeof(Node));
+	Node *new = (Node *) malloc(sizeof(Node));
 
     new->mark = 0;
     new->tag = 1;
     new->noline = xLine;
     new->type = xType;  // 0:int, 1:boolean
 
-    TInfo *i;
-    i =(TInfo *) malloc(sizeof(TInfo));
+    new->left = NULL;
+    new->mid = NULL;
+    new->right = NULL;
+
+    TInfo *i = (TInfo *) malloc(sizeof(TInfo));
 
     i->cons.value = xValue;   // constante int o bool(0,1)
-
     new->info = i;
     return new;
 }
 
 // Crea un nodo tipo operador (2).
 Node *newOp(char xId[], int xType, int xLine){
-	Node *new;
-    new = (Node *) malloc(sizeof(Node));
+	  Node *new = (Node *) malloc(sizeof(Node));
 
     new->mark = 0;
     new->tag = 2;
     new->noline = xLine;
     new->type = xType;  // 0:int, 1:boolean
 
-    TInfo *i;
-    i =(TInfo *) malloc(sizeof(TInfo));
+    new->left = NULL;
+    new->mid = NULL;
+    new->right = NULL;
 
+    TInfo *i = (TInfo *) malloc(sizeof(TInfo));
     strcpy( i->op.id , xId );
-
     new->info = i;
     return new;
 }
 
+
 // Crea un nodo tipo funcion (3).
 Node *newFunc(char xId[], int xType, struct list *xParam, Node *xAST, int xLine){
-	Node *new;
-    new = (Node *) malloc(sizeof(Node));
+	Node *new = (Node *) malloc(sizeof(Node));
 
     new->mark = 0;
     new->tag = 3;
     new->noline = xLine;
     new->type = xType;  // 0:int, 1:boolean
 
+    new->left = NULL;
+    new->mid = NULL;
+    new->right = NULL;
+
     TInfo *i;
-    i =(TInfo *) malloc(sizeof(TInfo));
+    i = (TInfo *) malloc(sizeof(TInfo));
 
     strcpy( i->func.id , xId );
     i->func.param = xParam;
     i->func.AST = xAST;
     new->info = i;
-	  return new;
+	return new;
 }
 
 
+// Le inserta al nodo 'root', sus hijos izquierdo, medio y derecho
+void insertTree(Node *root, Node *leafL, Node *leafM, Node *leafR){
+    root->left = leafL;
+    root->mid = leafM;
+    root->right = leafR;
+}
+
+
+
+/* Muestreo de datos */
+
 void showVar(Node *a){
+  printf("\n");
+  if(a != NULL){
+    printf("\n");
     printf("id: %s\n",a->info->var.id);
     if (a->type == 0){
         printf("type: integer\n");
@@ -156,9 +178,13 @@ void showVar(Node *a){
           printf("value: true\n");
         }
     }
+  } else { printf("Node NULL\n"); }
 }
 
+
 void showConst(Node *a){
+  printf("\n");
+  if(a != NULL){
     if (a->type == 0){
         printf("type: integer\n");
         printf("value:%i\n",a->info->cons.value);
@@ -170,31 +196,33 @@ void showConst(Node *a){
           printf("value: true\n");
         }
     }
+  } else { printf("Node NULL\n"); }
 }
 
+
 void showOp(Node *a){
+  printf("\n");
+  if(a != NULL){
     printf("id: %s\n",a->info->op.id);
     if (a->type == 0){
         printf("type: integer\n");
     }else{
         printf("type: boolean\n");
     }
+  } else { printf("Node NULL\n"); }
 }
 
 
 void showFunc(Node *a){
-     printf("id: %s\n",a->info->func.id);
+  printf("\n");
+  if(a != NULL){
+    printf("id: %s\n",a->info->func.id);
     if (a->type == 0){
         printf("type: integer\n");
     }else{
         printf("type: boolean\n");
     }
-}
-
-// Le inserta al nodo 'root', sus hijos izquierdo y derecho
-void insertTree(Node *root, Node *leafL, Node *leafR){
-    root->left = leafL;
-    root->right = leafR;
+  } else { printf("Node NULL\n"); }
 }
 
 /*
@@ -230,6 +258,7 @@ void dfs(Node *root){
 }*/
 
 /*int main(int argc, char const *argv[]) {
+
     Node *var1 = newVar("x",0,10,50);  // x:10
     Node *var2 = newVar("y",1,0,50);   // y:false
     showVar(var1);
@@ -244,9 +273,9 @@ void dfs(Node *root){
     Node *op2 = newOp("&&",1,50);      // &&
     showOp(op1);
     showOp(op2);
-  Node *func1 = newFunc("suma",0,50);
-    Node *func2 = newFunc("equals",1,50);
 
+    Node *func1 = newFunc("suma",0,50);
+    Node *func2 = newFunc("equals",1,50);
     showFunc(func1);
     showFunc(func2);
 

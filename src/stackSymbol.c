@@ -142,7 +142,6 @@ int main(int argc, char const *argv[]) {
     showVar(result1);
     printf("%s\n","BUSQUEDA EN TODO EL STACK: \n" );
     Node *result2 = findAll(test,"x2",0);
-    printf("%s\n","SHOWVAR: " );
     showVar(result2);
     */
 

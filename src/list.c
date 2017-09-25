@@ -10,8 +10,8 @@ typedef struct list {
 }List;
 
 /*PROTOTIPOS*/
-List *newList(List *l, Node *p);
-void insertLast(List *l, Node *dato);
+List *newList(List *l);
+void insertLast(List **l, Node *dato);
 void insertFirst(List **l, Node *dato);
 Node *findElem(List *l, char _id[],int tag);
 void deleteList(List **l);
@@ -21,34 +21,43 @@ List *deleteElem(List *l, char _id[],int tag);
 
 
 // Inicializa la lista con un nodo
-List *newList(List *l, Node *p) {
+List *newList(List *l) {
     l = (List *) malloc(sizeof(List));
-    l->node = p;
+    //l = NULL;
+    l->node = NULL;
     l->next = NULL;
     return l;
 }
 
 
 // Inserta el dato al final de la lista
-void insertLast(List *l, Node *dato) {
-    List *p,*q;
-    q = (List *) malloc(sizeof(List));
-    q->node = dato;
-    q->next = NULL;
-    p = l;
-    while (p->next != NULL)
-        p = p->next;
-    p->next = q;
+void insertLast(List **l, Node *dato) {
+	if((*l)->node !=NULL){
+    	List *p,*q;
+    	q = (List *) malloc(sizeof(List));
+    	q->node = dato;
+    	q->next = NULL;
+    	p = *l;
+    	while (p->next != NULL)
+    	    p = p->next;
+    	p->next = q;
+    }else{
+    	(*l)->node = dato;
+    }	
 }
 
 
 // Inserta el dato al comienzo de la lista
 void insertFirst(List **l, Node *dato) {
-    List *q;
-    q = (List *) malloc(sizeof(List));
-    q->node = dato;
-    q->next = *l;
-    *l = q;
+	if((*l)->node !=NULL){
+    	List *q;
+    	q = (List *) malloc(sizeof(List));
+    	q->node = dato;
+    	q->next = *l;
+    	*l = q;
+    }else{
+    	(*l)->node = dato;
+    }	
 }
 
 
@@ -140,30 +149,24 @@ void showList(List *l) {
     }
 }
 
+/*
+  int main(int argc, char const *argv[]) {
+  Node *var1 = newVar("x",0,10,50);  
+  Node *var2 = newVar("y",1,0,50);   
+  Node *var3 = newVar("z",0,20,50);  
+  Node *var4 = newVar("w",1,1,50);   
 
-  /*int main(int argc, char const *argv[]) {
-  Node *root;
-  Node *left;
-  Node *right;
-  Node *aux;
-  Node *aux2;
-
-  root = newNode(0,"pepe",10);
-  left = newNode(0,"jose",20);
-  right = newNode(0,"juan",30);
-  aux = newNode(0,"lucas",40);
-  aux2 = newNode(0,"fer",48);
   //insertTree(root,left,right);
-  //preorden(root);*/
+  //preorden(root);
 
   /* Prueba lista */
-
-  /*List *test;
-  test = newList(test,root);
-  insertLast(test,left);
-  insertLast(test,right);
-  insertFirst(&test,aux);
-  insertFirst(&test,aux2);
+/*
+  List *test;
+  test = newList(test);
+  //insertLast(&test,var1);
+  //insertLast(&test,var2);
+  insertFirst(&test,var3);
+  insertFirst(&test,var4);
   //deleteList(&test);
   showList(test);
   //Node *find;
@@ -171,8 +174,8 @@ void showList(List *l) {
   printf("%s\n","---------");
   //printf("Elem.Buscado: %s\n",find->id);
 
-  test = deleteElem(test,"fer");
-  showList(test);
+  //test = deleteElem(test,"fer");
+ //showList(test);
   //int length = longList(test);
   //printf("%i\n", length);
   return 0;

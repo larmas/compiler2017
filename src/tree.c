@@ -225,6 +225,23 @@ void showFunc(Node *a){
   } else { printf("Node NULL\n"); }
 }
 
+void showNode(Node *p){
+    switch ( p->tag ) {
+    case 0:
+        showVar(p);
+        break;
+    case 1:
+        showConst(p);
+        break;
+    case 2:
+        showOp(p);
+        break;
+    default:
+        showFunc(p);
+        break;
+    }
+}
+
 /*
 // Recorrido preorden
 void preorden(Node *raiz){

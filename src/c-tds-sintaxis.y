@@ -1,15 +1,15 @@
 %{
 #include <stdlib.h>
 #include <stdio.h>
-#include "list.c"
 #include "structures.c"
+#include "stackSymbol.c"
 
 //extern int yylineno;
-
+Stack *tds;
 List *list;
 %}
 
-%union { int i; struct tokenLine *tokenLine; struct node *treeN; }
+%union { int i; struct tokenLine *tokenLine; struct node *treeN; struct list *varList; }
 
 %token<tokenLine> ID
 %token<tokenLine> INT_LITERAL
@@ -35,6 +35,9 @@ List *list;
 %token<tokenLine> OR
 %token<tokenLine> NOT
 
+%type<varList> var_decl
+%type<i> type
+
 %left OR
 %left AND
 %nonassoc IGUAL
@@ -51,15 +54,49 @@ program: list_var_decl list_method_decl
        |
 ;
 
-list_var_decl: var_decl
-            |  list_var_decl var_decl
+list_var_decl: var_decl {
+                            printf("%s\n", "---1---");
+                            List *index = $1;
+                            while(index != NULL){
+                                if(tds==NULL){
+                                    tds = newStack(tds, index->node);
+                                }else{
+                                    tds = pushTop(tds, index->node);
+                                }
+                                showStack(tds);
+                            }
+                        }
+            |  list_var_decl var_decl   {
+                                            printf("%s\n", "---2---");
+                                            List *index = $2;
+                                            while(index != NULL){
+                                                if(tds==NULL){
+                                                    tds = newStack(tds,index->node);
+                                                }else{
+                                                    tds = pushTop(tds, index->node);
+                                                }
+                                                showStack(tds);
+                                            }
+                                        }
 ;
 
 list_method_decl: method_decl
                 | method_decl list_method_decl
 ;
+/*var_decl deberia ser una lista de un struct que tenga tipo y id*/
+var_decl: type ID';'        {
 
-var_decl: type ID';'
+                                Node *new = newVar($2,$1,NULL,$2->noLine);
+
+                                if($$ == NULL){
+                                    printf("%s\n","-----4----");
+                                    $$ = newList($$,new);
+                                }else{
+                                    printf("%s\n","-----3----");
+                                    $$ = insertLast($$,new);
+
+                                }
+                            }
         | type ID',' AuxId
 ;
 
@@ -87,8 +124,8 @@ list_statament: statament
             | statament list_statament
 ;
 
-type: INT
-    | BOOLEAN
+type: INT {$$ = 0;}
+    | BOOLEAN {$$ = 1;}
 
 ;
 
@@ -96,7 +133,7 @@ statament: ID ASIGN expr';'
          | method_call';'
          | IF '(' expr ')' block ELSE block
          | IF '(' expr ')' block
-         | WHILE '(' expr ')' block         {printf("Numero linea: %i\n",$1->noLine);}
+         | WHILE '(' expr ')' block
          | RETURN expr';'
          | RETURN';'
          | ';'

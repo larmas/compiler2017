@@ -9,9 +9,10 @@ typedef struct list {
   struct list *next;
 }List;
 
+
 /*PROTOTIPOS*/
 List *newList(List *l, Node *p);
-void insertLast(List *l, Node *dato);
+List *insertLast(List *l, Node *dato);
 void insertFirst(List **l, Node *dato);
 Node *findElem(List *l, char _id[],int tag);
 void deleteList(List **l);
@@ -30,7 +31,7 @@ List *newList(List *l, Node *p) {
 
 
 // Inserta el dato al final de la lista
-void insertLast(List *l, Node *dato) {
+List *insertLast(List *l, Node *dato) {
     List *p,*q;
     q = (List *) malloc(sizeof(List));
     q->node = dato;
@@ -39,6 +40,7 @@ void insertLast(List *l, Node *dato) {
     while (p->next != NULL)
         p = p->next;
     p->next = q;
+    return l;
 }
 
 
@@ -122,20 +124,7 @@ void showList(List *l) {
     List *p;
     p = l;
     while (p != NULL) {
-        switch ( p->node->tag ) {
-        case 0:
-            showVar(p->node);
-            break;
-        case 1:
-            showConst(p->node);
-            break;
-        case 2:
-            showOp(p->node);
-            break;
-        default:
-            showFunc(p->node);
-            break;
-        }
+        showNode(p->node);
         p = p->next;
     }
 }

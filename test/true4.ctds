@@ -1,0 +1,6 @@
+/* Archivo de prueba para TDS solo declaracion de variables a nivel global y sin
+anidar*/
+
+int x;
+int y;
+boolean z;

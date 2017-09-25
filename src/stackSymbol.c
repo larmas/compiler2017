@@ -13,7 +13,7 @@ typedef struct stack{
 
 Stack *newStack(Stack *s, Node *n); //Inicializa un nuevo stack
 Stack *pushNewLevel(Stack *s, Node *n); //Abre un nuevo nivel
-void pushTop(Stack *s, Node *n); //Inserta un nodo en la lista que esta en el tope
+Stack *pushTop(Stack *s, Node *n); //Inserta un nodo en la lista que esta en el tope
 Stack *popLevel(Stack *s); //Cierra un nivel
 Node *findTop(Stack *s, char _id[], int _tag); //Busca el nodo con id=_id y tag=_tag en el nivel corriente
 Node *findAll(Stack *s, char _id[], int _tag); //Busca el nodo con id=_id y tag=_tag en todo el stack
@@ -46,8 +46,9 @@ Stack *pushNewLevel(Stack *s, Node *n){
     return s;
 }
 
-void pushTop(Stack *s, Node *n){
-    insertLast(s->currentLevel,n);
+Stack *pushTop(Stack *s, Node *n){
+    s->currentLevel = insertLast(s->currentLevel,n);
+    return s;
 }
 
 Stack *popLevel(Stack *s){
@@ -86,7 +87,7 @@ void showStack(Stack *s){
     }
 }
 
-int main(int argc, char const *argv[]) {
+/*int main(int argc, char const *argv[]) {
     Stack *test = (Stack *) malloc (sizeof(Stack));
 
     /*  TEST INICIALIZACION
@@ -142,8 +143,8 @@ int main(int argc, char const *argv[]) {
     showVar(result1);
     printf("%s\n","BUSQUEDA EN TODO EL STACK: \n" );
     Node *result2 = findAll(test,"x2",0);
-    showVar(result2);
+    showNode(result2);
     */
-
+/*
     return 0;
-}
+}*/

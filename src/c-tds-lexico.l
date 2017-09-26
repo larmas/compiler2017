@@ -167,27 +167,27 @@ digit [0-9]
 
 
 
-{digit}{digit}*         {
-                            yylval.i = atoi(yytext);
-                            return INT_LITERAL;
-                        }
+{digit}{digit}*     {
+                        yylval.i = atoi(yytext);
+                        return INT_LITERAL;
+                    }
 
 
 
-{alpha}({alpha}|{digit}|'_')*     {
-                                        yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
-                                        strcpy(yylval.tokenLine->id,yytext);
-                                        yylval.tokenLine->noLine = yylineno;
-                                        return ID;
-                                    }
+{alpha}({alpha}|{digit}|'_')*   {
+                                    yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                                    strcpy(yylval.tokenLine->id,yytext);
+                                    yylval.tokenLine->noLine = yylineno;
+                                    return ID;
+                                }
 
-[;,(){}]                   {
-                                //printf("%s\n",yytext);
-                                return *yytext;
-                            }
-(\n|\t|" ")*                {
+[;,(){}]    {
+                //printf("%s\n",yytext);
+                return *yytext;
+            }
+(\n|\t|" ")*    {
 
-                            }
+                }
 
 
 "/*"                BEGIN(comment);

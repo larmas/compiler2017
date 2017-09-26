@@ -4,7 +4,6 @@
 #include "structures.c"
 #include "stackSymbol.c"
 
-//extern int yylineno;
 Stack *tds;
 List *list;
 
@@ -55,180 +54,205 @@ List *list;
 
 %%
 
-program: list_var_decl list_method_decl     {
-                                                List *indexVar = $1;
-                                                List *indexFunc = $2;
-                                                tds = newStack(tds);
+program:
+    list_var_decl list_method_decl  {
+                                        List *indexVar = $1;
+                                        List *indexFunc = $2;
+                                        tds = newStack(tds);
 
-                                                while(indexVar != NULL){
-                                                    tds = pushTop(tds,indexVar->node);
-                                                    indexVar = indexVar->next;
-                                                }
-                                                while(indexFunc != NULL){
-                                                    tds = pushTop(tds,indexFunc->node);
-                                                    indexFunc = indexFunc->next;
-                                                }
-                                                showStack(tds);
-                                            }
-       | list_method_decl   {
-                                List *index = $1;
-                                tds = newStack(tds);
-                                while(index != NULL){
-                                   tds = pushTop(tds,index->node);
-                                   index = index->next;
-                                }
-                                showStack(tds);
+                                        while(indexVar != NULL){
+                                            tds = pushTop(tds,indexVar->node);
+                                            indexVar = indexVar->next;
+                                        }
+                                        while(indexFunc != NULL){
+                                            tds = pushTop(tds,indexFunc->node);
+                                            indexFunc = indexFunc->next;
+                                        }
+                                        showStack(tds);
+                                    }
+    | list_method_decl  {
+                            List *index = $1;
+                            tds = newStack(tds);
+                            while(index != NULL){
+                               tds = pushTop(tds,index->node);
+                               index = index->next;
                             }
-       | list_var_decl      {
-                                List *index = $1;
-                                tds = newStack(tds);
-                                while(index != NULL){
-                                   tds = pushTop(tds,index->node);
-                                   index = index->next;
-                                }
-                                showStack(tds);
+                            showStack(tds);
+                        }
+    | list_var_decl     {
+                            List *index = $1;
+                            tds = newStack(tds);
+                            while(index != NULL){
+                               tds = pushTop(tds,index->node);
+                               index = index->next;
                             }
-       |                    {
-                                tds = newStack(tds);
-                            }
+                            showStack(tds);
+                        }
+       |    {
+                tds = newStack(tds);
+            }
 ;
 
-list_var_decl: var_decl {
-                            List *index = $1;
+list_var_decl:
+    var_decl    {
+                    List *index = $1;
+                    List *newL = newList(newL);
+                    while(index != NULL){
+                        newL = insertLast(newL,index->node);
+                        index = index->next;
+                    }
+                    $$ = newL;
+                }
+    |  list_var_decl var_decl   {
+                                    List *index = $2;
+                                    while(index != NULL){
+                                        $1 = insertLast($1,index->node);
+                                        index = index->next;
+                                    }
+                                }
+;
+
+list_method_decl:
+    method_decl     {
+                        List *newL = newList(newL);
+                        newL = insertFirst(newL,$1);
+                        $$ = newL;
+                    }
+    | method_decl list_method_decl  {
+                                        List *newL;
+                                        newL = insertFirst($2,$1);
+                                        $$ = newL;
+                                    }
+;
+
+var_decl:
+    type ID';'  {
+                    Node *new = newVar($2->id, $1, NULL, $2->noLine);
+                    List *newL = newList(newL);
+                    newL = insertLast(newL,new);
+                    $$ = newL;
+                }
+    | type ID',' AuxId  {
+                            Node *new = newVar($2, $1, NULL, $2->noLine);
                             List *newL = newList(newL);
-                            while(index != NULL){
+                            newL = insertLast(newL,new);
+                            List *index = $4;
+                            while (index != NULL){
+                                index->node->type = $1;
                                 newL = insertLast(newL,index->node);
                                 index = index->next;
                             }
                             $$ = newL;
                         }
-            |  list_var_decl var_decl   {
-                                            List *index = $2;
-                                            while(index != NULL){
-                                                $1 = insertLast($1,index->node);
-                                                index = index->next;
-                                            }
-                                        }
 ;
 
-list_method_decl: method_decl   {
-                                    List *newL = newList(newL);
-                                    newL = insertFirst(newL,$1);
-                                    $$ = newL;
-                                }
-                | method_decl list_method_decl      {
-                                                        List *newL;
-                                                        newL = insertFirst($2,$1);
-                                                        $$ = newL;
-                                                    }
-;
-
-var_decl: type ID';'        {
-                                Node *new = newVar($2->id, $1, NULL, $2->noLine);
-                                List *newL = newList(newL);
-                                newL = insertLast(newL,new);
-                                $$ = newL;
-                            }
-        | type ID',' AuxId  {
-
-                                Node *new = newVar($2, $1, NULL, $2->noLine);
-                                List *newL = newList(newL);
-                                newL = insertLast(newL,new);
-                                List *index = $4;
-                                while (index != NULL){
-                                    index->node->type = $1;
-                                    newL = insertLast(newL,index->node);
-                                    index = index->next;
-                                }
-                                $$ = newL;
-                            }
-;
-
-AuxId: ID';'            {
-                            Node *new = newVar($1, NULL, NULL, $1->noLine);
-                            List *newL = newList(newL);
-                            newL = insertFirst(newL,new);
-                            $$ = newL;
-                        }
-     | ID',' AuxId      {
-                            Node *new = newVar($1, NULL, NULL, $1->noLine);
-                            List *newL;
-                            newL = insertFirst($3,new);
-                            $$ = newL;
-                        }
-;
-
-method_decl: type ID '(' ')' block      {
-                                            List *newL;
-                                            newL = newFunc($2,$1,NULL,$5,$2->noLine);
-                                            $$ = newL;
-                                        }
-           | type ID '('TypeID')' block {
-                                            List *newL;
-                                            newL = newFunc($2,$1,$4,$6,$2->noLine);
-                                            $$ = newL;
-                                        }
-           | VOID ID '(' ')' block      {
-                                            List *newL;
-                                            newL = newFunc($2,3,NULL,$5,$2->noLine);
-                                            $$ = newL;
-                                        }
-           | VOID ID '('TypeID')' block {
-                                            List *newL;
-                                            newL = newFunc($2,3,$4,$6,$2->noLine);
-                                            $$ = newL;
-                                        }
-;
-
-TypeID: type ID     {
-                        Node *new = newVar($2,$1,NULL,$2->noLine);
-                        List *newL = newList(newL);
-                        newL = insertFirst(newL,new);
+AuxId:
+    ID';'   {
+                Node *new = newVar($1, NULL, NULL, $1->noLine);
+                List *newL = newList(newL);
+                newL = insertFirst(newL,new);
+                $$ = newL;
+            }
+    | ID',' AuxId  {
+                        Node *new = newVar($1, NULL, NULL, $1->noLine);
+                        List *newL;
+                        newL = insertFirst($3,new);
                         $$ = newL;
                     }
-      | type ID','TypeID    {
-                                Node *new = newVar($2,$1,NULL,$2->noLine);
+;
+
+method_decl:
+    type ID '(' ')' block   {
                                 List *newL;
-                                newL = insertFirst($4,new);
+                                newL = newFunc($2,$1,NULL,$5,$2->noLine);
                                 $$ = newL;
                             }
+    | type ID '('TypeID')' block    {
+                                        List *newL;
+                                        newL = newFunc($2,$1,$4,$6,$2->noLine);
+                                        $$ = newL;
+                                    }
+    | VOID ID '(' ')' block     {
+                                    List *newL;
+                                    newL = newFunc($2,3,NULL,$5,$2->noLine);
+                                    $$ = newL;
+                                }
+    | VOID ID '('TypeID')' block    {
+                                        List *newL;
+                                        newL = newFunc($2,3,$4,$6,$2->noLine);
+                                        $$ = newL;
+                                    }
 ;
 
-block: '{'list_var_decl list_statament'}'  {}
-     | '{'list_statament'}'     {}
-     | '{'list_var_decl'}'      {}
-     | '{''}'       {}
+TypeID:
+    type ID     {
+                    Node *new = newVar($2,$1,NULL,$2->noLine);
+                    List *newL = newList(newL);
+                    newL = insertFirst(newL,new);
+                    $$ = newL;
+                }
+    | type ID','TypeID  {
+                            Node *new = newVar($2,$1,NULL,$2->noLine);
+                            List *newL;
+                            newL = insertFirst($4,new);
+                            $$ = newL;
+                        }
 ;
 
-list_statament: statament
-            | statament list_statament
+block:
+    '{'list_var_decl list_statament'}'  {
+
+                                        }
+    | '{'list_statament'}'  {
+
+                            }
+    | '{'list_var_decl'}'   {
+
+                            }
+    | '{''}'    {
+
+                }
 ;
 
-type: INT {$$ = 0;}
-    | BOOLEAN {$$ = 1;}
+list_statament:
+    statament
+    | statament list_statament
+;
+
+type:
+    INT {
+            $$ = 0;
+        }
+    | BOOLEAN   {
+                    $$ = 1;
+                }
 
 ;
 
-statament: ID ASIGN expr';'
-         | method_call';'
-         | IF '(' expr ')' block ELSE block
-         | IF '(' expr ')' block
-         | WHILE '(' expr ')' block
-         | RETURN expr';'
-         | RETURN';'
-         | ';'
-         | block
+statament:
+    ID ASIGN expr';'
+    | method_call';'
+    | IF '(' expr ')' block ELSE block
+    | IF '(' expr ')' block
+    | WHILE '(' expr ')' block
+    | RETURN expr';'
+    | RETURN';'
+    | ';'
+    | block
 ;
 
-method_call: ID '(' ')'
-           | ID '('AuxExpr')'
+method_call:
+    ID '(' ')'
+    | ID '('AuxExpr')'
 ;
 
-AuxExpr:  expr
-        | expr',' AuxExpr
+AuxExpr:
+    expr
+    | expr',' AuxExpr
 ;
 
-expr: ID
+expr:
+    ID
     | method_call
     | literal
     | expr MAS expr
@@ -246,12 +270,14 @@ expr: ID
     | '('expr')'
 ;
 
-literal: INT_LITERAL
-       | bool_literal
+literal:
+    INT_LITERAL
+    | bool_literal
 ;
 
-bool_literal: TRUE
-            | FALSE
+bool_literal:
+    TRUE
+    | FALSE
 ;
 
 %%

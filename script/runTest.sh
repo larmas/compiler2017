@@ -1,6 +1,7 @@
 #!/bin/bash
 # -*- ENCODING: UTF-8 -*-
 
+# Script utilizado para correr los test del proyecto
 # Usage: Situado en la raiz del proyecto correr el comando..
 #  $ ./script/runTest.sh
 

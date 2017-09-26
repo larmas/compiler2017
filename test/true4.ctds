@@ -1,6 +1,9 @@
 /* Archivo de prueba para TDS solo declaracion de variables a nivel global y sin
 anidar*/
-
-int x;
-int y;
+int b;
+int x,y,a;
 boolean z;
+
+void main(){
+
+}

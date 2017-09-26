@@ -67,10 +67,8 @@ void insertTree(Node *raiz, Node *leafL, Node *leafM, Node *leafR);
 //void dfs(Node *root);
 
 
-// Crea un nodo tipo variable (0).
 Node *newVar(char xId[], int xType, int xValue, int xLine){
 	Node *new = (Node *) malloc(sizeof(Node));
-
     new->mark = 0;
     new->tag = 0;
     new->type = xType;  // 0:int, 1:boolean
@@ -78,71 +76,54 @@ Node *newVar(char xId[], int xType, int xValue, int xLine){
     new->left = NULL;
     new->mid = NULL;
     new->right = NULL;
-
     TInfo *i = (TInfo *) malloc(sizeof(TInfo));
-
     strcpy( i->var.id , xId );
     i->var.value = xValue;		// constante int o bool(0,1)
     new->info = i;
     return new;
 }
 
-// Crea un nodo tipo constante (1).
 Node *newConst(int xType, int xValue, int xLine){
 	Node *new = (Node *) malloc(sizeof(Node));
-
     new->mark = 0;
     new->tag = 1;
     new->noline = xLine;
     new->type = xType;  // 0:int, 1:boolean
-
     new->left = NULL;
     new->mid = NULL;
     new->right = NULL;
-
     TInfo *i = (TInfo *) malloc(sizeof(TInfo));
-
     i->cons.value = xValue;   // constante int o bool(0,1)
     new->info = i;
     return new;
 }
 
-// Crea un nodo tipo operador (2).
 Node *newOp(char xId[], int xType, int xLine){
-	  Node *new = (Node *) malloc(sizeof(Node));
-
+	Node *new = (Node *) malloc(sizeof(Node));
     new->mark = 0;
     new->tag = 2;
     new->noline = xLine;
     new->type = xType;  // 0:int, 1:boolean
-
     new->left = NULL;
     new->mid = NULL;
     new->right = NULL;
-
     TInfo *i = (TInfo *) malloc(sizeof(TInfo));
     strcpy( i->op.id , xId );
     new->info = i;
     return new;
 }
 
-
-// Crea un nodo tipo funcion (3).
 Node *newFunc(char xId[], int xType, struct list *xParam, Node *xAST, int xLine){
 	Node *new = (Node *) malloc(sizeof(Node));
-
     new->mark = 0;
     new->tag = 3;
     new->noline = xLine;
     new->type = xType;  // 0:int, 1:boolean
-
     new->left = NULL;
     new->mid = NULL;
     new->right = NULL;
-
     TInfo *i;
     i = (TInfo *) malloc(sizeof(TInfo));
-
     strcpy( i->func.id , xId );
     i->func.param = xParam;
     i->func.AST = xAST;
@@ -150,79 +131,82 @@ Node *newFunc(char xId[], int xType, struct list *xParam, Node *xAST, int xLine)
 	return new;
 }
 
-
-// Le inserta al nodo 'root', sus hijos izquierdo, medio y derecho
 void insertTree(Node *root, Node *leafL, Node *leafM, Node *leafR){
     root->left = leafL;
     root->mid = leafM;
     root->right = leafR;
 }
 
-
-
-/* Muestreo de datos */
-
 void showVar(Node *a){
-  printf("\n");
-  if(a != NULL){
     printf("\n");
-    printf("id: %s\n",a->info->var.id);
-    if (a->type == 0){
-        printf("type: integer\n");
-        printf("value:%i\n",a->info->var.value);
-    }else{
-        printf("type: boolean\n");
-        if(a->info->var.value == 0){
-          printf("value: false\n");
+    if(a != NULL){
+        printf("\n");
+        printf("id: %s\n",a->info->var.id);
+        if (a->type == 0){
+            printf("type: integer\n");
+            printf("value:%i\n",a->info->var.value);
         }else{
-          printf("value: true\n");
+            printf("type: boolean\n");
+            if(a->info->var.value == 0){
+                printf("value: false\n");
+            }else{
+                printf("value: true\n");
+            }
         }
+    } else {
+        printf("Node NULL\n");
     }
-  } else { printf("Node NULL\n"); }
 }
-
 
 void showConst(Node *a){
-  printf("\n");
-  if(a != NULL){
-    if (a->type == 0){
-        printf("type: integer\n");
-        printf("value:%i\n",a->info->cons.value);
-    }else{
-        printf("type: boolean\n");
-        if(a->info->cons.value == 0){
-          printf("value: false\n");
+    printf("\n");
+    if(a != NULL){
+        if (a->type == 0){
+            printf("type: integer\n");
+            printf("value:%i\n",a->info->cons.value);
         }else{
-          printf("value: true\n");
+            printf("type: boolean\n");
+            if(a->info->cons.value == 0){
+                printf("value: false\n");
+            }else{
+                printf("value: true\n");
+            }
         }
+    }else{
+        printf("Node NULL\n");
     }
-  } else { printf("Node NULL\n"); }
 }
-
 
 void showOp(Node *a){
-  printf("\n");
-  if(a != NULL){
-    printf("id: %s\n",a->info->op.id);
-    if (a->type == 0){
-        printf("type: integer\n");
+    printf("\n");
+    if(a != NULL){
+        printf("id: %s\n",a->info->op.id);
+        if (a->type == 0){
+            printf("type: integer\n");
+        }else{
+            printf("type: boolean\n");
+        }
     }else{
-        printf("type: boolean\n");
+        printf("Node NULL\n");
     }
-  } else { printf("Node NULL\n"); }
 }
 
-
 void showFunc(Node *a){
-  printf("\n");
-  if(a != NULL){
-    printf("id: %s\n",a->info->func.id);
-    if (a->type == 0){
-        printf("type: integer\n");
+    printf("\n");
+    if(a != NULL){
+        printf("id: %s\n",a->info->func.id);
+        if (a->type == 0){
+            printf("type: integer\n");
+        }
+        if(a->type == 1){
+            printf("type: boolean\n");
+        }
+        if(a->type == 3){
+            printf("type: void\n");
+        }
     }else{
-        printf("type: boolean\n");
+        printf("Node NULL\n");
     }
-  } else { printf("Node NULL\n"); }
 }
 
 void showNode(Node *p){
@@ -243,7 +227,6 @@ void showNode(Node *p){
 }
 
 /*
-// Recorrido preorden
 void preorden(Node *raiz){
 	if( !raiz ) return;
     if(raiz->value!=NULL)
@@ -272,10 +255,11 @@ void dfs(Node *root){
             dfs(adjacent[i]);
         }
     }
-}*/
+}
+*/
 
-/*int main(int argc, char const *argv[]) {
-
+/*
+int main(int argc, char const *argv[]) {
     Node *var1 = newVar("x",0,10,50);  // x:10
     Node *var2 = newVar("y",1,0,50);   // y:false
     showVar(var1);

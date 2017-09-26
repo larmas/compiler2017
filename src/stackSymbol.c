@@ -11,32 +11,32 @@ typedef struct stack{
 
 /*PROTOTIPOS*/
 
-Stack *newStack(Stack *s, Node *n); //Inicializa un nuevo stack
-Stack *pushNewLevel(Stack *s, Node *n); //Abre un nuevo nivel
+Stack *newStack(Stack *s); //Inicializa un nuevo stack
+Stack *pushNewLevel(Stack *s); //Abre un nuevo nivel
 Stack *pushTop(Stack *s, Node *n); //Inserta un nodo en la lista que esta en el tope
 Stack *popLevel(Stack *s); //Cierra un nivel
 Node *findTop(Stack *s, char _id[], int _tag); //Busca el nodo con id=_id y tag=_tag en el nivel corriente
 Node *findAll(Stack *s, char _id[], int _tag); //Busca el nodo con id=_id y tag=_tag en todo el stack
 void showStack(Stack *s); //Muestra por pantalla el stack completo
 
-Stack *newStack(Stack *s, Node *n){
+Stack *newStack(Stack *s){
+    s = (Stack *) malloc (sizeof(Stack));
     List *l;
     l = (List *) malloc (sizeof(List));
-    l = newList(l,n);
+    l = newList(l);
     s->currentLevel = l;
     s->next = NULL;
     s->length = 1;
     return s;
 }
 
-Stack *pushNewLevel(Stack *s, Node *n){
+Stack *pushNewLevel(Stack *s){
     if (s == NULL){
-        s = newStack(s,n);
+        s = newStack(s);
     }else{
         Stack *new = (Stack *) malloc (sizeof(Stack));
-        List *l;
-        l = (List *) malloc (sizeof(List));
-        l = newList(l,n);
+        List *l = (List *) malloc (sizeof(List));
+        l = newList(l);
         new->currentLevel = l;
         new->next = s;
         new->length = s->length;
@@ -87,27 +87,27 @@ void showStack(Stack *s){
     }
 }
 
-/*int main(int argc, char const *argv[]) {
+/*
+int main(int argc, char const *argv[]) {
     Stack *test = (Stack *) malloc (sizeof(Stack));
 
-    /*  TEST INICIALIZACION
     Node *n1 = (Node *) malloc (sizeof(Node));
     n1 = newVar("x1",0,10,1);
-    test = newStack(test,n1);
+    test = newStack(test);
+    test = pushTop(test,n1);
     showStack(test);
-    */
 
-    /* TEST ABRIR NUEVO NIVEL
     Node *n1 = (Node *) malloc (sizeof(Node));
     n1 = newVar("x1",0,10,1);
-    test = newStack(test,n1);
+    test = newStack(test);
+
     Node *n2 = (Node *) malloc (sizeof(Node));
     n2 = newVar("x2",0,0,2);
-    pushNewLevel(test,n2);
+    test = pushNewLevel(test);
+    test = pushTop(test,n2);
+    test = pushTop(test,n1);
     showStack(test);
-    */
 
-    /* TEST INSERTAR EN LA LISTA DEL TOPE DE LA PILA
     Node *n1 = (Node *) malloc (sizeof(Node));
     n1 = newVar("x1",0,10,1);
     test = newStack(test,n1);
@@ -115,9 +115,7 @@ void showStack(Stack *s){
     n2 = newVar("x2",0,0,2);
     pushTop(test,n2);
     showStack(test);
-    */
 
-    /* TEST PARA ELIMINAR UN NIVEL DE LA PILA
     Node *n1 = (Node *) malloc (sizeof(Node));
     n1 = newVar("x1",0,10,1);
     test = newStack(test,n1);
@@ -128,9 +126,7 @@ void showStack(Stack *s){
     test = popLevel(test);
     printf("\n%s\n","Level eliminado...\n" );
     showStack(test);
-    */
 
-    /*TEST findTop Y findAll
     Node *n1 = (Node *) malloc (sizeof(Node));
     n1 = newVar("x1",0,10,1);
     test = newStack(test,n1);
@@ -144,7 +140,6 @@ void showStack(Stack *s){
     printf("%s\n","BUSQUEDA EN TODO EL STACK: \n" );
     Node *result2 = findAll(test,"x2",0);
     showNode(result2);
-    */
-/*
     return 0;
-}*/
+}
+*/

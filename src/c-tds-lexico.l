@@ -6,6 +6,7 @@
 #include "c-tds-sintaxis.tab.h"
 #include "structures.c"
 
+
 %}
 
 %option noyywrap
@@ -217,5 +218,6 @@ int main(int argc,char *argv[]){
 		yyin = stdin;
 
 	yyparse();
+
 
 }

@@ -53,60 +53,38 @@ List *list;
 %right UMINUS
 
 %%
-
+initial:
+    {
+        tds = newStack(tds);
+    } program
+;
 program:
     list_var_decl list_method_decl  {
-                                        List *indexVar = $1;
-                                        List *indexFunc = $2;
-                                        tds = newStack(tds);
-
-                                        while(indexVar != NULL){
-                                            tds = pushTop(tds,indexVar->node);
-                                            indexVar = indexVar->next;
-                                        }
-                                        while(indexFunc != NULL){
-                                            tds = pushTop(tds,indexFunc->node);
-                                            indexFunc = indexFunc->next;
-                                        }
                                         showStack(tds);
                                     }
     | list_method_decl  {
-                            List *index = $1;
-                            tds = newStack(tds);
-                            while(index != NULL){
-                               tds = pushTop(tds,index->node);
-                               index = index->next;
-                            }
                             showStack(tds);
                         }
     | list_var_decl     {
-                            List *index = $1;
-                            tds = newStack(tds);
-                            while(index != NULL){
-                               tds = pushTop(tds,index->node);
-                               index = index->next;
-                            }
                             showStack(tds);
                         }
-       |    {
-                tds = newStack(tds);
-            }
+    | /* LAMBDA */  {
+                        showStack(tds);
+                    }
 ;
 
 list_var_decl:
     var_decl    {
                     List *index = $1;
-                    List *newL = newList(newL);
                     while(index != NULL){
-                        newL = insertLast(newL,index->node);
+                        tds = pushTop(tds,index->node);
                         index = index->next;
                     }
-                    $$ = newL;
                 }
     |  list_var_decl var_decl   {
                                     List *index = $2;
                                     while(index != NULL){
-                                        $1 = insertLast($1,index->node);
+                                        tds = pushTop(tds,index->node);
                                         index = index->next;
                                     }
                                 }
@@ -114,14 +92,10 @@ list_var_decl:
 
 list_method_decl:
     method_decl     {
-                        List *newL = newList(newL);
-                        newL = insertFirst(newL,$1);
-                        $$ = newL;
+
                     }
     | method_decl list_method_decl  {
-                                        List *newL;
-                                        newL = insertFirst($2,$1);
-                                        $$ = newL;
+
                                     }
 ;
 
@@ -133,7 +107,7 @@ var_decl:
                     $$ = newL;
                 }
     | type ID',' AuxId  {
-                            Node *new = newVar($2, $1, NULL, $2->noLine);
+                            Node *new = newVar($2->id, $1, NULL, $2->noLine);
                             List *newL = newList(newL);
                             newL = insertLast(newL,new);
                             List *index = $4;
@@ -148,54 +122,63 @@ var_decl:
 
 AuxId:
     ID';'   {
-                Node *new = newVar($1, NULL, NULL, $1->noLine);
+                Node *new = newVar($1->id, NULL, NULL, $1->noLine);
                 List *newL = newList(newL);
                 newL = insertFirst(newL,new);
                 $$ = newL;
             }
     | ID',' AuxId  {
-                        Node *new = newVar($1, NULL, NULL, $1->noLine);
-                        List *newL;
-                        newL = insertFirst($3,new);
+                        Node *new = newVar($1->id, NULL, NULL, $1->noLine);
+                        List *newL = insertFirst($3,new);
                         $$ = newL;
                     }
 ;
 
 method_decl:
-    type ID '(' ')' block   {
-                                List *newL;
-                                newL = newFunc($2,$1,NULL,$5,$2->noLine);
-                                $$ = newL;
-                            }
-    | type ID '('TypeID')' block    {
-                                        List *newL;
-                                        newL = newFunc($2,$1,$4,$6,$2->noLine);
-                                        $$ = newL;
-                                    }
-    | VOID ID '(' ')' block     {
-                                    List *newL;
-                                    newL = newFunc($2,3,NULL,$5,$2->noLine);
-                                    $$ = newL;
-                                }
-    | VOID ID '('TypeID')' block    {
-                                        List *newL;
-                                        newL = newFunc($2,3,$4,$6,$2->noLine);
-                                        $$ = newL;
-                                    }
+    method_aux1 '(' ')' method_aux3     {
+
+                                            tds = popLevel(tds);
+
+                                            //Aca debo completar el nodo funcion.
+                                        }
+    | method_aux1 '(' method_aux2 ')' method_aux3   {
+
+                                                        tds = popLevel(tds);
+                                                        tds = popLevel(tds);
+                                                        // Aca debo completar el nodo funcion.
+                                                    }
+;
+
+method_aux1:
+    type ID {
+                Node *new = newFunc($2->id,$1,NULL,NULL,$2->noLine);
+                tds = pushTop(tds,new);
+            }
+    | VOID ID   {
+                    Node *new = newFunc($2->id,3,NULL,NULL,$2->noLine);
+                    tds = pushTop(tds,new);
+                }
+;
+
+method_aux2:
+
+    {tds = pushNewLevel(tds);} TypeID
+
+;
+
+method_aux3:
+    {tds = pushNewLevel(tds);} block
+
 ;
 
 TypeID:
     type ID     {
-                    Node *new = newVar($2,$1,NULL,$2->noLine);
-                    List *newL = newList(newL);
-                    newL = insertFirst(newL,new);
-                    $$ = newL;
+                    Node *new = newVar($2->id,$1,NULL,$2->noLine);
+                    tds = pushTop(tds,new);
                 }
     | type ID','TypeID  {
-                            Node *new = newVar($2,$1,NULL,$2->noLine);
-                            List *newL;
-                            newL = insertFirst($4,new);
-                            $$ = newL;
+                            Node *new = newVar($2->id,$1,NULL,$2->noLine);
+                            tds = pushTop(tds,new);
                         }
 ;
 

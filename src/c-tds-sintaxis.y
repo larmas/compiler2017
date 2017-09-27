@@ -7,6 +7,8 @@
 Stack *tds;
 List *list;
 
+extern char yytext;
+
 %}
 
 %union { int i; struct tokenLine *tokenLine; struct node *treeN; struct list *List; }
@@ -308,7 +310,7 @@ statament:
             }
 
     | block     {
-                    $$ = $1
+                    $$ = $1;
                 }
 ;
 
@@ -406,13 +408,13 @@ expr: ID    {
                         }
 
     | MENOS expr %prec UMINUS   {
-                                    Node *root = newOp("negativo", 0, $2->noLine);
+                                    Node *root = newOp("negativo", 0, $1->noLine);
                                     insertTree(root, $1, NULL, NULL);
                                     $$ = root;
                                 }
 
     | NOT expr %prec UMINUS     {
-                                    Node *root = newOp("!", 1, $2->noLine);
+                                    Node *root = newOp("!", 1, $1->noLine);
                                     insertTree(root, $1, NULL, NULL);
                                     $$ = root;
                                 }

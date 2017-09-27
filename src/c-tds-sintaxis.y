@@ -43,6 +43,11 @@ List *list;
 %type<treeN> block
 %type<i> type
 %type<List> AuxId
+%type<treeN> statament
+%type<treeN> list_statament
+%type<treeN> bool_literal
+%type<treeN> literal
+%type<treeN> expr
 
 %left OR
 %left AND
@@ -70,6 +75,7 @@ program:
                                         }
                                         showStack(tds);
                                     }
+
     | list_method_decl  {
                             List *index = $1;
                             tds = newStack(tds);
@@ -79,6 +85,7 @@ program:
                             }
                             showStack(tds);
                         }
+
     | list_var_decl     {
                             List *index = $1;
                             tds = newStack(tds);
@@ -88,6 +95,7 @@ program:
                             }
                             showStack(tds);
                         }
+
        |    {
                 tds = newStack(tds);
             }
@@ -103,6 +111,7 @@ list_var_decl:
                     }
                     $$ = newL;
                 }
+
     |  list_var_decl var_decl   {
                                     List *index = $2;
                                     while(index != NULL){
@@ -118,6 +127,7 @@ list_method_decl:
                         newL = insertFirst(newL,$1);
                         $$ = newL;
                     }
+
     | method_decl list_method_decl  {
                                         List *newL;
                                         newL = insertFirst($2,$1);
@@ -132,6 +142,7 @@ var_decl:
                     newL = insertLast(newL,new);
                     $$ = newL;
                 }
+
     | type ID',' AuxId  {
                             Node *new = newVar($2, $1, NULL, $2->noLine);
                             List *newL = newList(newL);
@@ -153,6 +164,7 @@ AuxId:
                 newL = insertFirst(newL,new);
                 $$ = newL;
             }
+
     | ID',' AuxId  {
                         Node *new = newVar($1, NULL, NULL, $1->noLine);
                         List *newL;
@@ -167,16 +179,19 @@ method_decl:
                                 newL = newFunc($2,$1,NULL,$5,$2->noLine);
                                 $$ = newL;
                             }
+
     | type ID '('TypeID')' block    {
                                         List *newL;
                                         newL = newFunc($2,$1,$4,$6,$2->noLine);
                                         $$ = newL;
                                     }
+
     | VOID ID '(' ')' block     {
                                     List *newL;
                                     newL = newFunc($2,3,NULL,$5,$2->noLine);
                                     $$ = newL;
                                 }
+
     | VOID ID '('TypeID')' block    {
                                         List *newL;
                                         newL = newFunc($2,3,$4,$6,$2->noLine);
@@ -191,6 +206,7 @@ TypeID:
                     newL = insertFirst(newL,new);
                     $$ = newL;
                 }
+
     | type ID','TypeID  {
                             Node *new = newVar($2,$1,NULL,$2->noLine);
                             List *newL;
@@ -199,85 +215,203 @@ TypeID:
                         }
 ;
 
-block:
-    '{'list_var_decl list_statament'}'  {
-
-                                        }
-    | '{'list_statament'}'  {
-
-                            }
-    | '{'list_var_decl'}'   {
-
-                            }
-    | '{''}'    {
-
-                }
+block: '{'list_var_decl list_statament'}'   {$$ = $3;} // falta el manejo de variables
+     | '{'list_statament'}'                 {$$ = $2;}
+     | '{'list_var_decl'}'                  {} // falta el manejo de variables
+     | '{''}'                               {$$ = NULL;}
 ;
 
-list_statament:
-    statament
-    | statament list_statament
+
+list_statament: statament                   {$$ = $1;}
+
+              | statament list_statament    {Node *root = newOp(";", 0, NULL);
+                                             insertTree(root, $1, $2, NULL);
+                                             $$ = root;}
 ;
 
-type:
-    INT {
-            $$ = 0;
-        }
-    | BOOLEAN   {
-                    $$ = 1;
-                }
+
+type: INT       { $$=0; }
+    | BOOLEAN   { $$=1; }
 
 ;
 
-statament:
-    ID ASIGN expr';'
-    | method_call';'
-    | IF '(' expr ')' block ELSE block
-    | IF '(' expr ')' block
-    | WHILE '(' expr ')' block
-    | RETURN expr';'
-    | RETURN';'
-    | ';'
-    | block
+
+statament: ID ASIGN expr';'         { Node *xId = findAll(tds, $1, 0);
+									  if(xId != NULL){ 
+									  	if(xId-> type == $3->type){ 
+									  	    Node *root = newOp("=", $3->type, $1->noLIne); 
+                                            insertTree(root, xId, $3, NULL);
+                                            $$ = root;
+                                         }
+                                         else{ 
+                                            printf("%s%s%s%i\n","Tipos incompatibles: ",yytext," en la linea ",$1->noLIne);
+                                            exit(1);
+			                             }   
+                                      }
+			                          else{ 
+                                         printf("%s%s%s%i\n","Variable no declarada: ",yytext," en la linea ",$1->noLIne);
+                                         exit(1);
+			                          } 
+			                        }
+                                                   
+
+
+         | method_call';'
+
+
+
+         | IF '(' expr ')' block ELSE block     {if($3->type == 1){ 
+         	                                        Node *root = newOp("ifElse", 1, $1->noLIne);
+                                                    insertTree(root, $3, $5, $7);
+                                                    $$ = root;
+                                                 }else{ 
+                                          		    printf("%s%s%s%i\n","Tipos incompatibles: ",yytext," en la linea ",$1->noLIne);
+                                          			exit(1);
+			                            		 }}  
+                                                    
+
+         | IF '(' expr ')' block                {if($3->type == 1){ 
+         	                                        Node *root = newOp("if", 1, $1->noLIne);
+                                                    insertTree(root, $3, $5, NULL);
+                                                    $$ = root;
+                                                 }else{ 
+                                                    printf("%s%s%s%i\n","Tipos incompatibles: ",yytext," en la linea ",$1->noLIne);
+                                                    exit(1);
+			                                     }}  
+
+
+         | WHILE '(' expr ')' block             {if($3->type == 1){ 
+         										    Node *root = newOp("while", 1, $1->noLIne);
+                                                    insertTree(root, $3, $5, NULL);
+                                                    $$ = root;
+                                                 }else{ 
+                                           			printf("%s%s%s%i\n","Tipos incompatibles: ",yytext," en la linea ",$1->noLIne);
+                                                    exit(1);
+			                                     }}
+
+
+         | RETURN expr';'                       {Node *root = newOp("return", $2->type, $1->noLIne);
+                                                 insertTree(root, $2, NULL, NULL);
+                                                 $$ = root;}
+
+
+         | RETURN';'                            {Node *root = newOp("returnVoid", 3, $1->noLIne);
+                                                 insertTree(root, NULL, NULL, NULL);
+                                                 $$ = root;} 
+
+
+         | ';'                                  {Node *root = newOp("skip", 3, $1->noLIne);
+                                                 insertTree(root, NULL, NULL, NULL);
+                                                 $$ = root;}
+
+
+         | block                                {$$ = $1}
 ;
 
-method_call:
-    ID '(' ')'
-    | ID '('AuxExpr')'
+
+method_call: ID '(' ')'
+           | ID '('AuxExpr')'
 ;
 
-AuxExpr:
-    expr
-    | expr',' AuxExpr
+AuxExpr: expr
+       | expr',' AuxExpr
 ;
 
-expr:
-    ID
-    | method_call
-    | literal
-    | expr MAS expr
-    | expr MULT expr
-    | expr MENOS expr
-    | expr DIV expr
-    | expr MOD expr
-    | expr MENOR expr
-    | expr MAYOR expr
-    | expr IGUAL expr
-    | expr AND expr
-    | expr OR expr
-    | MENOS expr %prec UMINUS
-    | NOT expr %prec UMINUS
-    | '('expr')'
+
+//Node *findTop(Stack *s, char _id[], int _tag); //Busca el nodo con id=_id y tag=_tag en el nivel corriente
+//Node *findAll(Stack *s, char _id[], int _tag); //Busca el nodo con id=_id y tag=_tag en todo el stack
+
+expr: ID                        {Node *root = findAll(tds, $1, 0);
+								 if(root != NULL){ $$ = root; }
+								 else{ 
+								    printf("%s%s%s%i\n","Variable no declarada: ",yytext," en la linea ",$1->noLIne);
+                                    exit(1);
+								 }}
+
+    | method_call               //{$$ = $1;}
+
+    | literal                   {$$ = $1;}
+                                      
+
+    | expr MAS expr             {Node *root = newOp("+", 0, $2->noLIne);
+                                 insertTree(root, $1, $3, NULL);
+                                 $$ = root;} 
+
+
+    | expr MULT expr            {Node *root = newOp("*", 0, $2->noLIne);
+                                 insertTree(root, $1, $3, NULL);
+                                 $$ = root;} 
+
+
+    | expr MENOS expr           {Node *root = newOp("-", 0, $2->noLIne);
+                                 insertTree(root, $1, $3, NULL);
+                                 $$ = root;} 
+
+
+    | expr DIV expr             {Node *root = newOp("/", 0, $2->noLIne);
+                                 insertTree(root, $1, $3, NULL);
+                                 $$ = root;} 
+
+
+    | expr MOD expr             {Node *root = newOp("%", 0, $2->noLIne);
+                                 insertTree(root, $1, $3, NULL);
+                                 $$ = root;} 
+
+
+    | expr MENOR expr           {Node *root = newOp("<", 1, $2->noLIne);
+                                 insertTree(root, $1, $3, NULL);
+                                 $$ = root;}
+
+
+    | expr MAYOR expr           {Node *root = newOp(">", 1, $2->noLIne);
+                                 insertTree(root, $1, $3, NULL);
+                                 $$ = root;}
+
+
+    | expr IGUAL expr           {Node *root = newOp("==", 1, $2->noLIne);
+                                 insertTree(root, $1, $3, NULL);
+                                 $$ = root;} 
+
+
+    | expr AND expr             {Node *root = newOp("&&", 1, $2->noLIne);
+                                 insertTree(root, $1, $3, NULL);
+                                 $$ = root;} 
+
+
+    | expr OR expr              {Node *root = newOp("||", 1, $2->noLIne);
+                                 insertTree(root, $1, $3, NULL);
+                                 $$ = root;}
+
+
+    | MENOS expr %prec UMINUS      {Node *root = newOp("negativo", 0, $2->noLIne);
+                                    insertTree(root, $1, NULL, NULL);
+                                    $$ = root;}
+
+
+    | NOT expr %prec UMINUS        {Node *root = newOp("!", 1, $2->noLIne);
+                                    insertTree(root, $1, NULL, NULL);
+                                    $$ = root;}
+
+
+    | '('expr')'                {$$ = $2;}
 ;
 
-literal:
-    INT_LITERAL
-    | bool_literal
+
+
+literal: INT_LITERAL      {Node *root = newConst(0, $1, $1->noLine); // no hace falta noline.. quitar?
+                           $$ = root;}
+
+       | bool_literal     {$$ = $1;}
 ;
 
-bool_literal:
-    TRUE
-    | FALSE
+
+
+bool_literal: TRUE       {Node *root = newConst(1, 1, $1->noLine);
+                          $$ = root;}
+
+            | FALSE      {Node *root = newConst(1, 0, $1->noLine);
+                          $$ = root;}
 ;
+
 
 %%

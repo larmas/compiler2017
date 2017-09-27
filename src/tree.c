@@ -138,11 +138,9 @@ void insertTree(Node *root, Node *leafL, Node *leafM, Node *leafR){
 }
 
 void showVar(Node *a){
-    printf("\n");
     if(a != NULL){
-        printf("\n");
         printf("id: %s\n",a->info->var.id);
-        if (a->type == 0){
+        /*if (a->type == 0){
             printf("type: integer\n");
             printf("value:%i\n",a->info->var.value);
         }else{
@@ -152,14 +150,13 @@ void showVar(Node *a){
             }else{
                 printf("value: true\n");
             }
-        }
+        }*/
     } else {
         printf("Node NULL\n");
     }
 }
 
 void showConst(Node *a){
-    printf("\n");
     if(a != NULL){
         if (a->type == 0){
             printf("type: integer\n");
@@ -178,24 +175,22 @@ void showConst(Node *a){
 }
 
 void showOp(Node *a){
-    printf("\n");
     if(a != NULL){
         printf("id: %s\n",a->info->op.id);
-        if (a->type == 0){
+        /*if (a->type == 0){
             printf("type: integer\n");
         }else{
             printf("type: boolean\n");
-        }
+        }*/
     }else{
         printf("Node NULL\n");
     }
 }
 
 void showFunc(Node *a){
-    printf("\n");
     if(a != NULL){
         printf("id: %s\n",a->info->func.id);
-        if (a->type == 0){
+        /*if (a->type == 0){
             printf("type: integer\n");
         }
         if(a->type == 1){
@@ -203,7 +198,7 @@ void showFunc(Node *a){
         }
         if(a->type == 3){
             printf("type: void\n");
-        }
+        }*/
     }else{
         printf("Node NULL\n");
     }

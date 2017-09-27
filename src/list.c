@@ -14,6 +14,7 @@ typedef struct list {
 List *newList(List *l);
 List *insertLast(List *l, Node *dato);
 List *insertFirst(List *l, Node *dato);
+int exists(List *l, Node *dato);
 Node *findElem(List *l, char _id[],int tag);
 void deleteList(List **l);
 void showList(List *l);
@@ -28,42 +29,77 @@ List *newList(List *l) {
 }
 
 List *insertLast(List *l, Node *dato) {
-	if(l != NULL){
-    	List *p,*q;
-    	q = (List *) malloc(sizeof(List));
-    	q->node = dato;
-    	q->next = NULL;
-    	p = l;
-    	while (p->next != NULL){
-    	    p = p->next;
+    if( exists(l,dato) == 1 ){
+        if(l != NULL){
+        	List *p,*q;
+        	q = (List *) malloc(sizeof(List));
+        	q->node = dato;
+        	q->next = NULL;
+        	p = l;
+        	while (p->next != NULL){
+        	    p = p->next;
+            }
+        	p->next = q;
+        }else{
+            List *q;
+            q = (List *) malloc(sizeof(List));
+        	q->node = dato;
+        	q->next = NULL;
+        	l = q;
         }
-    	p->next = q;
     }else{
-        List *q;
-        q = (List *) malloc(sizeof(List));
-    	q->node = dato;
-    	q->next = NULL;
-    	l = q;
+        printf("%s\n", "El elemento ya existe.");
     }
     return l;
 }
 
 
 List *insertFirst(List *l, Node *dato) {
-	if(l !=NULL){
-    	List *q;
-    	q = (List *) malloc(sizeof(List));
-    	q->node = dato;
-    	q->next = l;
-    	l = q;
+	if(exists(l,dato) == 1){
+        if(l !=NULL){
+        	List *q;
+        	q = (List *) malloc(sizeof(List));
+        	q->node = dato;
+        	q->next = l;
+        	l = q;
+        }else{
+            List *q;
+            q = (List *) malloc(sizeof(List));
+        	q->node = dato;
+        	q->next = NULL;
+        	l = q;
+        }
     }else{
-        List *q;
-        q = (List *) malloc(sizeof(List));
-    	q->node = dato;
-    	q->next = NULL;
-    	l = q;
+        printf("%s\n", "El elemento ya existe.");
     }
     return l;
+}
+
+int exists(List *l, Node *dato){
+    int result;
+    switch ( dato->tag ) {
+    case 0:
+        if(findElem(l,dato->info->var.id,dato->tag) == NULL){
+            result = 1;
+        }else{
+            result = 0;
+        }
+        break;
+    case 1:
+
+        break;
+    case 2:
+
+        break;
+    default:
+        if(findElem(l,dato->info->func.id,dato->tag) == NULL){
+            result = 1;
+        }else{
+            result = 0;
+        }
+        break;
+    }
+    return result;
 }
 
 Node *findElem(List *l, char _id[], int tag ) {
@@ -129,9 +165,11 @@ void deleteList(List **l) {
 void showList(List *l) {
     List *p;
     p = l;
+
     while (p != NULL) {
         showNode(p->node);
         p = p->next;
+
     }
 }
 
@@ -141,6 +179,7 @@ int main(int argc, char const *argv[]) {
     Node *var2 = newVar("y",1,0,50);
     Node *var3 = newVar("z",0,20,50);
     Node *var4 = newVar("w",1,1,50);
+    Node *var5 = newVar("x",0,10,50);
     insertTree(root,left,right);
     preorden(root);
 
@@ -161,6 +200,14 @@ int main(int argc, char const *argv[]) {
     showList(test);
     int length = longList(test);
     printf("%i\n", length);
+    List *test;
+    test = newList(test);
+    test = insertLast(test,var1);
+    test = insertLast(test,var2);
+    test = insertFirst(test,var3);
+    test = insertFirst(test,var4);
+    test = insertLast(test,var5);
+    showList(test);
     return 0;
 }
 */

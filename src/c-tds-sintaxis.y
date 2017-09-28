@@ -240,18 +240,18 @@ type:
 
 statament:
     ID ASIGN expr';'    {
-                            Node *xId = findAll(tds, $1, 0);
+                            Node *xId = findAll(tds, $1->id, 0);
 							if(xId != NULL){
 							    if(xId-> type == $3->type){
 									Node *root = newOp("=", $3->type, $1->noLine);
                                     insertTree(root, xId, $3, NULL);
                                     $$ = root;
                                 }else{
-                                    printf("%s%s%s%i\n","Tipos incompatibles: ",yylex," en la linea ",$1->noLine);
+                                    printf("%s%c%s%i\n","Tipos incompatibles: ",yylex," en la linea ",$1->noLine);
                                     exit(1);
 			                    }
                             }else{
-                                printf("%s%s%s%i\n","Variable no declarada: ",yytext," en la linea ",$1->noLine);
+                                printf("%s%c%s%i\n","Variable no declarada: ",yytext," en la linea ",$1->noLine);
                                 exit(1);
 			                }
 			            }
@@ -264,7 +264,7 @@ statament:
                                                 insertTree(root, $3, $5, $7);
                                                 $$ = root;
                                             }else{
-                                      		    printf("%s%s%s%i\n","Tipos incompatibles: ",yytext," en la linea ",$1->noLine);
+                                      		    printf("%s%c%s%i\n","Tipos incompatibles: ",yytext," en la linea ",$1->noLine);
                                       			exit(1);
 			                            	}
                                         }
@@ -275,7 +275,7 @@ statament:
                                         insertTree(root, $3, $5, NULL);
                                         $$ = root;
                                     }else{
-                                        printf("%s%s%s%i\n","Tipos incompatibles: ",yytext," en la linea ",$1->noLine);
+                                        printf("%s%c%s%i\n","Tipos incompatibles: ",yytext," en la linea ",$1->noLine);
                                         exit(1);
                                     }
                                 }
@@ -286,7 +286,7 @@ statament:
                                         insertTree(root, $3, $5, NULL);
                                         $$ = root;
                                     }else{
-                               			printf("%s%s%s%i\n","Tipos incompatibles: ",yytext," en la linea ",$1->noLine);
+                               			printf("%s%c%s%i\n","Tipos incompatibles: ",yytext," en la linea ",$1->noLine);
                                         exit(1);
                                     }
                                 }
@@ -326,15 +326,15 @@ AuxExpr:
 ;
 
 
-//Node *findTop(Stack *s, char _id[], int _tag); //Busca el nodo con id=_id y tag=_tag en el nivel corriente
-//Node *findAll(Stack *s, char _id[], int _tag); //Busca el nodo con id=_id y tag=_tag en todo el stack
-
+/*Node *findTop(Stack *s, char _id[], int _tag); //Busca el nodo con id=_id y tag=_tag en el nivel corriente
+Node *findAll(Stack *s, char _id[], int _tag); //Busca el nodo con id=_id y tag=_tag en todo el stack
+*/
 expr: ID    {
-                Node *root = findAll(tds, $1, 0);
+                Node *root = findAll(tds, $1->id, 0);
 				if(root != NULL){
                     $$ = root;
                 }else{
-					printf("%s%s%s%i\n","Variable no declarada: ",yytext," en la linea ",$1->noLine);
+					printf("%s%c%s%i\n","Variable no declarada: ",yytext," en la linea ",$1->noLine);
                     exit(1);
 				}
             }
@@ -409,13 +409,13 @@ expr: ID    {
 
     | MENOS expr %prec UMINUS   {
                                     Node *root = newOp("negativo", 0, $1->noLine);
-                                    insertTree(root, $1, NULL, NULL);
+                                    insertTree(root, /*$1*/$2, NULL, NULL);
                                     $$ = root;
                                 }
 
     | NOT expr %prec UMINUS     {
                                     Node *root = newOp("!", 1, $1->noLine);
-                                    insertTree(root, $1, NULL, NULL);
+                                    insertTree(root, /*$1*/$2, NULL, NULL);
                                     $$ = root;
                                 }
 
@@ -428,6 +428,7 @@ expr: ID    {
 
 literal:
     INT_LITERAL     {
+                        // En newConst abria que castear $1->id a int
                         Node *root = newConst(0, $1, $1->noLine); // no hace falta noline.. quitar?
                         $$ = root;
                     }

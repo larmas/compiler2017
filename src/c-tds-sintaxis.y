@@ -154,14 +154,12 @@ AuxId:
 
 method_decl:
     method_aux1 '(' ')' method_aux3     {
-
                                             tds = popLevel(tds);
                                             List *newL = newList(newL);
                                             $1->info->func.param = newL;
                                             $1->info->func.AST = $4;
                                         }
     | method_aux1 '(' method_aux2 ')' method_aux3   {
-
                                                         tds = popLevel(tds);
                                                         tds = popLevel(tds);
                                                         $1->info->func.param = $3;

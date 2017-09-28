@@ -11,10 +11,11 @@ extern char yytext;
 
 %}
 
-%union { int i; struct tokenLine *tokenLine; struct node *treeN; struct list *List; }
+%union { int i; struct tokenLine *tokenLine; struct constLine *constLine;
+        struct node *treeN; struct list *List; }
 
 %token<tokenLine> ID
-%token<tokenLine> INT_LITERAL
+%token<constLine> INT_LITERAL
 %token<tokenLine> BOOLEAN
 %token<tokenLine> ELSE
 %token<tokenLine> FALSE
@@ -39,6 +40,9 @@ extern char yytext;
 
 %type<List> var_decl
 %type<treeN> method_decl
+%type<treeN> method_aux1;
+%type<List> method_aux2;
+%type<treeN> method_aux3;
 %type<List> list_var_decl
 %type<List> list_method_decl
 %type<List> TypeID
@@ -152,49 +156,63 @@ method_decl:
     method_aux1 '(' ')' method_aux3     {
 
                                             tds = popLevel(tds);
-
-                                            //Aca debo completar el nodo funcion.
+                                            List *newL = newList(newL);
+                                            $1->info->func.param = newL;
+                                            $1->info->func.AST = $4;
                                         }
     | method_aux1 '(' method_aux2 ')' method_aux3   {
 
                                                         tds = popLevel(tds);
                                                         tds = popLevel(tds);
-                                                        // Aca debo completar el nodo funcion.
+                                                        $1->info->func.param = $3;
+                                                        $1->info->func.AST = $5;
                                                     }
 ;
 
-method_aux1:
+method_aux1: /* retorna el nodo func */
     type ID {
                 Node *new = newFunc($2->id,$1,NULL,NULL,$2->noLine);
                 tds = pushTop(tds,new);
+                $$ = new;
             }
     | VOID ID   {
                     Node *new = newFunc($2->id,3,NULL,NULL,$2->noLine);
                     tds = pushTop(tds,new);
+                    $$ = new;
                 }
 ;
 
-method_aux2:
+method_aux2: /* retorna la lista de parametros */
     {
         tds = pushNewLevel(tds);
-    } TypeID
+    } TypeID    {
+                    $$ = $2;
+                }
 ;
 
-method_aux3:
+method_aux3: /* retorna el AST del block */
     {
         tds = pushNewLevel(tds);
-    } block
+    } block {
+                $$ = $2;
+            }
 ;
 
 TypeID:
     type ID     {
                     Node *new = newVar($2->id,$1,NULL,$2->noLine);
                     tds = pushTop(tds,new);
+                    List *newL = newList(newL);
+                    newL = insertFirst(newL,new);
+                    $$ = newL;
                 }
 
     | type ID','TypeID  {
                             Node *new = newVar($2->id,$1,NULL,$2->noLine);
                             tds = pushTop(tds,new);
+                            List *newL;
+                            newL = insertFirst($4,new);
+                            $$ = newL;
                         }
 ;
 
@@ -429,7 +447,7 @@ expr: ID    {
 literal:
     INT_LITERAL     {
                         // En newConst abria que castear $1->id a int
-                        Node *root = newConst(0, $1, $1->noLine); // no hace falta noline.. quitar?
+                        Node *root = newConst(0, $1->value, $1->noLine); // no hace falta noline.. quitar?
                         $$ = root;
                     }
 

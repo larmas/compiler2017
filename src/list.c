@@ -14,6 +14,7 @@ typedef struct list {
 List *newList(List *l);
 List *insertLast(List *l, Node *dato);
 List *insertFirst(List *l, Node *dato);
+int exists(List *l, Node *dato);
 Node *findElem(List *l, char _id[],int tag);
 void deleteList(List **l);
 void showList(List *l);
@@ -47,82 +48,52 @@ Node *findElem(List *l, char _id[], int tag ) {
 
 
 List *insertLast(List *l, Node *dato) {
-	if(l != NULL){
-        char _id[20];
-        if(dato->tag == 0){
-            strcpy(_id, dato->info->var.id);
-        }
-        else{
-            strcpy(_id, dato->info->func.id);
-        }
-        Node *exists = findElem(l,_id,dato->tag);
-    
-        if(exists == NULL){   //El elemento no existe en la lista actualmente
-    	   List *p,*q;
-    	   q = (List *) malloc(sizeof(List));
-    	   q->node = dato;
-    	   q->next = NULL;
-    	   p = l;
-    	   while (p->next != NULL){
-    	       p = p->next;
-             }
-    	   p->next = q;
+    if( exists(l,dato) == 1 ){
+        if(l != NULL){
+        	List *p,*q;
+        	q = (List *) malloc(sizeof(List));
+        	q->node = dato;
+        	q->next = NULL;
+        	p = l;
+        	while (p->next != NULL){
+        	    p = p->next;
+            }
+        	p->next = q;
         }else{
-            if(dato->tag == 0){
-              printf("%s%s%s%i\n","Error: Variable ",_id," y declarada en la linea ",dato->noline);
-              exit(1);
-            }else{
-              printf("%s%s%s%i\n","Error: Metodo ",_id, " y declaradon la linea ",dato->noline);
-              exit(1);  
-            }  
-        }     
+            List *q;
+            q = (List *) malloc(sizeof(List));
+        	q->node = dato;
+        	q->next = NULL;
+        	l = q;
+        }
     }else{
-        List *q;
-        q = (List *) malloc(sizeof(List));
-    	q->node = dato;
-    	q->next = NULL;
-    	l = q;
+        printf("%s\n", "El elemento ya existe.");
     }
     return l;
 }
 
 
 List *insertFirst(List *l, Node *dato) {
-	if(l !=NULL){
-
-        char _id[20];
-        if(dato->tag == 0){
-            strcpy(_id, dato->info->var.id);
+	if(exists(l,dato) == 1){
+        if(l !=NULL){
+        	List *q;
+        	q = (List *) malloc(sizeof(List));
+        	q->node = dato;
+        	q->next = l;
+        	l = q;
         }else{
-            strcpy(_id, dato->info->func.id);
+            List *q;
+            q = (List *) malloc(sizeof(List));
+        	q->node = dato;
+        	q->next = NULL;
+        	l = q;
         }
-        Node *exists = findElem(l,_id,dato->tag); 
-
-        if(exists == NULL){   //El elemento no existe en la lista actualmente
-
-    	   List *q;
-    	   q = (List *) malloc(sizeof(List));
-    	   q->node = dato;
-    	   q->next = l;
-    	   l = q;
-        }else{
-            if(dato->tag == 0){
-              printf("%s%s%s%i\n","Error: Variable ",_id," ya declarada en la linea ",dato->noline);
-              exit(1);
-            }else{
-              printf("%s%s%s%i\n","Error: Metodo ",_id, " ya declaradon la linea ",dato->noline);
-              exit(1);  
-            }  
-        }  
     }else{
-        List *q;
-        q = (List *) malloc(sizeof(List));
-    	q->node = dato;
-    	q->next = NULL;
-    	l = q;
+        printf("%s\n", "El elemento ya existe.");
     }
     return l;
 }
+
 
 
 List *insertParam(List *l, Node *dato) {   //permite insertar repetidos
@@ -138,10 +109,36 @@ List *insertParam(List *l, Node *dato) {   //permite insertar repetidos
         q->node = dato;
         q->next = NULL;
         l = q;
-    }
+    }   
     return l;
 }
 
+int exists(List *l, Node *dato){
+    int result;
+    switch ( dato->tag ) {
+    case 0:
+        if(findElem(l,dato->info->var.id,dato->tag) == NULL){
+            result = 1;
+        }else{
+            result = 0;
+        }
+        break;
+    case 1:
+
+        break;
+    case 2:
+
+        break;
+    default:
+        if(findElem(l,dato->info->func.id,dato->tag) == NULL){
+            result = 1;
+        }else{
+            result = 0;
+        }
+        break;
+    }
+    return result;
+}
 
 
 
@@ -191,21 +188,24 @@ void deleteList(List **l) {
 void showList(List *l) {
     List *p;
     p = l;
+
     while (p != NULL) {
         showNode(p->node);
         p = p->next;
+
     }
 }
 
-
+/*
 int main(int argc, char const *argv[]) {
-    /*Node *var1 = newVar("x",0,10,50);
+    Node *var1 = newVar("x",0,10,50);
     Node *var2 = newVar("x",1,0,50);
     Node *var3 = newVar("z",0,20,50);
-    Node *var4 = newVar("x",1,1,50);
-    insertTree(root,left,right);
-    preorden(root);*/
-    if(NULL == 0){printf("NULL ES CEROOOOOO!");}
+    Node *var4 = newVar("z",1,1,50);
+    Node *var5 = newVar("v",0,10,50);
+    //insertTree(root,left,right);
+    //preorden(root);
+
    /* List *test;
     test = newList(test);
     test = insertFirst(test,var1);
@@ -222,7 +222,17 @@ int main(int argc, char const *argv[]) {
     test = deleteElem(test,"fer");
     showList(test);
     int length = longList(test);
-    printf("%i\n", length);*/
+
+    printf("%i\n", length);
+    List *test;
+    test = newList(test);
+    test = insertLast(test,var1);
+    test = insertLast(test,var2);
+    test = insertFirst(test,var3);
+    test = insertFirst(test,var4);
+    test = insertLast(test,var5);
+    showList(test);
+
     return 0;
 }
-
+*/

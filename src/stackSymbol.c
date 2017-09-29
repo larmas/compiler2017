@@ -53,7 +53,6 @@ Stack *pushTop(Stack *s, Node *n){
 
 Stack *popLevel(Stack *s){
     s = s->next;
-    s->length--;
     return s;
 }
 
@@ -79,9 +78,12 @@ void showStack(Stack *s){
     Stack *index;
     index = s;
     int level = index->length;
+
     while(s != NULL){
-        printf("%s%i\n","Level: ",level);
+
+        printf("\n%s%i\n","Level: ",level);
         showList(s->currentLevel);
+        
         s = s->next;
         level--;
     }
@@ -140,6 +142,7 @@ int main(int argc, char const *argv[]) {
     printf("%s\n","BUSQUEDA EN TODO EL STACK: \n" );
     Node *result2 = findAll(test,"x2",0);
     showNode(result2);
+
     return 0;
 }
 */

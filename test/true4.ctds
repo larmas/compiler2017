@@ -1,9 +1,15 @@
-/* Archivo de prueba para TDS solo declaracion de variables a nivel global y sin
-anidar*/
+
 int b;
 int x,y,a;
-boolean z;
 
-void main(){
+void main(int x1){
+    int x2;
+}
 
+int funcion(){
+    int x3;
+}
+
+int fun(int x4){
+    int x5;
 }

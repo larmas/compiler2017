@@ -49,7 +49,6 @@ struct node{
   int mark;           //0 no visitado, -1 visitado
 };
 
-
 /*PROTOTIPOS*/
 Node *newVar(char xId[], int xType, int xValue, int xLine);
 Node *newConst(int xType, int xValue, int xLine);
@@ -62,9 +61,9 @@ void showOp(Node *a);
 void showConst(Node *a);
 
 void insertTree(Node *raiz, Node *leafL, Node *leafM, Node *leafR);
-//void preorden(Node *raiz);
-//void mark(Node *node);
-//void dfs(Node *root);
+//List *getAdjacentUnvisited(ListN *l, Node *node);
+void mark(Node *node);
+void dfs(Node *root);
 
 
 Node *newVar(char xId[], int xType, int xValue, int xLine){
@@ -221,30 +220,31 @@ void showNode(Node *p){
     }
 }
 
-/*
-void preorden(Node *raiz){
-	if( !raiz ) return;
-    if(raiz->value!=NULL)
-	   printf( "%i ", raiz->value );
-    else
-        printf("%s", raiz->id);
-	preorden(raiz->left);
-	preorden(raiz->right);
-}
-
 void mark(Node *node){
     node->mark = -1;
 }
 
+/*List *getAdjacentUnvisited(List *l, Node *node){
+    l = newList(l);
+    if(node->left != NULL && node->left->mark != -1)
+        l = insertLast(l,node->left);
+    if(node->mid != NULL && node->mid->mark != -1)
+        l = insertLast(l,node->mid);
+    if(node->right != NULL && node->right->mark != -1)
+        l = insertLast(l,node->right);
+}*/
+
+/*
 void dfs(Node *root){
     if(root->value!=NULL)
   	  printf( "%i ", root->value );
     else
       printf("%s", root->id);
     mark(root);
-    Node *adjacent[2];
+    Node *adjacent[3];
     adjacent[0] = root->left;
-    adjacent[1] = root->right;
+    adjacent[1] = root->mid;
+    adjacent[2] = root->right;
     for (int i = 0; i < 2; i++) {
         if(adjacent[i] != NULL && adjacent[i]->mark == 0){
             dfs(adjacent[i]);
@@ -253,27 +253,54 @@ void dfs(Node *root){
 }
 */
 
-/*
+void dfs(Node *root){
+    if(root->tag == 0)
+        printf("%s\n", root->info->var.id);
+    if(root->tag == 1)
+        printf( "%i\n", root->info->cons.value );
+    if(root->tag == 2)
+        printf("%s\n", root->info->op.id);
+    if(root->tag == 3)
+        printf("%s\n", root->info->func.id);
+    mark(root);
+    Node *adjacent[3];
+    adjacent[0] = root->left;
+    adjacent[1] = root->mid;
+    adjacent[2] = root->right;
+    for (int i = 0; i < 3; i++) {
+        if(adjacent[i] != NULL && adjacent[i]->mark == 0){
+            dfs(adjacent[i]);
+        }
+    }
+}
+
+
 int main(int argc, char const *argv[]) {
     Node *var1 = newVar("x",0,10,50);  // x:10
     Node *var2 = newVar("y",1,0,50);   // y:false
-    showVar(var1);
-    showVar(var2);
+    //showVar(var1);
+    //showVar(var2);
 
     Node *cons1 = newConst(1,1,50);    // true
     Node *cons2 = newConst(0,88,50);   // 88
-    showConst(cons1);
-    showConst(cons2);
+    //showConst(cons1);
+    //showConst(cons2);
 
     Node *op1 = newOp("*",0,50);       // *
     Node *op2 = newOp("&&",1,50);      // &&
-    showOp(op1);
-    showOp(op2);
+    //showOp(op1);
+    //showOp(op2);
 
-    Node *func1 = newFunc("suma",0,50);
-    Node *func2 = newFunc("equals",1,50);
-    showFunc(func1);
-    showFunc(func2);
+    Node *func1 = newFunc("suma",0,NULL,NULL,50);
+    Node *func2 = newFunc("equals",1,NULL,NULL,50);
+    //showFunc(func1);
+    //showFunc(func2);
+
+    insertTree(var1,var2,cons1,cons2);
+    insertTree(var2,op1,NULL,op2);
+    insertTree(op2,func1,NULL,func2);
+
+    dfs(var1);
 
   return 0;
-}*/
+}

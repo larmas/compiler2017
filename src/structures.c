@@ -6,3 +6,8 @@ typedef struct tokenLine{
     char id[20];
     int noLine;
 }TokenLine;
+
+typedef struct constLine{
+    int value;
+    int noLine;
+}ConstLine;

@@ -169,7 +169,10 @@ digit [0-9]
 
 
 {digit}{digit}*     {
-                        yylval.i = atoi(yytext);
+                        yylval.constLine = (ConstLine *)malloc(sizeof(ConstLine));
+                        yylval.constLine->value = yytext;
+                        //yylval.i = atoi(yytext);
+                        yylval.constLine->noLine = yylineno;
                         return INT_LITERAL;
                     }
 

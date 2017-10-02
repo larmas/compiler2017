@@ -139,17 +139,17 @@ void insertTree(Node *root, Node *leafL, Node *leafM, Node *leafR){
 void showVar(Node *a){
     if(a != NULL){
         printf("id: %s\n",a->info->var.id);
-        if (a->type == 0){
-            printf("type: integer\n");
-            printf("value:%i\n",a->info->var.value);
+        /*if (a->type == 0){
+            //printf("type: integer\n");
+            printf("\nvalue:%i\n",a->info->var.value);
         }else{
-            printf("type: boolean\n");
+            //printf("type: boolean\n");
             if(a->info->var.value == 0){
-                printf("value: false\n");
+                printf("\nvalue: false\n");
             }else{
-                printf("value: true\n");
+                printf("\nvalue: true\n");
             }
-        }
+        }*/
     } else {
         printf("Node NULL\n");
     }
@@ -159,24 +159,25 @@ void showVar(Node *a){
 void showConst(Node *a){
     if(a != NULL){
         if (a->type == 0){
-            printf("type: integer\n");
-            printf("value:%i\n",a->info->cons.value);
+            //printf("type: integer\n");
+            printf("\nvalue:%i\n",a->info->cons.value);
         }else{
-            printf("type: boolean\n");
+            //printf("type: boolean\n");
             if(a->info->cons.value == 0){
-                printf("value: false\n");
+                printf("\nvalue: false\n");
             }else{
-                printf("value: true\n");
+                printf("\nvalue: true\n");
             }
         }
     }else{
         printf("Node NULL\n");
     }
+    printf("\n");
 }
 
 void showOp(Node *a){
     if(a != NULL){
-        printf("id: %s\n",a->info->op.id);
+        printf("\nid: %s\n",a->info->op.id);
         /*if (a->type == 0){
             printf("type: integer\n");
         }else{
@@ -200,8 +201,8 @@ void showFunc(Node *a){
         if(a->type == 3){
             printf("type: void\n");
         }*/
-        printf("Parametros: \n");
-        showList(a->info->func.param);
+        /*printf("Parametros: \n");
+        showList(a->info->func.param);*/
     }else{
         printf("Node NULL\n");
     }
@@ -211,19 +212,15 @@ void showFunc(Node *a){
 void showNode(Node *p){
     switch ( p->tag ) {
     case 0:
-        printf("%s\n","---VAR--" );
         showVar(p);
         break;
     case 1:
-        printf("%s\n","---CONST--" );
         showConst(p);
         break;
     case 2:
-        printf("%s\n","--OP---" );
         showOp(p);
         break;
     default:
-        printf("%s\n","--FUNC---" );
         showFunc(p);
         break;
     }
@@ -234,26 +231,17 @@ void mark(Node *node){
 }
 
 void dfs(Node *root){
-    /*
-    if(root->tag == 0)
-        printf("%s\n", root->info->var.id);
-    if(root->tag == 1)
-        printf( "%i\n", root->info->cons.value );
-    if(root->tag == 2)
-        printf("%s\n", root->info->op.id);
-    if(root->tag == 3)
-        printf("%s\n", root->info->func.id);
-    */
-    showNode(root);
-    printf("%s\n","-----" );
-    mark(root);
-    Node *adjacent[3];
-    adjacent[0] = root->left;
-    adjacent[1] = root->mid;
-    adjacent[2] = root->right;
-    for (int i = 0; i < 3; i++) {
-        if(adjacent[i] != NULL && adjacent[i]->mark != -1){
-            dfs(adjacent[i]);
+    if(root != NULL){
+        showNode(root);
+        mark(root);
+        Node *adjacent[3];
+        adjacent[0] = root->left;
+        adjacent[1] = root->mid;
+        adjacent[2] = root->right;
+        for (int i = 0; i < 3; i++) {
+            if(adjacent[i] != NULL && (adjacent[i]->mark != -1 || adjacent[i]->tag == 0)){
+                dfs(adjacent[i]);
+            }
         }
     }
 }

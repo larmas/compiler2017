@@ -37,7 +37,7 @@ Node *findElem(List *l, char _id[], int tag ) {
     }
     if(tag == 0) { cond = strcmp(l->node->info->var.id,_id);}
     else { cond = strcmp(l->node->info->func.id,_id);}
-  
+
     if (cond == 0) {
         return (l->node);
     }else{
@@ -102,14 +102,14 @@ List *insertParam(List *l, Node *dato) {   //permite insertar repetidos
         q = (List *) malloc(sizeof(List));
         q->node = dato;
         q->next = l;
-        l = q;       
+        l = q;
     }else{
         List *q;
         q = (List *) malloc(sizeof(List));
         q->node = dato;
         q->next = NULL;
         l = q;
-    }   
+    }
     return l;
 }
 
@@ -188,11 +188,9 @@ void deleteList(List **l) {
 void showList(List *l) {
     List *p;
     p = l;
-
     while (p != NULL) {
         showNode(p->node);
         p = p->next;
-
     }
 }
 
@@ -206,7 +204,7 @@ int main(int argc, char const *argv[]) {
     //insertTree(root,left,right);
     //preorden(root);
 
-   /* List *test;
+
     test = newList(test);
     test = insertFirst(test,var1);
     test = insertFirst(test,var2);

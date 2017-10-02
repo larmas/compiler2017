@@ -11,8 +11,7 @@ extern char yytext;
 
 %}
 
-%union { int i; struct tokenLine *tokenLine; struct constLine *constLine;
-        struct node *treeN; struct list *List; }
+%union { int i; struct tokenLine *tokenLine; struct node *treeN; struct list *List; }
 
 %token<tokenLine> ID
 %token<tokenLine> INT_LITERAL
@@ -56,6 +55,7 @@ extern char yytext;
 %type<treeN> expr
 %type<treeN> method_call
 %type<List> AuxExpr
+
 %left OR
 %left AND
 %nonassoc IGUAL
@@ -72,19 +72,27 @@ initial:
 ;
 program:
     list_var_decl list_method_decl  {
+                                        //printf("---STACK---\n");
                                         //showStack(tds);
+                                        //printf("--------\n");
                                     }
 
     | list_method_decl  {
+                            //printf("---STACK---\n");
                             //showStack(tds);
+                            //printf("--------\n");
                         }
 
     | list_var_decl     {
+                            //printf("---STACK---\n");
                             //showStack(tds);
+                            //printf("--------\n");
                         }
 
     | /* LAMBDA */  {
+                        //printf("---STACK---\n");
                         //showStack(tds);
+                        //printf("--------\n");
                     }
 ;
 
@@ -118,14 +126,14 @@ list_method_decl:
 
 var_decl:
     type ID';'  {
-                    Node *new = newVar($2->id, $1, NULL, $2->noLine);
+                    Node *new = newVar($2->id, $1, 0, $2->noLine);
                     List *newL = newList(newL);
                     newL = insertLast(newL,new);
                     $$ = newL;
                 }
 
     | type ID',' AuxId  {
-                            Node *new = newVar($2->id, $1, NULL, $2->noLine);
+                            Node *new = newVar($2->id, $1, 0, $2->noLine);
                             List *newL = newList(newL);
                             newL = insertLast(newL,new);
                             List *index = $4;
@@ -140,14 +148,14 @@ var_decl:
 
 AuxId:
     ID';'   {
-                Node *new = newVar($1->id, NULL, NULL, $1->noLine);
+                Node *new = newVar($1->id, NULL, 0, $1->noLine);
                 List *newL = newList(newL);
                 newL = insertFirst(newL,new);
                 $$ = newL;
             }
 
     | ID',' AuxId  {
-                        Node *new = newVar($1->id, NULL, NULL, $1->noLine);
+                        Node *new = newVar($1->id, NULL, 0, $1->noLine);
                         List *newL = insertFirst($3,new);
                         $$ = newL;
                     }
@@ -222,6 +230,7 @@ block:
                                             $$ = $3; // falta el manejo de variables
                                         }
     | '{'list_statament'}'  {
+
                                 $$ = $2;
                             }
     | '{'list_var_decl'}'   {
@@ -259,7 +268,7 @@ statament: ID ASIGN expr';'     {
                                       exit(1);
 			                       }
 			                    }
-                                                   
+
          | method_call';'       { $$ =$1; }
 
 
@@ -317,8 +326,6 @@ method_call: ID '(' ')'             {
                                           Node *root = newOp("function", funcTDS->type, $1->noLine);
 										  insertTree(root, funcTDS, $3, NULL);
 										  $$ = root;
-										  showFunc(funcTDS);
-										  printf("%s\n--------------------");
 									   }else{
 										  printf("%s%s%s%i\n","Metodo no declarado: ",$1->id," en la linea ",$1->noLine);
                                           exit(1);

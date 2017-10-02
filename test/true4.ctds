@@ -1,5 +1,5 @@
 
-int b;
+boolean b;
 int x,y,a;
 
 int funcion(){

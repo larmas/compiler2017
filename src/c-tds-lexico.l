@@ -169,11 +169,13 @@ digit [0-9]
 
 
 {digit}{digit}*     {
-                        yylval.constLine = (ConstLine *)malloc(sizeof(ConstLine));
-                        yylval.constLine->value = yytext;
-                        //yylval.i = atoi(yytext);
-                        yylval.constLine->noLine = yylineno;
+                        yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
+                        strcpy(yylval.tokenLine->id,yytext);
+                        yylval.tokenLine->noLine = yylineno;
                         return INT_LITERAL;
+                       
+                        //yylval.i = atoi(yytext);
+                        //return INT_LITERAL;
                     }
 
 

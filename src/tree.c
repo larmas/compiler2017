@@ -139,7 +139,7 @@ void insertTree(Node *root, Node *leafL, Node *leafM, Node *leafR){
 void showVar(Node *a){
     if(a != NULL){
         printf("id: %s\n",a->info->var.id);
-        /*if (a->type == 0){
+        if (a->type == 0){
             printf("type: integer\n");
             printf("value:%i\n",a->info->var.value);
         }else{
@@ -149,10 +149,11 @@ void showVar(Node *a){
             }else{
                 printf("value: true\n");
             }
-        }*/
+        }
     } else {
         printf("Node NULL\n");
     }
+    printf("\n");
 }
 
 void showConst(Node *a){
@@ -184,6 +185,7 @@ void showOp(Node *a){
     }else{
         printf("Node NULL\n");
     }
+    printf("\n");
 }
 
 void showFunc(Node *a){
@@ -198,9 +200,12 @@ void showFunc(Node *a){
         if(a->type == 3){
             printf("type: void\n");
         }*/
+        printf("Parametros: \n");
+        showList(a->info->func.param);
     }else{
         printf("Node NULL\n");
     }
+
 }
 
 void showNode(Node *p){
@@ -282,5 +287,6 @@ int main(int argc, char const *argv[]) {
     dfs(var1);
 
   return 0;
+
 }
 */

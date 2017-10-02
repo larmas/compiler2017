@@ -1,15 +1,19 @@
 
-int b;
+boolean b;
 int x,y,a;
 
-void main(int x1){
-    int x2;
-}
-
-int funcion(){
-    int x3;
-}
-
-int fun(int x4){
+int fun(int x4, boolean x7){
     int x5;
 }
+
+void hola(int x1){
+    int x2;
+    b = true;
+    x2 = 4;
+    x2 = fun(x2,b);
+
+}
+
+
+
+

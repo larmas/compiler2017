@@ -15,7 +15,7 @@ extern char yytext;
         struct node *treeN; struct list *List; }
 
 %token<tokenLine> ID
-%token<constLine> INT_LITERAL
+%token<tokenLine> INT_LITERAL
 %token<tokenLine> BOOLEAN
 %token<tokenLine> ELSE
 %token<tokenLine> FALSE
@@ -313,6 +313,8 @@ method_call: ID '(' ')'             {
                                           Node *root = newOp("function", funcTDS->type, $1->noLine);
 										  insertTree(root, funcTDS, $3, NULL);
 										  $$ = root;
+										  showFunc(funcTDS);
+										  printf("%s\n--------------------");
 									   }else{
 										  printf("%s%s%s%i\n","Metodo no declarado: ",$1->id," en la linea ",$1->noLine);
                                           exit(1);

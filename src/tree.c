@@ -232,6 +232,7 @@ void mark(Node *node){
 
 void dfs(Node *root){
     if(root != NULL){
+        checkType(root);
         showNode(root);
         mark(root);
         Node *adjacent[3];

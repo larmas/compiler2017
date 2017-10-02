@@ -227,14 +227,13 @@ TypeID:
 
 block:
     '{'list_var_decl list_statament'}'  {
-                                            $$ = $3; // falta el manejo de variables
+                                            $$ = $3; 
                                         }
     | '{'list_statament'}'  {
 
                                 $$ = $2;
                             }
     | '{'list_var_decl'}'   {
-                                // falta el manejo de variables
                                 $$ = NULL;
                             }
     | '{''}'    {
@@ -448,3 +447,110 @@ bool_literal: TRUE      {Node *root = newConst(1, 1, $1->noLine);
 
 
 %%
+
+void checkType(Node * root){
+	if(root->tag == 2){ // es operador
+
+		if(strcmp(root->info->op.id, "=") == 0){
+			if(root->left->type != root->mid->type){
+				printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
+	        	exit(1);
+			}
+			checkType(root->mid);
+		}
+
+		if(strcmp(root->info->op.id, "function") == 0){
+			if ( longList(root->left->info->func.param) == longList(root->mid) ){    // tienen la misma cantidad de param
+				int cont = 0;
+				List *a_param = root->left->info->func.param;
+				List *b_param = root->mid;
+				for (cont; cont <  longList(b_param); cont++){ // controlo q cada parametro pasado tenga el mismo tipo
+					if(a_param->node->type != b_param->node->type){
+						printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
+	        			exit(1);
+					}else{
+						a_param = a_param->next;
+						a_param = b_param->next;
+					}
+				}
+
+			}else{
+				printf("%s%i\n","Error: la cantidad de parametros no es correcta ",root->noline);
+	        	exit(1);
+			} 
+		}	
+
+		if(strcmp(root->info->op.id, "if") == 0){
+			checkType(root->left);
+			checkType(root->mid);
+		}	
+
+		if(strcmp(root->info->op.id, "ifElse") == 0){
+			checkType(root->left);
+			checkType(root->mid);
+			checkType(root->right);
+		}	
+
+		if(strcmp(root->info->op.id, "while") == 0){	
+			checkType(root->left);
+			checkType(root->mid);
+		}	
+
+		if(strcmp(root->info->op.id, "return") == 0){
+			checkType(root->left);
+			//controlar que return retorne lo mismo que la funcion
+		}
+
+		if(strcmp(root->info->op.id, "returnVoid") == 0){
+			//controlar que return retorne lo mismo que la funcion
+		}
+        
+        if(strcmp(root->info->op.id, "+") == 0 ||
+           strcmp(root->info->op.id, "*") == 0 ||
+           strcmp(root->info->op.id, "-") == 0 ||
+           strcmp(root->info->op.id, "/") == 0 ||
+           strcmp(root->info->op.id, "%") == 0 )
+        {
+			if(root->left->type == root->mid->type){
+				checkType(root->left);
+				checkType(root->mid);
+			}else{
+				printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
+	            exit(1);
+			}
+        }   	
+
+        if(strcmp(root->info->op.id, "&&") == 0 ||
+           strcmp(root->info->op.id, "||") == 0 ||
+           strcmp(root->info->op.id, "==") == 0 )
+        {
+        	if(root->left->type == root->mid->type){
+				checkType(root->left);
+				checkType(root->mid);
+			}else{
+				printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
+	            exit(1);
+			}		
+        }  
+
+		if(strcmp(root->info->op.id, ">") == 0 || strcmp(root->info->op.id,"<") == 0){
+			if(root->left->type == 0 && root->mid->type == 0){
+				checkType(root->left);
+				checkType(root->mid);
+			}else{
+				printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
+	            exit(1);
+			}	
+		}
+
+		if(strcmp(root->info->op.id, "!") == 0 || strcmp(root->info->op.id,"negativo") == 0){
+			if(root->type == root->left->type){
+				checkType(root->left);
+			}else{
+				printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
+	            exit(1);
+			}
+		}
+	}
+	
+}	    

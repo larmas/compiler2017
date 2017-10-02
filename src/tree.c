@@ -206,15 +206,19 @@ void showFunc(Node *a){
 void showNode(Node *p){
     switch ( p->tag ) {
     case 0:
+        printf("%s\n","---VAR--" );
         showVar(p);
         break;
     case 1:
+        printf("%s\n","---CONST--" );
         showConst(p);
         break;
     case 2:
+        printf("%s\n","--OP---" );
         showOp(p);
         break;
     default:
+        printf("%s\n","--FUNC---" );
         showFunc(p);
         break;
     }
@@ -224,36 +228,8 @@ void mark(Node *node){
     node->mark = -1;
 }
 
-/*List *getAdjacentUnvisited(List *l, Node *node){
-    l = newList(l);
-    if(node->left != NULL && node->left->mark != -1)
-        l = insertLast(l,node->left);
-    if(node->mid != NULL && node->mid->mark != -1)
-        l = insertLast(l,node->mid);
-    if(node->right != NULL && node->right->mark != -1)
-        l = insertLast(l,node->right);
-}*/
-
-/*
 void dfs(Node *root){
-    if(root->value!=NULL)
-  	  printf( "%i ", root->value );
-    else
-      printf("%s", root->id);
-    mark(root);
-    Node *adjacent[3];
-    adjacent[0] = root->left;
-    adjacent[1] = root->mid;
-    adjacent[2] = root->right;
-    for (int i = 0; i < 2; i++) {
-        if(adjacent[i] != NULL && adjacent[i]->mark == 0){
-            dfs(adjacent[i]);
-        }
-    }
-}
-*/
-
-void dfs(Node *root){
+    /*
     if(root->tag == 0)
         printf("%s\n", root->info->var.id);
     if(root->tag == 1)
@@ -262,19 +238,22 @@ void dfs(Node *root){
         printf("%s\n", root->info->op.id);
     if(root->tag == 3)
         printf("%s\n", root->info->func.id);
+    */
+    showNode(root);
+    printf("%s\n","-----" );
     mark(root);
     Node *adjacent[3];
     adjacent[0] = root->left;
     adjacent[1] = root->mid;
     adjacent[2] = root->right;
     for (int i = 0; i < 3; i++) {
-        if(adjacent[i] != NULL && adjacent[i]->mark == 0){
+        if(adjacent[i] != NULL && adjacent[i]->mark != -1){
             dfs(adjacent[i]);
         }
     }
 }
 
-
+/*
 int main(int argc, char const *argv[]) {
     Node *var1 = newVar("x",0,10,50);  // x:10
     Node *var2 = newVar("y",1,0,50);   // y:false
@@ -304,3 +283,4 @@ int main(int argc, char const *argv[]) {
 
   return 0;
 }
+*/

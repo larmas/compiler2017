@@ -2,14 +2,6 @@
 int b;
 int x,y,a;
 
-void main(int x1){
-    int x2;
-}
-
 int funcion(){
     int x3;
-}
-
-int fun(int x4){
-    int x5;
 }

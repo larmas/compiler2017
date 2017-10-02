@@ -71,19 +71,19 @@ initial:
 ;
 program:
     list_var_decl list_method_decl  {
-                                        showStack(tds);
+                                        //showStack(tds);
                                     }
 
     | list_method_decl  {
-                            showStack(tds);
+                            //showStack(tds);
                         }
 
     | list_var_decl     {
-                            showStack(tds);
+                            //showStack(tds);
                         }
 
     | /* LAMBDA */  {
-                        showStack(tds);
+                        //showStack(tds);
                     }
 ;
 
@@ -158,12 +158,14 @@ method_decl:
                                             List *newL = newList(newL);
                                             $1->info->func.param = newL;
                                             $1->info->func.AST = $4;
+                                            dfs($1->info->func.AST);
                                         }
     | method_aux1 '(' method_aux2 ')' method_aux3   {
                                                         tds = popLevel(tds);
                                                         tds = popLevel(tds);
                                                         $1->info->func.param = $3;
                                                         $1->info->func.AST = $5;
+                                                        dfs($1->info->func.AST);
                                                     }
 ;
 
@@ -223,6 +225,7 @@ block:
                             }
     | '{'list_var_decl'}'   {
                                 // falta el manejo de variables
+                                $$ = NULL;
                             }
     | '{''}'    {
                     $$ = NULL;

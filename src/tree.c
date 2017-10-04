@@ -64,6 +64,7 @@ void insertTree(Node *raiz, Node *leafL, Node *leafM, Node *leafR);
 //List *getAdjacentUnvisited(ListN *l, Node *node);
 void mark(Node *node);
 void dfs(Node *root);
+void checkType(Node * root);
 
 
 Node *newVar(char xId[], int xType, int xValue, int xLine){
@@ -232,7 +233,6 @@ void mark(Node *node){
 
 void dfs(Node *root){
     if(root != NULL){
-        checkType(root);
         showNode(root);
         mark(root);
         Node *adjacent[3];
@@ -246,6 +246,7 @@ void dfs(Node *root){
         }
     }
 }
+
 
 /*
 int main(int argc, char const *argv[]) {

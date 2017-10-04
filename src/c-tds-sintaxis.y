@@ -328,7 +328,8 @@ method_call:
 	                        Node *funcTDS = findAll(tds, $1->id, 3);
 						    if(funcTDS != NULL){
                                 Node *root = newOp("function", funcTDS->type, $1->noLine);
-							    insertTree(root, funcTDS, $3, NULL);
+                                Node *auxFunc = newFunc("params",0,$3,NULL,$1->noLine);
+							    insertTree(root, funcTDS, auxFunc, NULL);
 							    $$ = root;
 						    }else{
 							    printf("%s%s%s%i\n","Metodo no declarado: ",$1->id," en la linea ",$1->noLine);
@@ -467,17 +468,17 @@ void checkType(Node * root){
 		}
 
 		if(strcmp(root->info->op.id, "function") == 0){
-			if ( longList(root->left->info->func.param) == longList(root->mid) ){    // tienen la misma cantidad de param
+			if ( longList(root->left->info->func.param) == longList(root->mid->info->func.param) ){    // tienen la misma cantidad de param
 				int cont = 0;
 				List *a_param = root->left->info->func.param;
-				List *b_param = root->mid;
+				List *b_param = root->mid->info->func.param;
 				for (cont; cont <  longList(b_param); cont++){ // controlo q cada parametro pasado tenga el mismo tipo
 					if(a_param->node->type != b_param->node->type){
 						printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
 	        			exit(1);
 					}else{
 						a_param = a_param->next;
-						a_param = b_param->next;
+						b_param = b_param->next;
 					}
 				}
 
@@ -559,5 +560,4 @@ void checkType(Node * root){
 			}
 		}
 	}
-
 }

@@ -2,9 +2,8 @@
 boolean b;
 int x,y,a;
 
-int funcion(){
+int funcion(int z){
     int x3;
-    x3=FALSE;
     if (x3==1){
         x3=2;
     }

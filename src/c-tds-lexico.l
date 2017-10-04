@@ -173,7 +173,7 @@ digit [0-9]
                         strcpy(yylval.tokenLine->id,yytext);
                         yylval.tokenLine->noLine = yylineno;
                         return INT_LITERAL;
-                       
+
                         //yylval.i = atoi(yytext);
                         //return INT_LITERAL;
                     }

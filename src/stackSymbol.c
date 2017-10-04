@@ -83,7 +83,7 @@ void showStack(Stack *s){
 
         printf("\n%s%i\n","Level: ",level);
         showList(s->currentLevel);
-        
+
         s = s->next;
         level--;
     }

@@ -1,10 +1,17 @@
-
+/* problemas en while */
 boolean b;
 int x,y,a;
 
-int funcion(int z){
-    int x3;
-    if (x3==1){
-        x3=2;
+int funcion(int z, int c){
+    x = 2 + 3;
+    if (x == 5){
+        x = 1;
+    }else{
+        x = 2;
     }
+    return x;
+}
+void main(){
+    x = funcion(x,a);
+    return ;
 }

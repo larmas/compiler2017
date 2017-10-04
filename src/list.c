@@ -68,6 +68,7 @@ List *insertLast(List *l, Node *dato) {
         }
     }else{
         printf("%s\n", "El elemento ya existe.");
+        exit(1);
     }
     return l;
 }
@@ -90,6 +91,7 @@ List *insertFirst(List *l, Node *dato) {
         }
     }else{
         printf("%s\n", "El elemento ya existe.");
+        exit(1);
     }
     return l;
 }

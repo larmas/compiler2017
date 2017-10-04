@@ -41,7 +41,7 @@ typedef union info{
 struct node{
   int tag;            // 0:variable, 1:const, 2:operador, 3:funcion.
   int noline;
-  int type;           // 0:int, 1:boolean.
+  int type;           // 0:int, 1:boolean, 2:void
   TInfo *info;
   struct node *left;
   struct node *mid;

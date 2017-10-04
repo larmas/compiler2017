@@ -6,6 +6,9 @@
 
 Stack *tds;
 List *list;
+int typeRet;
+int countReturn;
+
 
 extern char yytext;
 
@@ -75,25 +78,38 @@ program:
     list_var_decl list_method_decl  {
                                         //printf("---STACK---\n");
                                         //showStack(tds);
-                                        //printf("--------\n");
+                                        Node *main = findAll(tds,"main",3);
+                                        if(main == NULL){
+                                            printf("%s\n","Metodo main no existe.");
+                                            exit(1);
+                                        }
                                     }
 
     | list_method_decl  {
                             //printf("---STACK---\n");
                             //showStack(tds);
                             //printf("--------\n");
+                            Node *main = findAll(tds,"main",3);
+                            if(main == NULL){
+                                printf("%s\n","Metodo main no existe.");
+                                exit(1);
+                            }
                         }
 
     | list_var_decl     {
                             //printf("---STACK---\n");
                             //showStack(tds);
                             //printf("--------\n");
+                            printf("%s\n","Metodo main no existe.");
+                            exit(1);
                         }
 
     | /* LAMBDA */  {
                         //printf("---STACK---\n");
                         //showStack(tds);
                         //printf("--------\n");
+                        printf("%s\n","Metodo main no existe.");
+                        exit(1);
                     }
 ;
 
@@ -168,14 +184,26 @@ method_decl:
                                             List *newL = newList(newL);
                                             $1->info->func.param = newL;
                                             $1->info->func.AST = $4;
-                                            dfs($1->info->func.AST);
+                                            //dfs($1->info->func.AST);
+                                            typeRet = $1->type;
+                                            countReturn = 0;
+                                            checkType($1->info->func.AST);
+                                            if(countReturn == 0){
+                                                printf("%s\n","Return no encontrado.");
+                                            }
                                         }
     | method_aux1 '(' method_aux2 ')' method_aux3   {
                                                         tds = popLevel(tds);
                                                         tds = popLevel(tds);
                                                         $1->info->func.param = $3;
                                                         $1->info->func.AST = $5;
-                                                        dfs($1->info->func.AST);
+                                                        //dfs($1->info->func.AST);
+                                                        typeRet = $1->type;
+                                                        countReturn = 0;
+                                                        checkType($1->info->func.AST);
+                                                        if(countReturn == 0){
+                                                            printf("%s\n","Return no encontrado.");
+                                                        }
                                                     }
 ;
 
@@ -186,7 +214,7 @@ method_aux1: /* retorna el nodo func */
                 $$ = new;
             }
     | VOID ID   {
-                    Node *new = newFunc($2->id,3,NULL,NULL,$2->noLine);
+                    Node *new = newFunc($2->id,2,NULL,NULL,$2->noLine);
                     tds = pushTop(tds,new);
                     $$ = new;
                 }
@@ -298,7 +326,7 @@ statament:
                             $$ = root;
                         }
     | RETURN';'     {
-                        Node *root = newOp("returnVoid", 3, $1->noLine);
+                        Node *root = newOp("returnVoid", 2, $1->noLine);
                         insertTree(root, NULL, NULL, NULL);
                         $$ = root;
                     }
@@ -455,10 +483,14 @@ bool_literal:
 
 
 %%
-
+void checkBoolCondition(Node *root){
+    if ( root->type != 1){
+        printf("%s%i\n", "Error: tipos incompatibles en la linea ",root->noline);
+        exit(1);
+    }
+}
 void checkType(Node * root){
 	if(root->tag == 2){ // es operador
-
 		if(strcmp(root->info->op.id, "=") == 0){
 			if(root->left->type != root->mid->type){
 				printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
@@ -472,7 +504,7 @@ void checkType(Node * root){
 				int cont = 0;
 				List *a_param = root->left->info->func.param;
 				List *b_param = root->mid->info->func.param;
-				for (cont; cont <  longList(b_param); cont++){ // controlo q cada parametro pasado tenga el mismo tipo
+				for (cont; cont <=  longList(b_param); cont++){ // controlo q cada parametro pasado tenga el mismo tipo
 					if(a_param->node->type != b_param->node->type){
 						printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
 	        			exit(1);
@@ -483,34 +515,46 @@ void checkType(Node * root){
 				}
 
 			}else{
-				printf("%s%i\n","Error: la cantidad de parametros no es correcta ",root->noline);
+				printf("%s%i\n","Error: la cantidad de parametros no es correcta. Linea: ",root->noline);
 	        	exit(1);
 			}
 		}
 
 		if(strcmp(root->info->op.id, "if") == 0){
+            checkBoolCondition(root->left);
 			checkType(root->left);
 			checkType(root->mid);
 		}
 
 		if(strcmp(root->info->op.id, "ifElse") == 0){
+            checkBoolCondition(root->left);
 			checkType(root->left);
 			checkType(root->mid);
 			checkType(root->right);
 		}
 
 		if(strcmp(root->info->op.id, "while") == 0){
+            checkBoolCondition(root->left);
 			checkType(root->left);
 			checkType(root->mid);
 		}
 
 		if(strcmp(root->info->op.id, "return") == 0){
-			checkType(root->left);
-			//controlar que return retorne lo mismo que la funcion
+            countReturn++;
+            if(root->type == typeRet){
+                checkType(root->left);
+            }else{
+                printf("%s%i\n", "Valor de retorno incorrecto. Linea: ",root->noline);
+                exit(1);
+            }
 		}
 
 		if(strcmp(root->info->op.id, "returnVoid") == 0){
-			//controlar que return retorne lo mismo que la funcion
+            countReturn++;
+            if(root->type != typeRet){
+                printf("%s%i\n", "Valor de retorno incorrecto. Linea: ",root->noline);
+                exit(1);
+            }
 		}
 
         if(strcmp(root->info->op.id, "+") == 0 ||
@@ -559,5 +603,10 @@ void checkType(Node * root){
 	            exit(1);
 			}
 		}
+        if(strcmp(root->info->op.id, ";") == 0){
+            checkType(root->left);
+            checkType(root->mid);
+        }
+
 	}
 }

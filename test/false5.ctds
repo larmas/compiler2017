@@ -1,12 +1,8 @@
-// ERROR POR FALTA DE '}'
-// Encuentra el fin del archivo, muestra mensaje successfully y error a la vez
-int resta( int a, int b ){
-	return(a-b);
+/* Test falso para asignacion de tipos incorrecta */
+boolean a,b;
+int x,y;
+
+int main(){
+    x = false;
+    return x;
 }
-
-void main(){
-	int cont1, cont2, result;
-	cont1 = 10;
-	cont2 = 5;
-
-	result = resta( cont1, cont2 );

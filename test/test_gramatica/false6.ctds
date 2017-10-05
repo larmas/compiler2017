@@ -1,0 +1,19 @@
+//ERROR POR SOBRA DE ')'
+
+int x, y;
+
+void main(){
+	boolean cond;
+	x = 0;
+	y = 5;
+
+	cond = false;
+
+	while (!(cond == true))){
+		x = x+1;
+
+		if (x > y){
+			cond = true;
+		}
+	}
+}

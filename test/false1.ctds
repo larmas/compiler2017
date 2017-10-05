@@ -1,13 +1,8 @@
-// ERROR DE SIMBOLO NO DEFINIDO
+/* Test falso para ausencia de metodo main */
 
-int resta( int a, int b ){	
-	return(a-b);
-}
+boolean a,b;
+int x,y;
 
-void main(){
-	int c@nt1, cont2, result;
-	cont1 = 10;
-	cont2 = 5;
-
-	result = resta( cont1, cont2 );
+int funcion(int z){
+    return z;
 }

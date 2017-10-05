@@ -1,19 +1,10 @@
-// USO DE PALABRA RESERVADA EN NOMBRE DE FUNCION
-//Tira el error en la linea 4 y deberia ser en la 6
-int x, y;
-y = 5;
+/* Test falso para definicion de metodos antes de variables */
 
-void while(){
-	boolean cond;
-	x = 0;
-
-	cond = false;
-
-	while (!(cond == true)){
-		x = x+1;
-
-		if (x > y){
-			cond = true;
-		}
-	}
+int funcion(){
+    int x;
+    x = 2 + 3;
+    return x;
 }
+
+boolean b;
+int x,y,a;

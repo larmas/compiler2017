@@ -1,0 +1,13 @@
+// ERROR DE SIMBOLO NO DEFINIDO
+
+int resta( int a, int b ){	
+	return(a-b);
+}
+
+void main(){
+	int c@nt1, cont2, result;
+	cont1 = 10;
+	cont2 = 5;
+
+	result = resta( cont1, cont2 );
+}

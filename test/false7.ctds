@@ -1,19 +1,15 @@
-//ERROR POR FALTA DE EXPRESION
+/* Test falso para tipos de parametros incorrectos */
 
-int x, y;
+boolean a,b;
+int x,y;
 
-void main(){
-	boolean cond;
-	x = 0;
-	y = 5;
+int funcion(int a, boolean b){
+    a = 1;
+    b = false;
+    return a;
+}
 
-	cond = false;
-
-	while (){
-		x = x+1;
-
-		if (x > y){
-			cond = true;
-		}
-	}
+int main(){
+    x = funcion(a,x);
+    return x;
 }

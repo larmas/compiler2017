@@ -1,17 +1,28 @@
+/* Test true completo */
 
-int x, y;
+boolean a,b;
+boolean c;
+int x,y;
+int z;
 
-void main(){    
-	boolean cond;
-	x = 0;
-	y = 5;
-	cond = false;
+int funcion(int a, boolean b){
+    while(x>1){
+        x = x+1;
+    }
+    return z;
+}
 
-	while (!(cond == true)){
-		x = x+1;
+boolean funcion2(){
+    if(x == 1){
+        x = 2;
+    }else{
+        x = z+3;
+    }
+    return b;
+}
 
-		if (x > y){
-			cond = true;
-		}
-	}
+void main(){
+    x = funcion(x,a);
+    a = funcion2();
+    return ;
 }

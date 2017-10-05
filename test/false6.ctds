@@ -1,19 +1,14 @@
-//ERROR POR SOBRA DE ')'
+/* Test falso para cantidad de parametros incorrecta */
 
-int x, y;
+boolean a,b;
+int x,y;
 
-void main(){
-	boolean cond;
-	x = 0;
-	y = 5;
+int funcion(int a, boolean b){
+    a = 1;
+    b = false;
+}
 
-	cond = false;
-
-	while (!(cond == true))){
-		x = x+1;
-
-		if (x > y){
-			cond = true;
-		}
-	}
+int main(){
+    x = funcion(x);
+    return x;
 }

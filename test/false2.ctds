@@ -1,18 +1,7 @@
-// USO DE PALABRA RESERVADA EN NOMBRE DE IDENTIFICADOR
+/* Test falso para variable no definida */
+boolean a,b;
+int x,y;
 
-int x, void;
-
-void main(){    
-	boolean cond;
-	x = 0;
-	
-	cond = false;
-
-	while (!(cond == true)){
-		x = x+1;
-
-		if (x == y){
-			cond = true;
-		}
-	}
+void main(){
+    return z;
 }

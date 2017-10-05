@@ -1,13 +1,7 @@
-// ERROR POR FALTA DE ';'
+/* Test falso para ausencia de return int o boolean */
+boolean a,b;
+int x,y;
 
-int resta( int a, int b ){
-	return(a-b);
-}
-
-void main(){
-	int cont1, cont2, result;
-	cont1 = 10
-	cont2 = 5;
-
-	result = resta( cont1, cont2 );
+int main(){
+    x = 3;
 }

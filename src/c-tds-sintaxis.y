@@ -9,7 +9,6 @@ List *list;
 int typeRet;
 int countReturn;
 
-
 extern char yytext;
 
 %}
@@ -59,6 +58,7 @@ extern char yytext;
 %type<treeN> method_call
 %type<List> AuxExpr
 
+/* PRECEDENCIAS */
 %left OR
 %left AND
 %nonassoc IGUAL
@@ -78,6 +78,7 @@ program:
     list_var_decl list_method_decl  {
                                         //printf("---STACK---\n");
                                         //showStack(tds);
+                                        //printf("--------\n");
                                         Node *main = findAll(tds,"main",3);
                                         if(main == NULL){
                                             printf("%s\n","Metodo main no existe.");
@@ -192,6 +193,7 @@ method_decl:
                                                 printf("%s\n","Return no encontrado.");
                                             }
                                         }
+
     | method_aux1 '(' method_aux2 ')' method_aux3   {
                                                         tds = popLevel(tds);
                                                         tds = popLevel(tds);
@@ -213,6 +215,7 @@ method_aux1: /* retorna el nodo func */
                 tds = pushTop(tds,new);
                 $$ = new;
             }
+
     | VOID ID   {
                     Node *new = newFunc($2->id,2,NULL,NULL,$2->noLine);
                     tds = pushTop(tds,new);
@@ -258,13 +261,16 @@ block:
     '{'list_var_decl list_statament'}'  {
                                             $$ = $3;
                                         }
+
     | '{'list_statament'}'  {
 
                                 $$ = $2;
                             }
+
     | '{'list_var_decl'}'   {
                                 $$ = NULL;
                             }
+
     | '{''}'    {
                     $$ = NULL;
                 }
@@ -274,6 +280,7 @@ list_statament:
     statament   {
                     $$ = $1;
                 }
+
     | statament list_statament  {
                                    Node *root = newOp(";", 0, $1->noline);
                                    insertTree(root, $1, $2, NULL);
@@ -285,6 +292,7 @@ type:
     INT {
             $$=0;
         }
+
     | BOOLEAN   {
                     $$=1;
                 }
@@ -302,39 +310,47 @@ statament:
                                 exit(1);
 	                        }
 	                    }
+
     | method_call';'    {
                             $$ =$1;
                         }
+
     | IF '(' expr ')' block ELSE block  {
                                             Node *root = newOp("ifElse", 1, $1->noLine);
                                             insertTree(root, $3, $5, $7);
                                             $$ = root;
                                         }
+
     | IF '(' expr ')' block     {
                                     Node *root = newOp("if", 1, $1->noLine);
                                     insertTree(root, $3, $5, NULL);
                                     $$ = root;
                                 }
+
     | WHILE '(' expr ')' block   {
                                     Node *root = newOp("while", 1, $1->noLine);
                                     insertTree(root, $3, $5, NULL);
                                     $$ = root;
                                 }
+
     | RETURN expr';'    {
                             Node *root = newOp("return", $2->type, $1->noLine);
                             insertTree(root, $2, NULL, NULL);
                             $$ = root;
                         }
+
     | RETURN';'     {
                         Node *root = newOp("returnVoid", 2, $1->noLine);
                         insertTree(root, NULL, NULL, NULL);
                         $$ = root;
                     }
+
     | ';'   {
                 Node *root = newOp("skip", 3, -1);  //*** hacer que ; retorne noLine
                 insertTree(root, NULL, NULL, NULL);
                 $$ = root;
             }
+
     | block     {
                     $$ = $1;
                 }
@@ -352,6 +368,7 @@ method_call:
                             exit(1);
 					    }
 					}
+
     | ID '('AuxExpr')'  {
 	                        Node *funcTDS = findAll(tds, $1->id, 3);
 						    if(funcTDS != NULL){
@@ -372,6 +389,7 @@ AuxExpr:
                 newL = insertParam(newL,$1);
                 $$ = newL;
             }
+
     | expr',' AuxExpr   {
                             List *newL = insertParam($3,$1);
                             $$ = newL;
@@ -388,72 +406,87 @@ expr:
                 exit(1);
 		    }
 		}
+
     | method_call   {
                         $$ = $1;
                     }
+
     | literal   {
                     $$ = $1;
                 }
+
     | expr MAS expr     {
                             Node *root = newOp("+", 0, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
+
     | expr MULT expr    {
                             Node *root = newOp("*", 0, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
+
     | expr MENOS expr   {
                             Node *root = newOp("-", 0, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
+
     | expr DIV expr     {
                             Node *root = newOp("/", 0, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
+
     | expr MOD expr     {
                             Node *root = newOp("%", 0, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
+
     | expr MENOR expr   {
                             Node *root = newOp("<", 1, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
+
     | expr MAYOR expr   {
                             Node *root = newOp(">", 1, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
+
     | expr OR expr      {
                             Node *root = newOp("||", 1, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
+
     | expr AND expr     {
                             Node *root = newOp("&&", 1, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
+
     | expr IGUAL expr   {
                             Node *root = newOp("==", 1, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
+
     | MENOS expr %prec UMINUS   {
                                     Node *root = newOp("negativo", 0, $1->noLine);
                                     insertTree(root, $2, NULL, NULL);
                                     $$ = root;
                                 }
+
     | NOT expr %prec UMINUS     {
                                     Node *root = newOp("!", 1, $1->noLine);
                                     insertTree(root, $2, NULL, NULL);
                                     $$ = root;
                                 }
+
     | '('expr')'    {
                         $$ = $2;
                     }
@@ -465,6 +498,7 @@ literal:
                         Node *root = newConst(0, value, $1->noLine);
                         $$ = root;
                     }
+
     | bool_literal  {
                         $$ = $1;
                     }
@@ -475,6 +509,7 @@ bool_literal:
                 Node *root = newConst(1, 1, $1->noLine);
                 $$ = root;
             }
+
     | FALSE     {
                     Node *root = newConst(1, 0, $1->noLine);
                     $$ = root;
@@ -489,6 +524,7 @@ void checkBoolCondition(Node *root){
         exit(1);
     }
 }
+
 void checkType(Node * root){
 	if(root->tag == 2){ // es operador
 		if(strcmp(root->info->op.id, "=") == 0){

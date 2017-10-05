@@ -536,24 +536,26 @@ void checkType(Node * root){
 		}
 
 		if(strcmp(root->info->op.id, "function") == 0){
-			if ( longList(root->left->info->func.param) == longList(root->mid->info->func.param) ){    // tienen la misma cantidad de param
-				int cont = 0;
-				List *a_param = root->left->info->func.param;
-				List *b_param = root->mid->info->func.param;
-				for (cont; cont <=  longList(b_param); cont++){ // controlo q cada parametro pasado tenga el mismo tipo
-					if(a_param->node->type != b_param->node->type){
-						printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
-	        			exit(1);
-					}else{
-						a_param = a_param->next;
-						b_param = b_param->next;
-					}
-				}
+            if (root->mid != NULL){
+                if ( longList(root->left->info->func.param) == longList(root->mid->info->func.param) ){    // tienen la misma cantidad de param
+    				int cont = 0;
+    				List *a_param = root->left->info->func.param;
+    				List *b_param = root->mid->info->func.param;
+    				for (cont; cont <=  longList(b_param); cont++){ // controlo q cada parametro pasado tenga el mismo tipo
+    					if(a_param->node->type != b_param->node->type){
+    						printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
+    	        			exit(1);
+    					}else{
+    						a_param = a_param->next;
+    						b_param = b_param->next;
+    					}
+    				}
 
-			}else{
-				printf("%s%i\n","Error: la cantidad de parametros no es correcta. Linea: ",root->noline);
-	        	exit(1);
-			}
+    			}else{
+    				printf("%s%i\n","Error: la cantidad de parametros no es correcta. Linea: ",root->noline);
+    	        	exit(1);
+    			}
+            }
 		}
 
 		if(strcmp(root->info->op.id, "if") == 0){

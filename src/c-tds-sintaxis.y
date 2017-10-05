@@ -81,7 +81,7 @@ program:
                                         //printf("--------\n");
                                         Node *main = findAll(tds,"main",3);
                                         if(main == NULL){
-                                            printf("%s\n","Metodo main no existe.");
+                                            printf("%s\n","ERROR: Metodo main no existe.");
                                             exit(1);
                                         }
                                     }
@@ -92,7 +92,7 @@ program:
                             //printf("--------\n");
                             Node *main = findAll(tds,"main",3);
                             if(main == NULL){
-                                printf("%s\n","Metodo main no existe.");
+                                printf("%s\n","ERROR: Metodo main no existe.");
                                 exit(1);
                             }
                         }
@@ -101,7 +101,7 @@ program:
                             //printf("---STACK---\n");
                             //showStack(tds);
                             //printf("--------\n");
-                            printf("%s\n","Metodo main no existe.");
+                            printf("%s\n","ERROR: Metodo main no existe.");
                             exit(1);
                         }
 
@@ -109,7 +109,7 @@ program:
                         //printf("---STACK---\n");
                         //showStack(tds);
                         //printf("--------\n");
-                        printf("%s\n","Metodo main no existe.");
+                        printf("%s\n","ERROR: Metodo main no existe.");
                         exit(1);
                     }
 ;
@@ -190,7 +190,7 @@ method_decl:
                                             countReturn = 0;
                                             checkType($1->info->func.AST);
                                             if(countReturn == 0){
-                                                printf("%s\n","Return no encontrado.");
+                                                printf("%s%s%s%i\n","ERROR: Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
                                             }
                                         }
 
@@ -204,7 +204,7 @@ method_decl:
                                                         countReturn = 0;
                                                         checkType($1->info->func.AST);
                                                         if(countReturn == 0){
-                                                            printf("%s\n","Return no encontrado.");
+                                                            printf("%s%s%s%i\n","ERROR: Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
                                                         }
                                                     }
 ;
@@ -306,7 +306,7 @@ statament:
                                 insertTree(root, xId, $3, NULL);
                                 $$ = root;
                             }else{
-                                printf("%s%s%s%i\n","Variable no declarada: ",$1->id," en la linea ",$1->noLine);
+                                printf("%s%s%s%i\n","ERROR: Variable no declarada: ",$1->id,". Linea: ",$1->noLine);
                                 exit(1);
 	                        }
 	                    }
@@ -364,7 +364,7 @@ method_call:
 						    insertTree(root, funcTDS, NULL, NULL);
 						    $$ = root;
 					    }else{
-						    printf("%s%s%s%i\n","Metodo no declarado: ",$1->id," en la linea ",$1->noLine);
+						    printf("%s%s%s%i\n","ERROR: Metodo no declarado: '",$1->id,"'. Linea: ",$1->noLine);
                             exit(1);
 					    }
 					}
@@ -377,7 +377,7 @@ method_call:
 							    insertTree(root, funcTDS, auxFunc, NULL);
 							    $$ = root;
 						    }else{
-							    printf("%s%s%s%i\n","Metodo no declarado: ",$1->id," en la linea ",$1->noLine);
+							    printf("%s%s%s%i\n","ERROR: Metodo no declarado: '",$1->id,"'. Linea: ",$1->noLine);
                                 exit(1);
 						    }
 						}
@@ -402,7 +402,7 @@ expr:
 		    if(root != NULL){
 		        $$ = root;
 		    }else{
-		        printf("%s%s%s%i\n","Error: Variable no declarada: ",$1->id," en la linea ",$1->noLine);
+		        printf("%s%s%s%i\n","ERROR: Variable no declarada: '",$1->id,"'. Linea: ",$1->noLine);
                 exit(1);
 		    }
 		}
@@ -520,7 +520,7 @@ bool_literal:
 %%
 void checkBoolCondition(Node *root){
     if ( root->type != 1){
-        printf("%s%i\n", "Error: tipos incompatibles en la linea ",root->noline);
+        printf("%s%i\n", "ERROR: Tipos incompatibles. Linea: ",root->noline);
         exit(1);
     }
 }
@@ -529,7 +529,7 @@ void checkType(Node * root){
 	if(root->tag == 2){ // es operador
 		if(strcmp(root->info->op.id, "=") == 0){
 			if(root->left->type != root->mid->type){
-				printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
+				printf("%s%i\n","ERROR: Tipos incompatibles. Linea: ",root->noline);
 	        	exit(1);
 			}
 			checkType(root->mid);
@@ -543,7 +543,7 @@ void checkType(Node * root){
     				List *b_param = root->mid->info->func.param;
     				for (cont; cont <=  longList(b_param); cont++){ // controlo q cada parametro pasado tenga el mismo tipo
     					if(a_param->node->type != b_param->node->type){
-    						printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
+    						printf("%s%i\n","ERROR: tipos de parametros incompatibles. Linea: ",root->noline);
     	        			exit(1);
     					}else{
     						a_param = a_param->next;
@@ -552,7 +552,7 @@ void checkType(Node * root){
     				}
 
     			}else{
-    				printf("%s%i\n","Error: la cantidad de parametros no es correcta. Linea: ",root->noline);
+    				printf("%s%i\n","ERROR: cantidad de parametros incorrecta. Linea: ",root->noline);
     	        	exit(1);
     			}
             }
@@ -582,7 +582,7 @@ void checkType(Node * root){
             if(root->type == typeRet){
                 checkType(root->left);
             }else{
-                printf("%s%i\n", "Valor de retorno incorrecto. Linea: ",root->noline);
+                printf("%s%i\n", "ERROR: Valor de retorno incorrecto. Linea: ",root->noline);
                 exit(1);
             }
 		}
@@ -590,7 +590,7 @@ void checkType(Node * root){
 		if(strcmp(root->info->op.id, "returnVoid") == 0){
             countReturn++;
             if(root->type != typeRet){
-                printf("%s%i\n", "Valor de retorno incorrecto. Linea: ",root->noline);
+                printf("%s%i\n", "ERROR: Valor de retorno incorrecto. Linea: ",root->noline);
                 exit(1);
             }
 		}
@@ -605,7 +605,7 @@ void checkType(Node * root){
 				checkType(root->left);
 				checkType(root->mid);
 			}else{
-				printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
+				printf("%s%i\n","ERROR: tipos incompatibles. Linea: ",root->noline);
 	            exit(1);
 			}
         }
@@ -618,7 +618,7 @@ void checkType(Node * root){
 				checkType(root->left);
 				checkType(root->mid);
 			}else{
-				printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
+				printf("%s%i\n","ERROR: tipos incompatibles. Linea: ",root->noline);
 	            exit(1);
 			}
         }
@@ -628,7 +628,7 @@ void checkType(Node * root){
 				checkType(root->left);
 				checkType(root->mid);
 			}else{
-				printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
+				printf("%s%i\n","ERROR: tipos incompatibles. Linea: ",root->noline);
 	            exit(1);
 			}
 		}
@@ -637,7 +637,7 @@ void checkType(Node * root){
 			if(root->type == root->left->type){
 				checkType(root->left);
 			}else{
-				printf("%s%i\n","Error: tipos incompatibles en la linea ",root->noline);
+				printf("%s%i\n","ERROR: tipos incompatibles. Linea: ",root->noline);
 	            exit(1);
 			}
 		}

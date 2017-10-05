@@ -13,6 +13,6 @@ SRC=src/
 for i in $(ls $DIR)
 do
     printf "\n"
-    echo "File: '"$i"'"
+    echo "In file: '"$i"'"
     ./run.out $DIR/$i
 done

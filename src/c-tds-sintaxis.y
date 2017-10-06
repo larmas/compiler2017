@@ -536,7 +536,8 @@ void checkType(Node * root){
 		}
 
 		if(strcmp(root->info->op.id, "function") == 0){
-            if (root->mid != NULL){
+            if( (root->mid != NULL)&&(root->left->info->func.param != NULL) ){ // ninguno es null
+
                 if ( longList(root->left->info->func.param) == longList(root->mid->info->func.param) ){    // tienen la misma cantidad de param
     				int cont = 0;
     				List *a_param = root->left->info->func.param;
@@ -555,6 +556,13 @@ void checkType(Node * root){
     				printf("%s%i\n","ERROR: cantidad de parametros incorrecta. Linea: ",root->noline);
     	        	exit(1);
     			}
+
+            }else{
+            	if( (root->mid != NULL)||(root->left->info->func.param != NULL) ){  // alguno no es null
+            		printf("%s%i\n","ERROR: tipos de parametros incompatibles. Linea: ",root->noline);
+    	        	exit(1);	
+            	}
+            	// ambos son null
             }
 		}
 

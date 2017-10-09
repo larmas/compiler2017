@@ -360,7 +360,7 @@ method_call:
     ID '(' ')'     {
 					    Node *funcTDS = findAll(tds, $1->id, 3);
 					    if(funcTDS != NULL){
-                            Node *root = newOp("function", funcTDS->type, $1->noLine);
+                            Node *root = newOp("functionVoid", funcTDS->type, $1->noLine);
 						    insertTree(root, funcTDS, NULL, NULL);
 						    $$ = root;
 					    }else{
@@ -556,15 +556,19 @@ void checkType(Node * root){
     				printf("%s%i\n","ERROR: cantidad de parametros incorrecta. Linea: ",root->noline);
     	        	exit(1);
     			}
+    			
+    		}else{
+    				printf("%s%i\n","ERROR: cantidad de parametros incorrecta. Linea: ",root->noline);
+    	        	exit(1);
+    		}	
+		}
 
-            }else{
-            	if( (root->mid != NULL)||(root->left->info->func.param != NULL) ){  // alguno no es null
+		if(strcmp(root->info->op.id, "functionVoid") == 0){
+			if( (root->mid != NULL)||(root->left->info->func.param != NULL) ){  // alguno no es null
             		printf("%s%i\n","ERROR: tipos de parametros incompatibles. Linea: ",root->noline);
     	        	exit(1);	
-            	}
-            	// ambos son null
             }
-		}
+        }    
 
 		if(strcmp(root->info->op.id, "if") == 0){
             checkBoolCondition(root->left);

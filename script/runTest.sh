@@ -7,7 +7,7 @@
 
 cd src/
 
-DIR=../test/
+DIR=../test/test_semanticos
 SRC=src/
 
 for i in $(ls $DIR)

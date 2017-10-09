@@ -191,6 +191,7 @@ method_decl:
                                             checkType($1->info->func.AST);
                                             if(countReturn == 0){
                                                 printf("%s%s%s%i\n","ERROR: Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
+                                                exit(1);
                                             }
                                         }
 
@@ -205,6 +206,7 @@ method_decl:
                                                         checkType($1->info->func.AST);
                                                         if(countReturn == 0){
                                                             printf("%s%s%s%i\n","ERROR: Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
+                                                            exit(1);
                                                         }
                                                     }
 ;
@@ -556,7 +558,7 @@ void checkType(Node * root){
     				printf("%s%i\n","ERROR: cantidad de parametros incorrecta. Linea: ",root->noline);
     	        	exit(1);
     			}
-    			
+
     		}else{
     				printf("%s%i\n","ERROR: cantidad de parametros incorrecta. Linea: ",root->noline);
     	        	exit(1);

@@ -3,11 +3,14 @@
 #include <stdio.h>
 #include "structures.c"
 #include "stackSymbol.c"
+#include "ciList.c"
 
 Stack *tds;
 List *list;
+CIList *ciList;
 int typeRet;
 int countReturn;
+int tempCount;
 
 extern char yytext;
 
@@ -541,10 +544,9 @@ void checkType(Node * root){
             if( (root->mid != NULL)&&(root->left->info->func.param != NULL) ){ // ninguno es null
 
                 if ( longList(root->left->info->func.param) == longList(root->mid->info->func.param) ){    // tienen la misma cantidad de param
-    				int cont = 0;
     				List *a_param = root->left->info->func.param;
     				List *b_param = root->mid->info->func.param;
-    				for (cont; cont <=  longList(b_param); cont++){ // controlo q cada parametro pasado tenga el mismo tipo
+    				for (int cont=0; cont <=  longList(b_param); cont++){ // controlo q cada parametro pasado tenga el mismo tipo
     					if(a_param->node->type != b_param->node->type){
     						printf("%s%i\n","ERROR: tipos de parametros incompatibles. Linea: ",root->noline);
     	        			exit(1);
@@ -562,15 +564,15 @@ void checkType(Node * root){
     		}else{
     				printf("%s%i\n","ERROR: cantidad de parametros incorrecta. Linea: ",root->noline);
     	        	exit(1);
-    		}	
+    		}
 		}
 
 		if(strcmp(root->info->op.id, "functionVoid") == 0){
 			if( (root->mid != NULL)||(root->left->info->func.param != NULL) ){  // alguno no es null
             		printf("%s%i\n","ERROR: tipos de parametros incompatibles. Linea: ",root->noline);
-    	        	exit(1);	
+    	        	exit(1);
             }
-        }    
+        }
 
 		if(strcmp(root->info->op.id, "if") == 0){
             checkBoolCondition(root->left);
@@ -661,4 +663,143 @@ void checkType(Node * root){
         }
 
 	}
+}
+
+/*
+    Antes de llamar a generateIC se debe inicializar tempCount y newCIList
+ */
+Node *generateIC(Node *root){
+    if(root->tag == 2){
+        if (strcmp(root->info->op.id, "=") == 0){
+            //char temp = strcat("level",atoi(tempCount));
+            //Node *newTemporal = newVar(level,0,0,0);
+            NodeCI *new = newNodeCI("MOV",generateIC(root->left),generateIC(root->mid), NULL);
+            ciList = insertLastCI(ciList,new);
+            //tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, "+") == 0){
+            char temp = strcat("level",atoi(tempCount));
+            Node *newTemporal = newVar(level,0,0,0);
+            NodeCI *new = newNodeCI("ADD",generateIC(root->left),generateIC(root->mid), newTemporal);
+            ciList = insertLastCI(ciList,new);
+            tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, "-") == 0){
+            char temp = strcat("level",atoi(tempCount));
+            Node *newTemporal = newVar(level,0,0,0);
+            NodeCI *new = newNodeCI("SUB",generateIC(root->left),generateIC(root->mid), newTemporal);
+            ciList = insertLastCI(ciList,new);
+            tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, "*") == 0){
+            char temp = strcat("level",atoi(tempCount));
+            Node *newTemporal = newVar(level,0,0,0);
+            NodeCI *new = newNodeCI("MULT",generateIC(root->left),generateIC(root->mid), newTemporal);
+            ciList = insertLastCI(ciList,new);
+            tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, "/") == 0){
+            char temp = strcat("level",atoi(tempCount));
+            Node *newTemporal = newVar(level,0,0,0);
+            NodeCI *new = newNodeCI("DIV",generateIC(root->left),generateIC(root->mid), newTemporal);
+            ciList = insertLastCI(ciList,new);
+            tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, "%") == 0){
+            char temp = strcat("level",atoi(tempCount));
+            Node *newTemporal = newVar(level,0,0,0);
+            NodeCI *new = newNodeCI("MOD",generateIC(root->left),generateIC(root->mid), newTemporal);
+            ciList = insertLastCI(ciList,new);
+            tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, ">") == 0){
+            char temp = strcat("level",atoi(tempCount));
+            Node *newTemporal = newVar(level,1,0,0);
+            NodeCI *new = newNodeCI("MAY",generateIC(root->left),generateIC(root->mid), newTemporal);
+            ciList = insertLastCI(ciList,new);
+            tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, "<") == 0){
+            char temp = strcat("level",atoi(tempCount));
+            Node *newTemporal = newVar(level,1,0,0);
+            NodeCI *new = newNodeCI("MIN",generateIC(root->left),generateIC(root->mid), newTemporal);
+            ciList = insertLastCI(ciList,new);
+            tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, "&&") == 0){
+            char temp = strcat("level",atoi(tempCount));
+            Node *newTemporal = newVar(level,1,0,0);
+            NodeCI *new = newNodeCI("AND",generateIC(root->left),generateIC(root->mid), newTemporal);
+            ciList = insertLastCI(ciList,new);
+            tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, "||") == 0){
+            char temp = strcat("level",atoi(tempCount));
+            Node *newTemporal = newVar(level,1,0,0);
+            NodeCI *new = newNodeCI("OR",generateIC(root->left),generateIC(root->mid), newTemporal);
+            ciList = insertLastCI(ciList,new);
+            tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, "==") == 0){
+            char temp = strcat("level",atoi(tempCount));
+            Node *newTemporal = newVar(level,root->type,0,0);
+            NodeCI *new = newNodeCI("EQUAL",generateIC(root->left),generateIC(root->mid), newTemporal);
+            ciList = insertLastCI(ciList,new);
+            tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, "!") == 0){
+            char temp = strcat("level",atoi(tempCount));
+            Node *newTemporal = newVar(level,1,0,0);
+            NodeCI *new = newNodeCI("NEGB",generateIC(root->left),NULL, newTemporal);
+            ciList = insertLastCI(ciList,new);
+            tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, "negativo") == 0){
+            char temp = strcat("level",atoi(tempCount));
+            Node *newTemporal = newVar(level,0,0,0);
+            NodeCI *new = newNodeCI("NEGI",generateIC(root->left),NULL, newTemporal);
+            ciList = insertLastCI(ciList,new);
+            tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, "return") == 0){
+            char temp = strcat("level",atoi(tempCount));
+            Node *newTemporal = newVar(level,toot->type,0,0);
+            NodeCI *new = newNodeCI("RETURN",NULL,NULL, newTemporal);
+            ciList = insertLastCI(ciList,new);
+            tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, "returnVoid") == 0){
+            char temp = strcat("level",atoi(tempCount));
+            Node *newTemporal = newVar(level,toot->type,0,0);
+            NodeCI *new = newNodeCI("RETURNV",NULL,NULL, newTemporal);
+            ciList = insertLastCI(ciList,new);
+            tempCount++;
+            return newTemporal;
+        }
+        if (strcmp(root->info->op.id, "if") == 0){
+            //eval condition -> eval statements -> add new Level
+        }
+        if (strcmp(root->info->op.id, "ifElse") == 0){
+            //eval condition -> eval statements -> add new Level ->
+            //eval statements else -> add new Level
+        }
+        if (strcmp(root->info->op.id, "while") == 0){
+            // add new Level -> eval condition -> eval statements ->
+            // add new Level
+        }
+    }
 }

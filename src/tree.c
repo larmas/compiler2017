@@ -1,8 +1,10 @@
+#ifndef TREE_C
+#define TREE_C
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-
 
 struct node;
 typedef struct node Node;
@@ -280,3 +282,5 @@ int main(int argc, char const *argv[]) {
 
 }
 */
+
+#endif

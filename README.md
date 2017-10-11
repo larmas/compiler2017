@@ -1,8 +1,8 @@
 # COMPILER 2017 #
 
 ### Autores: ###
-- @larmas
-- @fernando13
+- Armas Lucas, [Github User](@larmas)
+- Bentolilla Fernando, [Github User](@fernando13)
 
 ### Como correr los tests? ###
 

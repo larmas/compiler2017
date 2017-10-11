@@ -5,8 +5,8 @@
 
 
 ### Autores: ###
-- [Armas Lucas](https://github.com/larmas GitHub)
-- [Bentolilla Fernando](https://github.com/fernando13 GitHub)
+- [Armas Lucas](https://github.com/larmas "Perfil GitHub")
+- [Bentolilla Fernando](https://github.com/fernando13 "Perfil GitHub")
 
 ### Como correr los tests? ###
 ____

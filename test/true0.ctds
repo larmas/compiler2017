@@ -1,0 +1,9 @@
+/* Test true completo */
+
+boolean a;
+int x;
+
+void main(){
+    x = 1;
+    return ;
+}

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "structures.c"
 #include "stackSymbol.c"
+#include "list.c"
 #include "ciList.c"
 #include "intermediateCode.c"
 
@@ -75,6 +76,7 @@ extern char yytext;
 %%
 initial:
     {
+        printf("---1---\n");
         tds = newStack(tds);
         ciList = newCIList(ciList);
     } program
@@ -90,15 +92,15 @@ program:
                                             printf("%s\n","ERROR: Metodo main no existe.");
                                             exit(1);
                                         }
-                                        /*
-                                        List *index = $2;
 
+                                        List *index = $2;
                                         while (index != NULL){
-                                            generateIC(index->node->info->func.AST);
+
+                                            //generateIC(index->node->info->func.AST);
                                             index = index->next;
                                         }
+                                        printf("----SHOWCILIST----\n");
                                         showCIList(ciList);
-                                        */
                                     }
 
     | list_method_decl  {
@@ -110,14 +112,13 @@ program:
                                 printf("%s\n","ERROR: Metodo main no existe.");
                                 exit(1);
                             }
-                            /*
+                            printf("------");
                             List *index = $1;
                             while (index != NULL){
                                 generateIC(index->node->info->func.AST);
                                 index = index->next;
                             }
                             showCIList(ciList);
-                            */
                         }
 
     | list_var_decl     {
@@ -216,8 +217,8 @@ method_decl:
                                                 printf("%s%s%s%i\n","ERROR: Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
                                                 exit(1);
                                             }
-                                            generateIC($1->info->func.AST);
-                                            showCIList(ciList);
+                                            //generateIC($1->info->func.AST);
+                                            //showCIList(ciList);
                                         }
 
     | method_aux1 '(' method_aux2 ')' method_aux3   {
@@ -233,8 +234,8 @@ method_decl:
                                                             printf("%s%s%s%i\n","ERROR: Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
                                                             exit(1);
                                                         }
-                                                        generateIC($1->info->func.AST);
-                                                        showCIList(ciList);
+                                                        //generateIC($1->info->func.AST);
+                                                        //showCIList(ciList);
                                                     }
 ;
 

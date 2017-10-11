@@ -96,9 +96,15 @@ void showCiNode(Node *a){
             printf(" NULL ");
         }
         break;
-    default:
-        //showFunc(p);
+    case 3:
+        if(a != NULL){
+            printf("%s",a->info->func.id);
+        }else{
+            printf(" NULL ");
+        }
         break;
+    default:
+        printf(" LISTA VACIA ");
     }
 }
 }

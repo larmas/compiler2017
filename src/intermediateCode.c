@@ -9,7 +9,6 @@ extern CIList *ciList;
     Antes de llamar a generateIC se debe inicializar tempCount, labelCount y newCIList
  */
 Node *generateIC(Node *root){
-
     static int tempCount = 0;
     static int labelCount = 0;
     if((root->tag == 0)||(root->tag == 1)){  //es una constante o variable

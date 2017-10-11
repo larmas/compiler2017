@@ -860,7 +860,6 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,l0);
 
             return NULL;
-            //eval condition -> eval statements -> add new Level
         }
 
 
@@ -906,8 +905,6 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,l1);
 
             return NULL;
-            //eval condition -> eval statements -> add new Level ->
-            //eval statements else -> add new Level
         }
 
 
@@ -952,23 +949,58 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,l1);
 
             return NULL;
-            // add new Level -> eval condition -> eval statements -> add new Level
         }
-/*
+
         if (strcmp(root->info->op.id, "function") == 0){
-            return *??*;
+            List *par = root->mid->info->func.param;
+            while(par != NULL){
+                NodeCI *load = newNodeCI("LOAD",par->node,NULL,NULL);
+                ciList = insertLastCI(ciList,load);
+                par = par->next;
+            }
+
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,root->left->type,0,0);
+            NodeCI *callF = newNodeCI("CALL",root->left,newTemporal,NULL);
+            ciList = insertLastCI(ciList,callF);
+            tempCount++;
+
+            return newTemporal;
         }
 
         if (strcmp(root->info->op.id, "functionVoid") == 0){
-            return *??*;
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,root->left->type,0,0);
+            NodeCI *callF = newNodeCI("CALL",root->left,newTemporal,NULL);
+            ciList = insertLastCI(ciList,callF);
+            tempCount++;
+
+            return newTemporal;
         }
 
         if (strcmp(root->info->op.id, ";") == 0){
-            *??* = generateIC(root->left);
-            *??* = generateIC(root->mid);
-            return *??*;
+            generateIC(root->left);
+            generateIC(root->mid);
+            return NULL;
         }
-*/
     }
+    if(root->tag == 3){  // es funcion
+        char nameFunc[20];
+
+        strcpy(nameFunc,strcat("BEGIN ",root->info->func.id));
+        NodeCI *beginF = newNodeCI(nameFunc,NULL,NULL,NULL);
+        ciList = insertLastCI(ciList,beginF);
+
+        generateIC(root->info->func.AST);
+
+        strcpy(nameFunc,strcat("END ",root->info->func.id));
+        NodeCI *endF = newNodeCI(nameFunc,NULL,NULL,NULL);
+        ciList = insertLastCI(ciList,endF);
+        return NULL;
+    }   
     return NULL;
 }

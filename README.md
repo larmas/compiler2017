@@ -22,5 +22,4 @@ ____
 ### Como eliminar archivos generados en la etapa de compilación? ###
 ____
 ##### Situado en la raíz del proyecto ejecute el siguiente comando: #####
-* *Compilar el proyecto:*\
- `./script/clear.sh`
+* `./script/clear.sh`

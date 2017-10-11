@@ -92,15 +92,19 @@ program:
                                             printf("%s\n","ERROR: Metodo main no existe.");
                                             exit(1);
                                         }
-
-                                        List *index = $2;
-                                        while (index != NULL){
-
+                                    
+                                        List *index = $2;                       //       **************************************      
+                                        while (index != NULL){                  //       *           Se hace AKA              *
+                                            printf("----TENGO ALGO----\n");     //  <--- * index tiene dos cosas, pero basura *
+                                            showNode(index->node);              //       *         Usar abajo quizas?         * 
+                                                                                //       **************************************
                                             //generateIC(index->node->info->func.AST);
                                             index = index->next;
                                         }
-                                        printf("----SHOWCILIST----\n");
+                                        //printf("----SHOWCILIST----\n");
                                         showCIList(ciList);
+                                    
+                                    
                                     }
 
     | list_method_decl  {
@@ -112,13 +116,15 @@ program:
                                 printf("%s\n","ERROR: Metodo main no existe.");
                                 exit(1);
                             }
+                            /*
                             printf("------");
                             List *index = $1;
                             while (index != NULL){
-                                generateIC(index->node->info->func.AST);
+                               // generateIC(index->node->info->func.AST);
                                 index = index->next;
                             }
-                            showCIList(ciList);
+                            //showCIList(ciList);
+                            */
                         }
 
     | list_var_decl     {

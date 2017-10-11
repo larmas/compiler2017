@@ -3,10 +3,10 @@
 >El proyecto de la materia consiste en implementar un compilador para un lenguaje
 >imperativo simple, similar a C o Pascal, llamado C-TDS.
 
-____
+
 ### Autores: ###
-- [Armas Lucas](https://github.com/larmas)
-- [Bentolilla Fernando](https://github.com/fernando13)
+- [Armas Lucas](https://github.com/larmas GitHub)
+- [Bentolilla Fernando](https://github.com/fernando13 GitHub)
 
 ### Como correr los tests? ###
 ____

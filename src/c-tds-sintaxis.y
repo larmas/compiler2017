@@ -10,8 +10,8 @@ List *list;
 CIList *ciList;
 int typeRet;
 int countReturn;
-int tempCount;
-int labelCount;
+//int tempCount;
+//int labelCount;
 
 extern char yytext;
 
@@ -88,6 +88,14 @@ program:
                                             printf("%s\n","ERROR: Metodo main no existe.");
                                             exit(1);
                                         }
+                                        ciList = newCIList(ciList);
+                                        List *index = $2;
+
+                                        while (index != NULL){
+                                            generateIC(index->node);
+                                            index = index->next;
+                                        }
+                                        showCIList(ciList);
                                     }
 
     | list_method_decl  {
@@ -99,6 +107,12 @@ program:
                                 printf("%s\n","ERROR: Metodo main no existe.");
                                 exit(1);
                             }
+                            List *index = $1;
+                            while (index != NULL){
+                                generateIC(index->node);
+                                index = index->next;
+                            }
+                            showCIList(ciList);
                         }
 
     | list_var_decl     {
@@ -170,14 +184,14 @@ var_decl:
 
 AuxId:
     ID';'   {
-                Node *new = newVar($1->id, NULL, 0, $1->noLine);
+                Node *new = newVar($1->id, -10, 0, $1->noLine);
                 List *newL = newList(newL);
                 newL = insertFirst(newL,new);
                 $$ = newL;
             }
 
     | ID',' AuxId  {
-                        Node *new = newVar($1->id, NULL, 0, $1->noLine);
+                        Node *new = newVar($1->id, -10, 0, $1->noLine);
                         List *newL = insertFirst($3,new);
                         $$ = newL;
                     }
@@ -247,7 +261,7 @@ method_aux3: /* retorna el AST del block */
 
 TypeID:
     type ID     {
-                    Node *new = newVar($2->id,$1,NULL,$2->noLine);
+                    Node *new = newVar($2->id,$1,0,$2->noLine);
                     tds = pushTop(tds,new);
                     List *newL = newList(newL);
                     newL = insertFirst(newL,new);
@@ -255,7 +269,7 @@ TypeID:
                 }
 
     | type ID','TypeID  {
-                            Node *new = newVar($2->id,$1,NULL,$2->noLine);
+                            Node *new = newVar($2->id,$1,0,$2->noLine);
                             tds = pushTop(tds,new);
                             List *newL;
                             newL = insertFirst($4,new);
@@ -667,11 +681,11 @@ void checkType(Node * root){
 }
 
 /*
-    Antes de llamar a generateIC se debe inicializar tempCount y newCIList
+    Antes de llamar a generateIC se debe inicializar tempCount, labelCount y newCIList
  */
 Node *generateIC(Node *root){
-    //static int tempCount = 0;
-    //static int labelCount = 0;
+    static int tempCount = 0;
+    static int labelCount = 0;
     if((root->tag == 0)||(root->tag == 1)){  //es una constante o variable
         return root;
     }
@@ -826,7 +840,8 @@ Node *generateIC(Node *root){
         if (strcmp(root->info->op.id, "if") == 0){
             char labelId[20];
             char aux[20];
-            itoa(labelCount, aux, 10);
+            //itoa(labelCount, aux, 10);
+            sprintf(aux, "%d", labelCount);
             strcpy(labelId,strcat("L",aux));
             Node *label0 = newVar(labelId,0,0,0);
             labelCount++;
@@ -838,13 +853,13 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,nIF);
 
             // cuerpo if
-            //?? = generateIC(root->mid);
+            generateIC(root->mid);
 
             // LABEL L0
             NodeCI *l0 = newNodeCI("LABEL",NULL,NULL, label0);
             ciList = insertLastCI(ciList,l0);
 
-            //return ??;
+            return NULL;
             //eval condition -> eval statements -> add new Level
         }
 
@@ -852,13 +867,15 @@ Node *generateIC(Node *root){
         if (strcmp(root->info->op.id, "ifElse") == 0){
             char labelId[20];
             char aux[20];
-            itoa(labelCount, aux, 10);
+            //itoa(labelCount, aux, 10);
+            sprintf(aux, "%d", labelCount);
             strcpy(labelId,strcat("L",aux));
             Node *label0 = newVar(labelId,0,0,0);
             labelCount++;
 
 
-            itoa(labelCount, aux, 10);
+            //itoa(labelCount, aux, 10);
+            sprintf(aux, "%d", labelCount);
             strcpy(labelId,strcat("L",aux));
             Node *label1 = newVar(labelId,0,0,0);
             labelCount++;
@@ -888,7 +905,7 @@ Node *generateIC(Node *root){
             NodeCI *l1 = newNodeCI("LABEL",NULL,NULL, label1);
             ciList = insertLastCI(ciList,l1);
 
-            //return ??;
+            return NULL;
             //eval condition -> eval statements -> add new Level ->
             //eval statements else -> add new Level
         }
@@ -898,14 +915,16 @@ Node *generateIC(Node *root){
 
             char labelId[20];
             char aux[20];
-            itoa(labelCount, aux, 10);
+            //itoa(labelCount, aux, 10);
+            sprintf(aux, "%d", labelCount);
             strcpy(labelId,strcat("L",aux));
             Node *label0 = newVar(labelId,0,0,0);
             labelCount++;
 
 
 
-            itoa(labelCount, aux, 10);
+            //itoa(labelCount, aux, 10);
+            sprintf(aux, "%d", labelCount);
             strcpy(labelId,strcat("L",aux));
             Node *label1 = newVar(labelId,0,0,0);
             labelCount++;
@@ -922,7 +941,7 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,nIF);
 
             // cuerpo del while
-            //?? = generateIC(root->mid);
+            generateIC(root->mid);
 
             // JMP L0
             NodeCI *jmp = newNodeCI("JMP",NULL,NULL, label0);
@@ -932,7 +951,7 @@ Node *generateIC(Node *root){
             NodeCI *l1 = newNodeCI("LABEL",NULL,NULL, label1);
             ciList = insertLastCI(ciList,l1);
 
-            //return ??;
+            return NULL;
             // add new Level -> eval condition -> eval statements -> add new Level
         }
 /*
@@ -951,4 +970,5 @@ Node *generateIC(Node *root){
         }
 */
     }
+    return NULL;
 }

@@ -60,13 +60,13 @@ CIList *insertLastCI(CIList *l, NodeCI *_node){
 }
 
 
-void showCiNode(Node *n){
-    switch ( p->tag ) {
+void showCiNode(Node *a){
+    switch ( a->tag ) {
     case 0:
         if(a != NULL){
             printf(" %s\n ",a->info->var.id);
         } else {
-            printf(" NULL ");    
+            printf(" NULL ");
         break;
 
     case 1:
@@ -81,14 +81,14 @@ void showCiNode(Node *n){
                 }
             }
         }else{
-             printf("Node NULL");
+             printf(" NULL ");
         }
-        
+
         break;
     case 2:
         if(a != NULL){
             printf(" %s ",a->info->op.id);
-        
+
         }else{
             printf(" NULL ");
         }
@@ -106,9 +106,9 @@ void showCIList(CIList *l){
     while (p != NULL) {
         printf("\n");
         printf("%s", p->node->codOp);
-        showNode(p->node->firstOp);
-        showNode(p->node->secondOp);
-        showNode(p->node->temp);
+        showCiNode(p->node->firstOp);
+        showCiNode(p->node->secondOp);
+        showCiNode(p->node->temp);
         p = p->next;
     }
 }

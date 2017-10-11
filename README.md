@@ -1,10 +1,12 @@
 # README #
 
-### Como correr los tests? ###
+### Correr los tests ###
 Situado en la raiz del proyecto ejecute los siguientes comandos:
 * ``./script/compile.sh``
+<p>
 Si quiere correr casos de test sintacticos:
 * ``./script/runTestSintactico.sh``
+<p>
 Si quiere correr casos de test semanticos:
 * ``./script/runTestSemantico.sh``
 

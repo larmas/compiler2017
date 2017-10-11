@@ -1,4 +1,4 @@
-# **TALLER DE DISEÑO DE SOFTWARE 2017** #
+![#f03c15] # **TALLER DE DISEÑO DE SOFTWARE 2017** #
 
 >El proyecto de la materia consiste en implementar un compilador para un lenguaje
 >imperativo simple, similar a C o Pascal, llamado C-TDS.

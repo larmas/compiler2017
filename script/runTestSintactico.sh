@@ -3,11 +3,11 @@
 
 # Script utilizado para correr los test del proyecto
 # Usage: Situado en la raiz del proyecto correr el comando..
-#  $ ./script/runTest.sh
+#  $ ./script/runTestSintactico.sh
 
 cd src/
 
-DIR=../test/test_semanticos
+DIR=../test/test_sintactico
 SRC=src/
 
 for i in $(ls $DIR)

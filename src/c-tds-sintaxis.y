@@ -678,120 +678,146 @@ Node *generateIC(Node *root){
 
     if(root->tag == 2){  //es un operador
         if (strcmp(root->info->op.id, "=") == 0){
-            //char temp = strcat("level",atoi(tempCount));
-            //Node *newTemporal = newVar(level,0,0,0);
             NodeCI *new = newNodeCI("MOV",generateIC(root->left),generateIC(root->mid), NULL);
             ciList = insertLastCI(ciList,new);
-            //tempCount++;
-            return newTemporal;
+            
+            //return ??;
         }
         if (strcmp(root->info->op.id, "+") == 0){
-            char temp = strcat("level",atoi(tempCount));
-            Node *newTemporal = newVar(temp,0,0,0);
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,0,0,0);
             NodeCI *new = newNodeCI("ADD",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
             tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "-") == 0){
-            char temp = strcat("level",atoi(tempCount));
-            Node *newTemporal = newVar(temp,0,0,0);
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,0,0,0);
             NodeCI *new = newNodeCI("SUB",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
             tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "*") == 0){
-            char temp = strcat("level",atoi(tempCount));
-            Node *newTemporal = newVar(temp,0,0,0);
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,0,0,0);
             NodeCI *new = newNodeCI("MULT",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
             tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "/") == 0){
-            char temp = strcat("level",atoi(tempCount));
-            Node *newTemporal = newVar(temp,0,0,0);
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,0,0,0);
             NodeCI *new = newNodeCI("DIV",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
             tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "%") == 0){
-            char temp = strcat("level",atoi(tempCount));
-            Node *newTemporal = newVar(temp,0,0,0);
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,0,0,0);
             NodeCI *new = newNodeCI("MOD",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
             tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, ">") == 0){
-            char temp = strcat("level",atoi(tempCount));
-            Node *newTemporal = newVar(temp,1,0,0);
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,1,0,0);
             NodeCI *new = newNodeCI("MAY",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
             tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "<") == 0){
-            char temp = strcat("level",atoi(tempCount));
-            Node *newTemporal = newVar(temp,1,0,0);
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,1,0,0);
             NodeCI *new = newNodeCI("MIN",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
             tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "&&") == 0){
-            char temp = strcat("level",atoi(tempCount));
-            Node *newTemporal = newVar(temp,1,0,0);
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,1,0,0);
             NodeCI *new = newNodeCI("AND",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
             tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "||") == 0){
-            char temp = strcat("level",atoi(tempCount));
-            Node *newTemporal = newVar(temp,1,0,0);
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,1,0,0);
             NodeCI *new = newNodeCI("OR",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
             tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "==") == 0){
-            char temp = strcat("level",atoi(tempCount));
-            Node *newTemporal = newVar(temp,root->type,0,0);
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,root->type,0,0);
             NodeCI *new = newNodeCI("EQUAL",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
             tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "!") == 0){
-            char temp = strcat("level",atoi(tempCount));
-            Node *newTemporal = newVar(temp,1,0,0);
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,1,0,0);
             NodeCI *new = newNodeCI("NEGB",generateIC(root->left),NULL, newTemporal);
             ciList = insertLastCI(ciList,new);
             tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "negativo") == 0){
-            char temp = strcat("level",atoi(tempCount));
-            Node *newTemporal = newVar(temp,0,0,0);
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,0,0,0);
             NodeCI *new = newNodeCI("NEGI",generateIC(root->left),NULL, newTemporal);
             ciList = insertLastCI(ciList,new);
             tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "return") == 0){
-            char temp = strcat("level",atoi(tempCount));
-            Node *newTemporal = newVar(temp,root->type,0,0);
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,root->type,0,0);
             NodeCI *new = newNodeCI("RETURN",NULL,NULL, newTemporal);
             ciList = insertLastCI(ciList,new);
             tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "returnVoid") == 0){
-            char temp = strcat("level",atoi(tempCount));
-            Node *newTemporal = newVar(temp,root->type,0,0);
+            char tempId[20];
+            char aux = tempCount + '0';
+            strcpy(tempId, strcat("T",&aux));
+            Node *newTemporal = newVar(tempId,root->type,0,0);
             NodeCI *new = newNodeCI("RETURNV",NULL,NULL, newTemporal);
             ciList = insertLastCI(ciList,new);
             tempCount++;
@@ -800,8 +826,8 @@ Node *generateIC(Node *root){
 
         if (strcmp(root->info->op.id, "if") == 0){
 
-            char temp = strcat("L",atoi(labelCount));
-            Node *label0 = newVar(temp,0,0,0);
+            char tempId = strcat("L",atoi(labelCount));
+            Node *label0 = newVar(tempId,0,0,0);
             labelCount++;
 
             // condicion if
@@ -812,25 +838,25 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,nIF);
 
             // cuerpo if
-            ?? = generateIC(root->mid);
+            //?? = generateIC(root->mid);
 
             // LABEL L0
             NodeCI *l0 = newNodeCI("LABEL",NULL,NULL, label0);
             ciList = insertLastCI(ciList,l0);
 
-            return ??;
+            return /*??*/;
             //eval condition -> eval statements -> add new Level 
         }
 
 
         if (strcmp(root->info->op.id, "ifElse") == 0){
 
-            char temp = strcat("L",atoi(labelCount));
-            Node *label0 = newVar(temp,0,0,0);
+            char tempId = strcat("L",atoi(labelCount));
+            Node *label0 = newVar(tempId,0,0,0);
             labelCount++;
 
-            temp = strcat("L",atoi(labelCount));
-            Node *label1 = newVar(temp,0,0,0);
+            tempId = strcat("L",atoi(labelCount));
+            Node *label1 = newVar(tempId,0,0,0);
             labelCount++;
 
             // condicion del ifElse
@@ -841,7 +867,7 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,nIF);
 
             // cuerpo del if
-            ?? = generateIC(root->mid);
+            //?? = generateIC(root->mid);
 
             // JMP L1
             NodeCI *jmp = newNodeCI("JMP",NULL,NULL, label1);
@@ -852,13 +878,13 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,l0);
 
             // cuerpo del Else
-            ?? = generateIC(root->right);
+            //?? = generateIC(root->right);
 
             // LABEL L1
             NodeCI *l1 = newNodeCI("LABEL",NULL,NULL, label1);
             ciList = insertLastCI(ciList,l1);
 
-            return ??;
+            return /*??*/;
             //eval condition -> eval statements -> add new Level ->
             //eval statements else -> add new Level
         }
@@ -866,12 +892,12 @@ Node *generateIC(Node *root){
 
         if (strcmp(root->info->op.id, "while") == 0){
 
-            char temp = strcat("L",atoi(labelCount));
-            Node *label0 = newVar(temp,0,0,0);
+            char tempId = strcat("L",atoi(labelCount));
+            Node *label0 = newVar(tempId,0,0,0);
             labelCount++;
 
-            temp = strcat("L",atoi(labelCount));
-            Node *label1 = newVar(temp,0,0,0);
+            tempId = strcat("L",atoi(labelCount));
+            Node *label1 = newVar(tempId,0,0,0);
             labelCount++;
 
             // LABEL L0
@@ -886,7 +912,7 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,nIF);
 
             // cuerpo del while
-            ?? = generateIC(root->mid);
+            //?? = generateIC(root->mid);
 
             // JMP L0
             NodeCI *jmp = newNodeCI("JMP",NULL,NULL, label0);
@@ -896,7 +922,7 @@ Node *generateIC(Node *root){
             NodeCI *l1 = newNodeCI("LABEL",NULL,NULL, label1);
             ciList = insertLastCI(ciList,l1);
 
-            return ??;
+            return /*??*/;
             // add new Level -> eval condition -> eval statements -> add new Level
         }
 /*

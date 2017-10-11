@@ -674,14 +674,13 @@ Node *generateIC(Node *root){
     //static int labelCount = 0;
     if((root->tag == 0)||(root->tag == 1)){  //es una constante o variable
         return root;
-    }    
+    }
 
     if(root->tag == 2){  //es un operador
         if (strcmp(root->info->op.id, "=") == 0){
             NodeCI *new = newNodeCI("MOV",generateIC(root->left),generateIC(root->mid), NULL);
             ciList = insertLastCI(ciList,new);
-            
-            //return ??;
+
         }
         if (strcmp(root->info->op.id, "+") == 0){
             char tempId[20];
@@ -825,11 +824,12 @@ Node *generateIC(Node *root){
         }
 
         if (strcmp(root->info->op.id, "if") == 0){
-
-            char tempId = strcat("L",atoi(labelCount));
-            Node *label0 = newVar(tempId,0,0,0);
+            char labelId[20];
+            char aux[20];
+            itoa(labelCount, aux, 10);
+            strcpy(labelId,strcat("L",aux));
+            Node *label0 = newVar(labelId,0,0,0);
             labelCount++;
-
             // condicion if
             Node *cond = generateIC(root->left);
 
@@ -844,19 +844,23 @@ Node *generateIC(Node *root){
             NodeCI *l0 = newNodeCI("LABEL",NULL,NULL, label0);
             ciList = insertLastCI(ciList,l0);
 
-            return /*??*/;
-            //eval condition -> eval statements -> add new Level 
+            //return ??;
+            //eval condition -> eval statements -> add new Level
         }
 
 
         if (strcmp(root->info->op.id, "ifElse") == 0){
-
-            char tempId = strcat("L",atoi(labelCount));
-            Node *label0 = newVar(tempId,0,0,0);
+            char labelId[20];
+            char aux[20];
+            itoa(labelCount, aux, 10);
+            strcpy(labelId,strcat("L",aux));
+            Node *label0 = newVar(labelId,0,0,0);
             labelCount++;
 
-            tempId = strcat("L",atoi(labelCount));
-            Node *label1 = newVar(tempId,0,0,0);
+
+            itoa(labelCount, aux, 10);
+            strcpy(labelId,strcat("L",aux));
+            Node *label1 = newVar(labelId,0,0,0);
             labelCount++;
 
             // condicion del ifElse
@@ -867,7 +871,7 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,nIF);
 
             // cuerpo del if
-            //?? = generateIC(root->mid);
+            generateIC(root->mid);
 
             // JMP L1
             NodeCI *jmp = newNodeCI("JMP",NULL,NULL, label1);
@@ -878,13 +882,13 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,l0);
 
             // cuerpo del Else
-            //?? = generateIC(root->right);
+            generateIC(root->right);
 
             // LABEL L1
             NodeCI *l1 = newNodeCI("LABEL",NULL,NULL, label1);
             ciList = insertLastCI(ciList,l1);
 
-            return /*??*/;
+            //return ??;
             //eval condition -> eval statements -> add new Level ->
             //eval statements else -> add new Level
         }
@@ -892,12 +896,18 @@ Node *generateIC(Node *root){
 
         if (strcmp(root->info->op.id, "while") == 0){
 
-            char tempId = strcat("L",atoi(labelCount));
-            Node *label0 = newVar(tempId,0,0,0);
+            char labelId[20];
+            char aux[20];
+            itoa(labelCount, aux, 10);
+            strcpy(labelId,strcat("L",aux));
+            Node *label0 = newVar(labelId,0,0,0);
             labelCount++;
 
-            tempId = strcat("L",atoi(labelCount));
-            Node *label1 = newVar(tempId,0,0,0);
+
+
+            itoa(labelCount, aux, 10);
+            strcpy(labelId,strcat("L",aux));
+            Node *label1 = newVar(labelId,0,0,0);
             labelCount++;
 
             // LABEL L0
@@ -922,7 +932,7 @@ Node *generateIC(Node *root){
             NodeCI *l1 = newNodeCI("LABEL",NULL,NULL, label1);
             ciList = insertLastCI(ciList,l1);
 
-            return /*??*/;
+            //return ??;
             // add new Level -> eval condition -> eval statements -> add new Level
         }
 /*
@@ -939,6 +949,6 @@ Node *generateIC(Node *root){
             *??* = generateIC(root->mid);
             return *??*;
         }
-*/            
+*/
     }
 }

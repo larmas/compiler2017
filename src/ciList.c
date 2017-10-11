@@ -1,3 +1,6 @@
+#ifndef CILIST_C
+#define CILIST_C
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -112,3 +115,5 @@ void showCIList(CIList *l){
         p = p->next;
     }
 }
+
+#endif

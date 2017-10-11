@@ -1,6 +1,5 @@
-<h1 style="color: red;">
-    TALLER DE DISEÑO DE SOFTWARE 2017
-</h1>
+<span style="color:blue">some # **TALLER DE DISEÑO DE SOFTWARE 2017** # text</span>
+
 >El proyecto de la materia consiste en implementar un compilador para un lenguaje
 >imperativo simple, similar a C o Pascal, llamado C-TDS.
 

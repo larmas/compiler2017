@@ -1,5 +1,8 @@
-# **COMPILER 2017** #
----------
+# **TALLER DE DISEÑO DE SOFTWARE 2017** #
+
+>El proyecto de la materia consiste en implementar un compilador para un lenguaje
+>imperativo simple, similar a C o Pascal, llamado C-TDS.
+
 ### Autores: ###
 - [Armas Lucas](https://github.com/larmas)
 - [Bentolilla Fernando](https://github.com/fernando13)

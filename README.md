@@ -1,4 +1,4 @@
-<h1 style="text-color: red;">
+<h1 style="color: red;">
     TALLER DE DISEÑO DE SOFTWARE 2017
 </h1>
 >El proyecto de la materia consiste en implementar un compilador para un lenguaje

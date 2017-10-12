@@ -1,9 +1,12 @@
 /* Test true completo */
 
 boolean a;
-int x;
+int x,y;
 
-void main(){
+int main(){
     x = 1;
-    return ;
+    while (x < 3){
+        x = x + 1;
+    }
+    return x;
 }

@@ -67,9 +67,8 @@ void showCiNode(Node *a){
     switch ( a->tag ) {
     case 0:
         if(a != NULL){
-            printf(" %s\n ",a->info->var.id);
-        } else {
-            printf(" NULL ");
+            printf(" %s ",a->info->var.id);
+        }
         break;
 
     case 1:
@@ -83,24 +82,15 @@ void showCiNode(Node *a){
                      printf(" true ");
                 }
             }
-        }else{
-             printf(" NULL ");
-        }
-
         break;
     case 2:
         if(a != NULL){
             printf(" %s ",a->info->op.id);
-
-        }else{
-            printf(" NULL ");
         }
         break;
     case 3:
         if(a != NULL){
             printf("%s",a->info->func.id);
-        }else{
-            printf(" NULL ");
         }
         break;
     default:
@@ -113,11 +103,14 @@ void showCIList(CIList *l){
     CIList *p;
     p = l;
     while (p != NULL) {
-        printf("\n");
         printf("%s", p->node->codOp);
-        showCiNode(p->node->firstOp);
-        showCiNode(p->node->secondOp);
-        showCiNode(p->node->temp);
+        if (p->node->firstOp != NULL)
+            showCiNode(p->node->firstOp);
+        if (p->node->secondOp != NULL)
+            showCiNode(p->node->secondOp);
+        if (p->node->temp != NULL)
+            showCiNode(p->node->temp);
+        printf("\n");
         p = p->next;
     }
 }

@@ -12,8 +12,6 @@ List *list;
 CIList *ciList;
 int typeRet;
 int countReturn;
-//int tempCount;
-//int labelCount;
 
 extern char yytext;
 
@@ -76,7 +74,6 @@ extern char yytext;
 %%
 initial:
     {
-        printf("---1---\n");
         tds = newStack(tds);
         ciList = newCIList(ciList);
     } program
@@ -92,19 +89,18 @@ program:
                                             printf("%s\n","ERROR: Metodo main no existe.");
                                             exit(1);
                                         }
-                                    
-                                        List *index = $2;                       //       **************************************      
+                                        /*
+                                        List *index = $2;                       //       **************************************
                                         while (index != NULL){                  //       *           Se hace AKA              *
                                             printf("----TENGO ALGO----\n");     //  <--- * index tiene dos cosas, pero basura *
-                                            showNode(index->node);              //       *         Usar abajo quizas?         * 
+                                            showNode(index->node);              //       *         Usar abajo quizas?         *
                                                                                 //       **************************************
-                                            //generateIC(index->node->info->func.AST);
+                                            generateIC(index->node->info->func.AST);
                                             index = index->next;
                                         }
-                                        //printf("----SHOWCILIST----\n");
+                                        printf("----SHOWCILIST----\n");
                                         showCIList(ciList);
-                                    
-                                    
+                                        */
                                     }
 
     | list_method_decl  {
@@ -117,13 +113,12 @@ program:
                                 exit(1);
                             }
                             /*
-                            printf("------");
                             List *index = $1;
                             while (index != NULL){
-                               // generateIC(index->node->info->func.AST);
+                                generateIC(index->node->info->func.AST);
                                 index = index->next;
                             }
-                            //showCIList(ciList);
+                            showCIList(ciList);
                             */
                         }
 
@@ -223,8 +218,8 @@ method_decl:
                                                 printf("%s%s%s%i\n","ERROR: Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
                                                 exit(1);
                                             }
-                                            //generateIC($1->info->func.AST);
-                                            //showCIList(ciList);
+                                            generateIC($1->info->func.AST);
+                                            showCIList(ciList);
                                         }
 
     | method_aux1 '(' method_aux2 ')' method_aux3   {
@@ -240,7 +235,7 @@ method_decl:
                                                             printf("%s%s%s%i\n","ERROR: Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
                                                             exit(1);
                                                         }
-                                                        //generateIC($1->info->func.AST);
+                                                        generateIC($1->info->func.AST);
                                                         //showCIList(ciList);
                                                     }
 ;

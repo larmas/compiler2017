@@ -15,7 +15,6 @@ GREEN='\033[0;32m'
 cd src/
 
 DIR=../test/test_semantico
-SRC=src/
 
 for i in $(ls $DIR)
 do

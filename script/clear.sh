@@ -5,6 +5,9 @@
 #Usage: Situado en la raiz del proyecto correr el comando..
 # $ ./script/clear.sh
 
+RESET='\033[0m'
+GREEN='\033[0;32m'
+
 cd src/
 
 if [[ -f lex.yy.c ]]; then
@@ -25,3 +28,5 @@ fi
 if [[ -f run.out ]]; then
     rm run.out
 fi
+
+echo -e "${GREEN}Clean directory${RESET}"

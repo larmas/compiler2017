@@ -6,6 +6,13 @@
 #include "c-tds-sintaxis.tab.h"
 #include "structures.c"
 
+#define COLOR_RED     "\x1b[31m"
+#define COLOR_GREEN   "\x1b[32m"
+#define COLOR_YELLOW  "\x1b[33m"
+#define COLOR_BLUE    "\x1b[34m"
+#define COLOR_MAGENTA "\x1b[35m"
+#define COLOR_CYAN    "\x1b[36m"
+#define COLOR_RESET   "\x1b[0m"
 
 %}
 
@@ -205,14 +212,14 @@ digit [0-9]
 "//".*\n  ; /* Ignore rest of line */
 
 .       {
-            printf("%s%s%s%i\n","Simbolo no valido: ",yytext," en la linea ",yylineno);
+            printf("%s%s%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Simbolo no valido ",yytext,". Linea: ",yylineno);
             exit(1);
         }
 
 %%
 
 void yyerror(){
-	printf("%s%d\n","-> ERROR Sintactico en la linea: ",yylineno);
+	printf("%s%d\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Error sintactico. Linea: ",yylineno);
 }
 
 int main(int argc,char *argv[]){

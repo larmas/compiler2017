@@ -6,7 +6,9 @@
 #include <string.h>
 #include "tree.c"
 
-
+/**
+ * Estructura que representa una lista
+ */
 typedef struct list {
   Node *node;
   struct list *next;
@@ -14,15 +16,25 @@ typedef struct list {
 
 
 /*PROTOTIPOS*/
+// Inicializa una lista.
 List *newList(List *l);
+// Inserta un elemento al final de la lista.
 List *insertLast(List *l, Node *dato);
+// Inserta un elemento al inicio de la lista.
 List *insertFirst(List *l, Node *dato);
+// Retorna 0 si el elemento (variable o funcion) existe en la lista, 1 en caso contrario.
 int exists(List *l, Node *dato);
+// Busca un elemento en la lista y lo retorna.
 Node *findElem(List *l, char _id[],int tag);
+// Elimina una lista.
 void deleteList(List **l);
+// Muestra una lista de nodos por pantalla.
 void showList(List *l);
+// Retorna la longitud de la lista.
 int longList(List *l);
+// Busca un elemento y si existe, lo elimina de la lista.
 List *deleteElem(List *l, char _id[],int tag);
+// Inserta elementos en una lista, permite insertar repetidos.
 List *insertParam(List *l, Node *dato);
 
 
@@ -32,23 +44,21 @@ List *newList(List *l) {
     return l;
 }
 
-
 Node *findElem(List *l, char _id[], int tag ) {
     int cond;
-    if (l == NULL){  // elemento no encontrado
+    if (l == NULL){
         return NULL;
     }
-    if(tag == 0) { cond = strcmp(l->node->info->var.id,_id);}
-    else { cond = strcmp(l->node->info->func.id,_id);}
-
-    if (cond == 0) {
+    if(tag == 0)
+        cond = strcmp(l->node->info->var.id,_id);
+    else
+        cond = strcmp(l->node->info->func.id,_id);
+    if (cond == 0)
         return (l->node);
-    }else{
+    else
         return ( findElem(l->next,_id,tag) );
-    }
     return NULL;
 }
-
 
 List *insertLast(List *l, Node *dato) {
     if( exists(l,dato) == 1 ){
@@ -70,12 +80,11 @@ List *insertLast(List *l, Node *dato) {
         	l = q;
         }
     }else{
-        printf("%s\n", "El elemento ya existe.");
+        printf("%s%i\n", "El elemento ya existe. Linea: ",dato->noline);
         exit(1);
     }
     return l;
 }
-
 
 List *insertFirst(List *l, Node *dato) {
 	if(exists(l,dato) == 1){
@@ -93,15 +102,13 @@ List *insertFirst(List *l, Node *dato) {
         	l = q;
         }
     }else{
-        printf("%s\n", "El elemento ya existe.");
+        printf("%s%i\n", "El elemento ya existe. Linea: ",dato->noline);
         exit(1);
     }
     return l;
 }
 
-
-
-List *insertParam(List *l, Node *dato) {   //permite insertar repetidos
+List *insertParam(List *l, Node *dato) {
     if(l !=NULL){
         List *q;
         q = (List *) malloc(sizeof(List));
@@ -129,10 +136,8 @@ int exists(List *l, Node *dato){
         }
         break;
     case 1:
-
         break;
     case 2:
-
         break;
     default:
         if(findElem(l,dato->info->func.id,dato->tag) == NULL){
@@ -145,17 +150,14 @@ int exists(List *l, Node *dato){
     return result;
 }
 
-
-
 List *deleteElem(List *l, char _id[], int tag) {
     int cond;
     if (l == NULL)
         return l;
-    if(tag == 0) {
+    if(tag == 0)
         cond = strcmp(l->node->info->var.id, _id);
-    }else {
+    else
         cond = strcmp(l->node->info->func.id, _id);
-    }
     if (cond == 0) {
         List *q;
         q = l->next;
@@ -166,7 +168,6 @@ List *deleteElem(List *l, char _id[], int tag) {
         l->next = deleteElem(l->next,_id,tag);
     return l;
 }
-
 
 int longList(List *l) {
     List *p;
@@ -179,7 +180,6 @@ int longList(List *l) {
     }
     return n;
 }
-
 
 void deleteList(List **l) {
     List *q;

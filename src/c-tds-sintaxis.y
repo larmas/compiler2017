@@ -7,6 +7,14 @@
 #include "ciList.c"
 #include "intermediateCode.c"
 
+#define COLOR_RED     "\x1b[31m"
+#define COLOR_GREEN   "\x1b[32m"
+#define COLOR_YELLOW  "\x1b[33m"
+#define COLOR_BLUE    "\x1b[34m"
+#define COLOR_MAGENTA "\x1b[35m"
+#define COLOR_CYAN    "\x1b[36m"
+#define COLOR_RESET   "\x1b[0m"
+
 Stack *tds;
 List *list;
 CIList *ciList;
@@ -52,6 +60,7 @@ extern char yytext;
 %type<List> list_method_decl
 %type<List> TypeID
 %type<treeN> block
+%type<treeN> block_aux
 %type<i> type
 %type<List> AuxId
 %type<treeN> statament
@@ -81,60 +90,30 @@ initial:
 
 program:
     list_var_decl list_method_decl  {
-                                        //printf("---STACK---\n");
-                                        //showStack(tds);
-                                        //printf("--------\n");
                                         Node *main = findAll(tds,"main",3);
                                         if(main == NULL){
-                                            printf("%s\n","ERROR: Metodo main no existe.");
+                                            printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
                                             exit(1);
                                         }
-                                        /*
-                                        List *index = $2;                       //       **************************************
-                                        while (index != NULL){                  //       *           Se hace AKA              *
-                                            printf("----TENGO ALGO----\n");     //  <--- * index tiene dos cosas, pero basura *
-                                            showNode(index->node);              //       *         Usar abajo quizas?         *
-                                                                                //       **************************************
-                                            generateIC(index->node->info->func.AST);
-                                            index = index->next;
-                                        }
-                                        printf("----SHOWCILIST----\n");
                                         showCIList(ciList);
-                                        */
                                     }
 
     | list_method_decl  {
-                            //printf("---STACK---\n");
-                            //showStack(tds);
-                            //printf("--------\n");
                             Node *main = findAll(tds,"main",3);
                             if(main == NULL){
-                                printf("%s\n","ERROR: Metodo main no existe.");
+                                printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
                                 exit(1);
                             }
-                            /*
-                            List *index = $1;
-                            while (index != NULL){
-                                generateIC(index->node->info->func.AST);
-                                index = index->next;
-                            }
                             showCIList(ciList);
-                            */
                         }
 
     | list_var_decl     {
-                            //printf("---STACK---\n");
-                            //showStack(tds);
-                            //printf("--------\n");
-                            printf("%s\n","ERROR: Metodo main no existe.");
+                            printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
                             exit(1);
                         }
 
     | /* LAMBDA */  {
-                        //printf("---STACK---\n");
-                        //showStack(tds);
-                        //printf("--------\n");
-                        printf("%s\n","ERROR: Metodo main no existe.");
+                        printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
                         exit(1);
                     }
 ;
@@ -147,7 +126,6 @@ list_var_decl:
                         index = index->next;
                     }
                 }
-
     |  list_var_decl var_decl   {
                                     List *index = $2;
                                     while(index != NULL){
@@ -158,13 +136,8 @@ list_var_decl:
 ;
 
 list_method_decl:
-    method_decl     {
-
-                    }
-
-    | method_decl list_method_decl  {
-
-                                    }
+    method_decl {}
+    | method_decl list_method_decl  {}
 ;
 
 var_decl:
@@ -174,7 +147,6 @@ var_decl:
                     newL = insertLast(newL,new);
                     $$ = newL;
                 }
-
     | type ID',' AuxId  {
                             Node *new = newVar($2->id, $1, 0, $2->noLine);
                             List *newL = newList(newL);
@@ -196,7 +168,6 @@ AuxId:
                 newL = insertFirst(newL,new);
                 $$ = newL;
             }
-
     | ID',' AuxId  {
                         Node *new = newVar($1->id, -10, 0, $1->noLine);
                         List *newL = insertFirst($3,new);
@@ -210,33 +181,32 @@ method_decl:
                                             List *newL = newList(newL);
                                             $1->info->func.param = newL;
                                             $1->info->func.AST = $4;
-                                            //dfs($1->info->func.AST);
                                             typeRet = $1->type;
                                             countReturn = 0;
                                             checkType($1->info->func.AST);
                                             if(countReturn == 0){
-                                                printf("%s%s%s%i\n","ERROR: Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
+                                                printf("%s%s%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
                                                 exit(1);
                                             }
+                                            insertInitIC($1);
                                             generateIC($1->info->func.AST);
-                                            showCIList(ciList);
+                                            insertEndIC($1);
                                         }
-
     | method_aux1 '(' method_aux2 ')' method_aux3   {
                                                         tds = popLevel(tds);
                                                         tds = popLevel(tds);
                                                         $1->info->func.param = $3;
                                                         $1->info->func.AST = $5;
-                                                        //dfs($1->info->func.AST);
                                                         typeRet = $1->type;
                                                         countReturn = 0;
                                                         checkType($1->info->func.AST);
                                                         if(countReturn == 0){
-                                                            printf("%s%s%s%i\n","ERROR: Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
+                                                            printf("%s%s%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
                                                             exit(1);
                                                         }
+                                                        insertInitIC($1);
                                                         generateIC($1->info->func.AST);
-                                                        //showCIList(ciList);
+                                                        insertEndIC($1);
                                                     }
 ;
 
@@ -246,7 +216,6 @@ method_aux1: /* retorna el nodo func */
                 tds = pushTop(tds,new);
                 $$ = new;
             }
-
     | VOID ID   {
                     Node *new = newFunc($2->id,2,NULL,NULL,$2->noLine);
                     tds = pushTop(tds,new);
@@ -263,11 +232,9 @@ method_aux2: /* retorna la lista de parametros */
 ;
 
 method_aux3: /* retorna el AST del block */
-    {
-        tds = pushNewLevel(tds);
-    } block {
-                $$ = $2;
-            }
+    block_aux   {
+                    $$ = $1;
+                }
 ;
 
 TypeID:
@@ -278,7 +245,6 @@ TypeID:
                     newL = insertFirst(newL,new);
                     $$ = newL;
                 }
-
     | type ID','TypeID  {
                             Node *new = newVar($2->id,$1,0,$2->noLine);
                             tds = pushTop(tds,new);
@@ -288,20 +254,25 @@ TypeID:
                         }
 ;
 
+block_aux:
+    {
+        tds = pushNewLevel(tds);
+    } block {
+                $$ = $2;
+            }
+;
+
 block:
     '{'list_var_decl list_statament'}'  {
                                             $$ = $3;
                                         }
-
     | '{'list_statament'}'  {
 
                                 $$ = $2;
                             }
-
     | '{'list_var_decl'}'   {
                                 $$ = NULL;
                             }
-
     | '{''}'    {
                     $$ = NULL;
                 }
@@ -311,7 +282,6 @@ list_statament:
     statament   {
                     $$ = $1;
                 }
-
     | statament list_statament  {
                                    Node *root = newOp(";", 0, $1->noline);
                                    insertTree(root, $1, $2, NULL);
@@ -323,7 +293,6 @@ type:
     INT {
             $$=0;
         }
-
     | BOOLEAN   {
                     $$=1;
                 }
@@ -337,69 +306,65 @@ statament:
                                 insertTree(root, xId, $3, NULL);
                                 $$ = root;
                             }else{
-                                printf("%s%s%s%i\n","ERROR: Variable no declarada: ",$1->id,". Linea: ",$1->noLine);
+                                printf("%s%s%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Variable no declarada: ",$1->id,". Linea: ",$1->noLine);
                                 exit(1);
 	                        }
 	                    }
-
     | method_call';'    {
                             $$ =$1;
                         }
-
-    | IF '(' expr ')' block ELSE block  {
-                                            Node *root = newOp("ifElse", 1, $1->noLine);
-                                            insertTree(root, $3, $5, $7);
-                                            $$ = root;
-                                        }
-
-    | IF '(' expr ')' block     {
-                                    Node *root = newOp("if", 1, $1->noLine);
-                                    insertTree(root, $3, $5, NULL);
-                                    $$ = root;
-                                }
-
-    | WHILE '(' expr ')' block   {
-                                    Node *root = newOp("while", 1, $1->noLine);
-                                    insertTree(root, $3, $5, NULL);
-                                    $$ = root;
-                                }
-
+    | IF '(' expr ')' block_aux ELSE block_aux  {
+                                                    tds = popLevel(tds);
+                                                    tds = popLevel(tds);
+                                                    Node *root = newOp("ifElse", 1, $1->noLine);
+                                                    insertTree(root, $3, $5, $7);
+                                                    $$ = root;
+                                                }
+    | IF '(' expr ')' block_aux     {
+                                        tds = popLevel(tds);
+                                        Node *root = newOp("if", 1, $1->noLine);
+                                        insertTree(root, $3, $5, NULL);
+                                        $$ = root;
+                                    }
+    | WHILE '(' expr ')' block_aux  {
+                                        tds = popLevel(tds);
+                                        Node *root = newOp("while", 1, $1->noLine);
+                                        insertTree(root, $3, $5, NULL);
+                                        $$ = root;
+                                    }
     | RETURN expr';'    {
                             Node *root = newOp("return", $2->type, $1->noLine);
                             insertTree(root, $2, NULL, NULL);
                             $$ = root;
                         }
-
     | RETURN';'     {
                         Node *root = newOp("returnVoid", 2, $1->noLine);
                         insertTree(root, NULL, NULL, NULL);
                         $$ = root;
                     }
-
     | ';'   {
                 Node *root = newOp("skip", 3, -1);  //*** hacer que ; retorne noLine
                 insertTree(root, NULL, NULL, NULL);
                 $$ = root;
             }
-
-    | block     {
+    | block_aux {
+                    tds = popLevel(tds);
                     $$ = $1;
                 }
 ;
 
 method_call:
-    ID '(' ')'     {
-					    Node *funcTDS = findAll(tds, $1->id, 3);
-					    if(funcTDS != NULL){
-                            Node *root = newOp("functionVoid", funcTDS->type, $1->noLine);
-						    insertTree(root, funcTDS, NULL, NULL);
-						    $$ = root;
-					    }else{
-						    printf("%s%s%s%i\n","ERROR: Metodo no declarado: '",$1->id,"'. Linea: ",$1->noLine);
-                            exit(1);
-					    }
-					}
-
+    ID '(' ')'  {
+				    Node *funcTDS = findAll(tds, $1->id, 3);
+				    if(funcTDS != NULL){
+                        Node *root = newOp("functionVoid", funcTDS->type, $1->noLine);
+					    insertTree(root, funcTDS, NULL, NULL);
+					    $$ = root;
+				    }else{
+					    printf("%s%s%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo no declarado: '",$1->id,"'. Linea: ",$1->noLine);
+                        exit(1);
+				    }
+				}
     | ID '('AuxExpr')'  {
 	                        Node *funcTDS = findAll(tds, $1->id, 3);
 						    if(funcTDS != NULL){
@@ -408,7 +373,7 @@ method_call:
 							    insertTree(root, funcTDS, auxFunc, NULL);
 							    $$ = root;
 						    }else{
-							    printf("%s%s%s%i\n","ERROR: Metodo no declarado: '",$1->id,"'. Linea: ",$1->noLine);
+							    printf("%s%s%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo no declarado: '",$1->id,"'. Linea: ",$1->noLine);
                                 exit(1);
 						    }
 						}
@@ -420,7 +385,6 @@ AuxExpr:
                 newL = insertParam(newL,$1);
                 $$ = newL;
             }
-
     | expr',' AuxExpr   {
                             List *newL = insertParam($3,$1);
                             $$ = newL;
@@ -433,91 +397,76 @@ expr:
 		    if(root != NULL){
 		        $$ = root;
 		    }else{
-		        printf("%s%s%s%i\n","ERROR: Variable no declarada: '",$1->id,"'. Linea: ",$1->noLine);
+		        printf("%s%s%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Variable no declarada: '",$1->id,"'. Linea: ",$1->noLine);
                 exit(1);
 		    }
 		}
-
     | method_call   {
                         $$ = $1;
                     }
-
     | literal   {
                     $$ = $1;
                 }
-
     | expr MAS expr     {
                             Node *root = newOp("+", 0, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
-
     | expr MULT expr    {
                             Node *root = newOp("*", 0, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
-
     | expr MENOS expr   {
                             Node *root = newOp("-", 0, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
-
     | expr DIV expr     {
                             Node *root = newOp("/", 0, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
-
     | expr MOD expr     {
                             Node *root = newOp("%", 0, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
-
     | expr MENOR expr   {
                             Node *root = newOp("<", 1, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
-
     | expr MAYOR expr   {
                             Node *root = newOp(">", 1, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
-
     | expr OR expr      {
                             Node *root = newOp("||", 1, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
-
     | expr AND expr     {
                             Node *root = newOp("&&", 1, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
-
     | expr IGUAL expr   {
                             Node *root = newOp("==", 1, $2->noLine);
                             insertTree(root, $1, $3, NULL);
                             $$ = root;
                         }
-
     | MENOS expr %prec UMINUS   {
                                     Node *root = newOp("negativo", 0, $1->noLine);
                                     insertTree(root, $2, NULL, NULL);
                                     $$ = root;
                                 }
-
     | NOT expr %prec UMINUS     {
                                     Node *root = newOp("!", 1, $1->noLine);
                                     insertTree(root, $2, NULL, NULL);
                                     $$ = root;
                                 }
-
     | '('expr')'    {
                         $$ = $2;
                     }
@@ -529,7 +478,6 @@ literal:
                         Node *root = newConst(0, value, $1->noLine);
                         $$ = root;
                     }
-
     | bool_literal  {
                         $$ = $1;
                     }
@@ -540,7 +488,6 @@ bool_literal:
                 Node *root = newConst(1, 1, $1->noLine);
                 $$ = root;
             }
-
     | FALSE     {
                     Node *root = newConst(1, 0, $1->noLine);
                     $$ = root;
@@ -551,7 +498,7 @@ bool_literal:
 %%
 void checkBoolCondition(Node *root){
     if ( root->type != 1){
-        printf("%s%i\n", "ERROR: Tipos incompatibles. Linea: ",root->noline);
+        printf("%s%i\n", COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
         exit(1);
     }
 }
@@ -560,83 +507,72 @@ void checkType(Node * root){
 	if(root->tag == 2){ // es operador
 		if(strcmp(root->info->op.id, "=") == 0){
 			if(root->left->type != root->mid->type){
-				printf("%s%i\n","ERROR: Tipos incompatibles. Linea: ",root->noline);
+				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
 	        	exit(1);
 			}
 			checkType(root->mid);
 		}
-
 		if(strcmp(root->info->op.id, "function") == 0){
             if( (root->mid != NULL)&&(root->left->info->func.param != NULL) ){ // ninguno es null
-
                 if ( longList(root->left->info->func.param) == longList(root->mid->info->func.param) ){    // tienen la misma cantidad de param
     				List *a_param = root->left->info->func.param;
     				List *b_param = root->mid->info->func.param;
-    				for (int cont=0; cont <=  longList(b_param); cont++){ // controlo q cada parametro pasado tenga el mismo tipo
+    				for (int cont=0; cont <=  longList(b_param); cont++){
     					if(a_param->node->type != b_param->node->type){
-    						printf("%s%i\n","ERROR: tipos de parametros incompatibles. Linea: ",root->noline);
+    						printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos de parametros incompatibles. Linea: ",root->noline);
     	        			exit(1);
     					}else{
     						a_param = a_param->next;
     						b_param = b_param->next;
     					}
     				}
-
     			}else{
-    				printf("%s%i\n","ERROR: cantidad de parametros incorrecta. Linea: ",root->noline);
+    				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Cantidad de parametros incorrecta. Linea: ",root->noline);
     	        	exit(1);
     			}
-
     		}else{
-    				printf("%s%i\n","ERROR: cantidad de parametros incorrecta. Linea: ",root->noline);
+    				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Cantidad de parametros incorrecta. Linea: ",root->noline);
     	        	exit(1);
     		}
 		}
-
 		if(strcmp(root->info->op.id, "functionVoid") == 0){
 			if( (root->mid != NULL)||(root->left->info->func.param != NULL) ){  // alguno no es null
-            		printf("%s%i\n","ERROR: tipos de parametros incompatibles. Linea: ",root->noline);
+            		printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos de parametros incompatibles. Linea: ",root->noline);
     	        	exit(1);
             }
         }
-
 		if(strcmp(root->info->op.id, "if") == 0){
             checkBoolCondition(root->left);
 			checkType(root->left);
 			checkType(root->mid);
 		}
-
 		if(strcmp(root->info->op.id, "ifElse") == 0){
             checkBoolCondition(root->left);
 			checkType(root->left);
 			checkType(root->mid);
 			checkType(root->right);
 		}
-
 		if(strcmp(root->info->op.id, "while") == 0){
             checkBoolCondition(root->left);
 			checkType(root->left);
 			checkType(root->mid);
 		}
-
 		if(strcmp(root->info->op.id, "return") == 0){
             countReturn++;
             if(root->type == typeRet){
                 checkType(root->left);
             }else{
-                printf("%s%i\n", "ERROR: Valor de retorno incorrecto. Linea: ",root->noline);
+                printf("%s%i\n", COLOR_RED"[ERROR]"COLOR_MAGENTA" Valor de retorno incorrecto. Linea: ",root->noline);
                 exit(1);
             }
 		}
-
 		if(strcmp(root->info->op.id, "returnVoid") == 0){
             countReturn++;
             if(root->type != typeRet){
-                printf("%s%i\n", "ERROR: Valor de retorno incorrecto. Linea: ",root->noline);
+                printf("%s%i\n", COLOR_RED"[ERROR]"COLOR_MAGENTA" Valor de retorno incorrecto. Linea: ",root->noline);
                 exit(1);
             }
 		}
-
         if(strcmp(root->info->op.id, "+") == 0 ||
            strcmp(root->info->op.id, "*") == 0 ||
            strcmp(root->info->op.id, "-") == 0 ||
@@ -647,11 +583,10 @@ void checkType(Node * root){
 				checkType(root->left);
 				checkType(root->mid);
 			}else{
-				printf("%s%i\n","ERROR: tipos incompatibles. Linea: ",root->noline);
+				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
 	            exit(1);
 			}
         }
-
         if(strcmp(root->info->op.id, "&&") == 0 ||
            strcmp(root->info->op.id, "||") == 0 ||
            strcmp(root->info->op.id, "==") == 0 )
@@ -660,26 +595,24 @@ void checkType(Node * root){
 				checkType(root->left);
 				checkType(root->mid);
 			}else{
-				printf("%s%i\n","ERROR: tipos incompatibles. Linea: ",root->noline);
+				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
 	            exit(1);
 			}
         }
-
 		if(strcmp(root->info->op.id, ">") == 0 || strcmp(root->info->op.id,"<") == 0){
 			if(root->left->type == 0 && root->mid->type == 0){
 				checkType(root->left);
 				checkType(root->mid);
 			}else{
-				printf("%s%i\n","ERROR: tipos incompatibles. Linea: ",root->noline);
+				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
 	            exit(1);
 			}
 		}
-
 		if(strcmp(root->info->op.id, "!") == 0 || strcmp(root->info->op.id,"negativo") == 0){
 			if(root->type == root->left->type){
 				checkType(root->left);
 			}else{
-				printf("%s%i\n","ERROR: tipos incompatibles. Linea: ",root->noline);
+				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
 	            exit(1);
 			}
 		}
@@ -687,6 +620,5 @@ void checkType(Node * root){
             checkType(root->left);
             checkType(root->mid);
         }
-
 	}
 }

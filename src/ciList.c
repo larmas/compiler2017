@@ -6,6 +6,9 @@
 #include <string.h>
 #include "tree.c"
 
+/**
+ * Estructura que representa un codigo de 3 direcciones.
+ */
 typedef struct nodeCI{
     char codOp[20];
     Node *firstOp;
@@ -13,18 +16,23 @@ typedef struct nodeCI{
     Node *temp;
 }NodeCI;
 
+/**
+ * Estructura que representa una lista de codigos de 3 direcciones.
+ */
 typedef struct ciList{
     NodeCI *node;
     struct ciList *next;
 }CIList;
 
 /*PROTOTIPOS*/
+// Inicializa una lista de codigo de 3 direcciones.
 CIList *newCIList(CIList *l);
+// Inicializa un nodo que representa un codigo de 3 direcciones.
 NodeCI *newNodeCI(char _codOp[], Node *_firstOp, Node *_secondOp, Node *_temp);
+// Inserta un elemento al final de la lista.
 CIList *insertLastCI(CIList *l, NodeCI *_node);
+// Muestra por pantalla una lista.
 void showCIList(CIList *l);
-//Node *findElemCI(CIList *l, char _codOp[],int tag);
-
 
 CIList *newCIList(CIList *l) {
     l = (CIList *) malloc(sizeof(CIList));
@@ -62,7 +70,6 @@ CIList *insertLastCI(CIList *l, NodeCI *_node){
     return l;
 }
 
-
 void showCiNode(Node *a){
     switch ( a->tag ) {
     case 0:
@@ -77,11 +84,12 @@ void showCiNode(Node *a){
                 printf(" %i ",a->info->cons.value);
             }else{
                 if(a->info->cons.value == 0){
-                     printf(" false ");
+                    printf(" false ");
                 }else{
-                     printf(" true ");
+                    printf(" true ");
                 }
             }
+        }
         break;
     case 2:
         if(a != NULL){
@@ -96,7 +104,6 @@ void showCiNode(Node *a){
     default:
         printf(" LISTA VACIA ");
     }
-}
 }
 
 void showCIList(CIList *l){

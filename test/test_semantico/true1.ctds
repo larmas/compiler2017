@@ -1,0 +1,158 @@
+
+/* retorna el factorial de v*/
+int factorial (int v){
+  int limit;
+  limit = 15;
+  if ( v > limit){
+      return (-1);
+  }
+
+  { /*nuevo bloque*/
+	int c, fact;
+	c = 0;
+	fact = 1;
+    while (c<v)
+    {
+       c = c+1;
+       fact = fact*c;
+    }
+    return fact;
+  }
+}
+
+/* retorna el n esimo primo*/
+int nthprime (int n) {
+    int i;
+    int divs;
+    i = 0;
+    divs = 2;
+    n = n +1;
+    while ( n > 0){
+        boolean divides;
+        divides = false;
+        i = i + 1;
+        while ( ! divides && divs < i){
+            if ( i % divs == 0){
+                divides = true;
+            }else{
+                divs = divs + 1;
+            }
+        }
+        divs = 2;
+        if ( ! divides)
+        { n = n - 1; }
+    }
+    return i;
+}
+
+/*retorna la representacion de d en binario*/
+int int2bin(int d)
+{
+   boolean flagc1;
+   int acum, aux, i;
+   acum=0;
+   i=0;
+   flagc1=true;
+   while (flagc1){
+      if(d>1)
+        {
+            aux = d % 2;   // toma el ultimo digito
+            {
+              boolean flagc2;
+              int j;
+              j=0;
+              flagc2 =true;
+              while (flagc2){    // ubica el digito en la posicion que le corresponde
+                if (j<i)  {
+                   aux = aux * 10;
+                   j=j+1;
+                   flagc1=true;
+                }
+                else {
+                    flagc2=false;
+                }
+              } /*} while*/
+            } /*} bloque*/
+
+          acum=acum +aux;  // resultado parcial
+          i=i+1;
+          d=d/2;           // toma el resto del numero decimal
+          flagc1=true;
+       } /*} if*/
+       else
+       {
+          flagc1=false;
+       }
+      } /*} while*/
+
+      { /*nuevo bloque, ubica el ultimo digito en la posicion que corresponde*/
+
+         boolean flagc1;
+         int j;
+         j=0;
+         flagc1=true;
+         while (flagc1)
+         {
+            if (j<i)
+            {
+              d = d * 10;
+              j=j+1;
+              flagc1=true;
+            }
+            else
+            {
+              flagc1=false;
+            }
+         } /*} ciclo*/
+      } /*} bloque*/
+
+      return acum + d;  /*resultaod final y retorna*/
+}
+
+/*retorna el maximo comun divisor de a y b*/
+int gcd (int a, int b) {
+	int i;
+	int result;
+    i=1;
+    result = i;
+	while ( i < (a+b)) {
+		if (((a % i) == 0) &&  ((b%i) ==0 ))
+			{ result = i; }
+		i = i + 1;
+	}
+	return result;
+}
+
+/* Calcula el valor del real m elevado a la n*/
+int potencia(int m, int n)
+{
+	int i;
+	int acum;
+        boolean continuar;
+	acum=1;
+	i=1;
+        continuar =true;
+	while (continuar)
+        {
+		if(i<n || i==n)
+                {
+			acum=acum * m;
+			i=i+1;
+		}
+		else
+                {
+                    continuar = false; /*simulo el break, con un flag booelano*/
+                }
+	}
+	return(acum);
+}
+
+   int  main()
+   {
+        int y;
+        y=9;
+        factorial(factorial(factorial(factorial(1)))+1);
+
+        return potencia(nthprime(2),y);
+
+   }

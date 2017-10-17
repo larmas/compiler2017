@@ -1,0 +1,33 @@
+int x;
+int breaks(int g){
+      int  i;
+      i = 0;
+
+      while(i < 10){
+	{ //bloque 1
+          i = i + 1;
+
+             { //bloque 2
+	          if(g < 0){
+	                ;
+                   }
+	           else{
+	                ;
+                   }
+             } //fin bloque 2
+        }//fin bloque 1
+
+     } //fin while
+
+	return i;
+
+}
+
+void printI(int i){
+    // se rompe aca, pero deberia devolver error por falta de return
+}
+
+int main(){
+   printI(x);
+   return 1;
+}

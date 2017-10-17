@@ -5,7 +5,7 @@ boolean c;
 int x,y;
 int z;
 
-int funcion(int a, boolean b){
+int funcion(boolean s, int a){
     while(x>1){
         x = x+1;
     }
@@ -22,7 +22,7 @@ boolean funcion2(){
 }
 
 void main(){
-    x = funcion(x,a);
+    x = funcion(c,z);
     a = funcion2();
     return ;
 }

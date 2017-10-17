@@ -1,0 +1,40 @@
+
+    /*decremento de un numero*/
+    int dec (int y)
+      {
+        return y - 1;
+      }
+    /*incremento de un numero*/
+    int inc (int z)
+      {
+        return z + 1;
+      }
+
+
+    int  main()
+      {
+        int y;
+        y=9;
+        /*TIPO DE EXPRESION: booleano*/
+        if (y > 0)
+          {
+              if (true)
+              {
+                 int z;
+                 boolean y;
+                 if (true)
+                 {
+                    z=5;
+                    y=false;
+                    if (true)
+                     {
+                       return (dec(y) + z);
+                     }
+                 }
+              }
+          }
+        else
+          {
+            return inc (y);
+          }
+      }

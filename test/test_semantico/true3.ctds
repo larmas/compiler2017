@@ -1,5 +1,5 @@
 //Deberia ser boolean, pero en lugar de mostrar mensaje de error se rompe
-bool res;
+boolean res;
 
 
 int inc (int x) {

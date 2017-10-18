@@ -112,10 +112,6 @@ program:
                             exit(1);
                         }
 
-    | /* LAMBDA */  {
-                        printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
-                        exit(1);
-                    }
 ;
 
 list_var_decl:

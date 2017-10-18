@@ -98,7 +98,7 @@ void showCiNode(Node *a){
         break;
     case 3:
         if(a != NULL){
-            printf("%s",a->info->func.id);
+            printf(" %s ",a->info->func.id);
         }
         break;
     default:

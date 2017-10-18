@@ -296,17 +296,11 @@ Node *generateIC(Node *root){
 }
 
 void insertInitIC(Node *root){
-    char nameFunc[20];
-    strcpy(nameFunc,"BEGIN ");
-    strcat(nameFunc, root->info->func.id);
-    NodeCI *beginF = newNodeCI(nameFunc,NULL,NULL,NULL);
+    NodeCI *beginF = newNodeCI("BEGIN ",root,NULL,NULL);
     ciList = insertLastCI(ciList,beginF);
 }
 
 void insertEndIC(Node *root){
-    char nameFunc[20];
-    strcpy(nameFunc,"END ");
-    strcat(nameFunc, root->info->func.id);
-    NodeCI *endF = newNodeCI(nameFunc,NULL,NULL,NULL);
+    NodeCI *endF = newNodeCI("END ",root,NULL,NULL);
     ciList = insertLastCI(ciList,endF);
 }

@@ -22,7 +22,7 @@ flex c-tds-lexico.l
 
 printf "\n\n${CYAN}-----COMPILE BISON-----${RESET}"
 
-bison -v -d c-tds-sintaxis.y
+bison -d c-tds-sintaxis.y
 
 printf "\n\n${CYAN}-----COMPILE GCC-----${RESET}\n"
 

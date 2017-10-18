@@ -1,0 +1,28 @@
+/*
+Saca el promedio entre las dos notas mas altas.
+*/
+int promedio (int nota1, int nota2, int nota3){
+
+	if ((nota1 > nota3) && (nota2 > nota3)){
+		return (nota1 + nota2)/2;
+	}
+	if ((nota1 > nota2) && (nota3 > nota2)){
+		return (nota1 + nota3)/2;
+	}
+	if ((nota2 > nota1) && (nota3 > nota1)){
+		return (nota3 + nota2)/2;
+	}
+	if ((nota1 == nota2) && (nota1 == nota3) && (nota2 == nota3)){
+		return nota1;
+	}
+}
+
+void printF(int i){
+	return;
+}
+
+
+int main(){
+ printF(promedio( 3, 0 , 10) );
+ return 1;
+}

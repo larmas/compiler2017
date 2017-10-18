@@ -220,7 +220,9 @@ digit [0-9]
 
 void yyerror(){
 	printf("%s%d\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Error sintactico. Linea: ",yylineno);
+    exit(1);
 }
+
 
 int main(int argc,char *argv[]){
 	++argv,--argc;
@@ -229,7 +231,5 @@ int main(int argc,char *argv[]){
 	else
 		yyin = stdin;
 
-	yyparse();
-
-
+    yyparse();
 }

@@ -14,6 +14,7 @@
 #define COLOR_CYAN    "\x1b[36m"
 #define COLOR_RESET   "\x1b[0m"
 
+
 %}
 
 %option noyywrap
@@ -220,7 +221,7 @@ digit [0-9]
 
 void yyerror(){
 	printf("%s%d\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Error sintactico. Linea: ",yylineno);
-    exit(1);
+    
 }
 
 

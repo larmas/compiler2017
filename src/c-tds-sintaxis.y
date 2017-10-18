@@ -15,6 +15,9 @@
 #define COLOR_CYAN    "\x1b[36m"
 #define COLOR_RESET   "\x1b[0m"
 
+int yylex();
+void yyerror();
+
 Stack *tds;
 List *list;
 CIList *ciList;

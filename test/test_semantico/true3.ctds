@@ -1,0 +1,28 @@
+//Deberia ser boolean, pero en lugar de mostrar mensaje de error se rompe
+bool res;
+
+
+int inc (int x) {
+	return x+1;
+}
+int resto(int x, int y) {
+
+	int res;
+
+	if (x > 3*2) {
+		res = x / 3;
+	}
+	else {
+		res = x%2;
+	}
+	return res;
+}
+
+void printI(int i){
+	return ;
+}
+
+int main() {
+    res = false;
+    return 1;
+}

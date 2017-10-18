@@ -1,0 +1,37 @@
+boolean b;
+
+int pruif(int b, int c ){ //ERROR tipos incompatibles aca 0.0
+		int res;
+        boolean i;
+
+	if(b){ // Error la expresion debe ser de tipo boolean
+		res = 1 - c;
+        }
+        if ( i == true ){
+           res = res + 4;
+        }
+        else{
+           if ( i == true ){
+                res = 4 + res;;
+           }
+           else{
+                 res = 4-3;
+           }
+
+       }
+
+	return res;
+
+}
+
+void printI(int i){
+    return ;
+}
+
+int main(){
+
+    printI( pruif(4 ) + 5 );
+    return 1;
+
+
+}

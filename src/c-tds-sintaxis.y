@@ -504,121 +504,123 @@ void checkBoolCondition(Node *root){
 }
 
 void checkType(Node * root){
-	if(root->tag == 2){ // es operador
-		if(strcmp(root->info->op.id, "=") == 0){
-			if(root->left->type != root->mid->type){
-				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
-	        	exit(1);
-			}
-			checkType(root->mid);
-		}
-		if(strcmp(root->info->op.id, "function") == 0){
-            if( (root->mid != NULL)&&(root->left->info->func.param != NULL) ){ // ninguno es null
-                if ( longList(root->left->info->func.param) == longList(root->mid->info->func.param) ){    // tienen la misma cantidad de param
-    				List *a_param = root->left->info->func.param;
-    				List *b_param = root->mid->info->func.param;
-    				for (int cont=0; cont <=  longList(b_param); cont++){
-    					if(a_param->node->type != b_param->node->type){
-    						printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos de parametros incompatibles. Linea: ",root->noline);
-    	        			exit(1);
-    					}else{
-    						a_param = a_param->next;
-    						b_param = b_param->next;
-    					}
-    				}
-    			}else{
-    				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Cantidad de parametros incorrecta. Linea: ",root->noline);
+    if(root != NULL){
+    	if(root->tag == 2){ // es operador
+    		if(strcmp(root->info->op.id, "=") == 0){
+    			if(root->left->type != root->mid->type){
+    				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
     	        	exit(1);
     			}
-    		}else{
-    				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Cantidad de parametros incorrecta. Linea: ",root->noline);
-    	        	exit(1);
+    			checkType(root->mid);
     		}
-		}
-		if(strcmp(root->info->op.id, "functionVoid") == 0){
-			if( (root->mid != NULL)||(root->left->info->func.param != NULL) ){  // alguno no es null
-            		printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos de parametros incompatibles. Linea: ",root->noline);
-    	        	exit(1);
+    		if(strcmp(root->info->op.id, "function") == 0){
+                if( (root->mid != NULL)&&(root->left->info->func.param != NULL) ){ // ninguno es null
+                    if ( longList(root->left->info->func.param) == longList(root->mid->info->func.param) ){    // tienen la misma cantidad de param
+        				List *a_param = root->left->info->func.param;
+        				List *b_param = root->mid->info->func.param;
+        				for (int cont=0; cont <=  longList(b_param); cont++){
+        					if(a_param->node->type != b_param->node->type){
+        						printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos de parametros incompatibles. Linea: ",root->noline);
+        	        			exit(1);
+        					}else{
+        						a_param = a_param->next;
+        						b_param = b_param->next;
+        					}
+        				}
+        			}else{
+        				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Cantidad de parametros incorrecta. Linea: ",root->noline);
+        	        	exit(1);
+        			}
+        		}else{
+        				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Cantidad de parametros incorrecta. Linea: ",root->noline);
+        	        	exit(1);
+        		}
+    		}
+    		if(strcmp(root->info->op.id, "functionVoid") == 0){
+    			if( (root->mid != NULL)||(root->left->info->func.param != NULL) ){  // alguno no es null
+                		printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos de parametros incompatibles. Linea: ",root->noline);
+        	        	exit(1);
+                }
             }
-        }
-		if(strcmp(root->info->op.id, "if") == 0){
-            checkBoolCondition(root->left);
-			checkType(root->left);
-			checkType(root->mid);
-		}
-		if(strcmp(root->info->op.id, "ifElse") == 0){
-            checkBoolCondition(root->left);
-			checkType(root->left);
-			checkType(root->mid);
-			checkType(root->right);
-		}
-		if(strcmp(root->info->op.id, "while") == 0){
-            checkBoolCondition(root->left);
-			checkType(root->left);
-			checkType(root->mid);
-		}
-		if(strcmp(root->info->op.id, "return") == 0){
-            countReturn++;
-            if(root->type == typeRet){
+    		if(strcmp(root->info->op.id, "if") == 0){
+                checkBoolCondition(root->left);
+    			checkType(root->left);
+    			checkType(root->mid);
+    		}
+    		if(strcmp(root->info->op.id, "ifElse") == 0){
+                checkBoolCondition(root->left);
+    			checkType(root->left);
+    			checkType(root->mid);
+    			checkType(root->right);
+    		}
+    		if(strcmp(root->info->op.id, "while") == 0){
+                checkBoolCondition(root->left);
+    			checkType(root->left);
+    			checkType(root->mid);
+    		}
+    		if(strcmp(root->info->op.id, "return") == 0){
+                countReturn++;
+                if(root->type == typeRet){
+                    checkType(root->left);
+                }else{
+                    printf("%s%i\n", COLOR_RED"[ERROR]"COLOR_MAGENTA" Valor de retorno incorrecto. Linea: ",root->noline);
+                    exit(1);
+                }
+    		}
+    		if(strcmp(root->info->op.id, "returnVoid") == 0){
+                countReturn++;
+                if(root->type != typeRet){
+                    printf("%s%i\n", COLOR_RED"[ERROR]"COLOR_MAGENTA" Valor de retorno incorrecto. Linea: ",root->noline);
+                    exit(1);
+                }
+    		}
+            if(strcmp(root->info->op.id, "+") == 0 ||
+               strcmp(root->info->op.id, "*") == 0 ||
+               strcmp(root->info->op.id, "-") == 0 ||
+               strcmp(root->info->op.id, "/") == 0 ||
+               strcmp(root->info->op.id, "%") == 0 )
+            {
+    			if(root->left->type == root->mid->type){
+    				checkType(root->left);
+    				checkType(root->mid);
+    			}else{
+    				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
+    	            exit(1);
+    			}
+            }
+            if(strcmp(root->info->op.id, "&&") == 0 ||
+               strcmp(root->info->op.id, "||") == 0 ||
+               strcmp(root->info->op.id, "==") == 0 )
+            {
+            	if(root->left->type == root->mid->type){
+    				checkType(root->left);
+    				checkType(root->mid);
+    			}else{
+    				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
+    	            exit(1);
+    			}
+            }
+    		if(strcmp(root->info->op.id, ">") == 0 || strcmp(root->info->op.id,"<") == 0){
+    			if(root->left->type == 0 && root->mid->type == 0){
+    				checkType(root->left);
+    				checkType(root->mid);
+    			}else{
+    				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
+    	            exit(1);
+    			}
+    		}
+    		if(strcmp(root->info->op.id, "!") == 0 || strcmp(root->info->op.id,"negativo") == 0){
+    			if(root->type == root->left->type){
+    				checkType(root->left);
+    			}else{
+    				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
+    	            exit(1);
+    			}
+    		}
+            if(strcmp(root->info->op.id, ";") == 0){
                 checkType(root->left);
-            }else{
-                printf("%s%i\n", COLOR_RED"[ERROR]"COLOR_MAGENTA" Valor de retorno incorrecto. Linea: ",root->noline);
-                exit(1);
+                checkType(root->mid);
             }
-		}
-		if(strcmp(root->info->op.id, "returnVoid") == 0){
-            countReturn++;
-            if(root->type != typeRet){
-                printf("%s%i\n", COLOR_RED"[ERROR]"COLOR_MAGENTA" Valor de retorno incorrecto. Linea: ",root->noline);
-                exit(1);
-            }
-		}
-        if(strcmp(root->info->op.id, "+") == 0 ||
-           strcmp(root->info->op.id, "*") == 0 ||
-           strcmp(root->info->op.id, "-") == 0 ||
-           strcmp(root->info->op.id, "/") == 0 ||
-           strcmp(root->info->op.id, "%") == 0 )
-        {
-			if(root->left->type == root->mid->type){
-				checkType(root->left);
-				checkType(root->mid);
-			}else{
-				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
-	            exit(1);
-			}
-        }
-        if(strcmp(root->info->op.id, "&&") == 0 ||
-           strcmp(root->info->op.id, "||") == 0 ||
-           strcmp(root->info->op.id, "==") == 0 )
-        {
-        	if(root->left->type == root->mid->type){
-				checkType(root->left);
-				checkType(root->mid);
-			}else{
-				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
-	            exit(1);
-			}
-        }
-		if(strcmp(root->info->op.id, ">") == 0 || strcmp(root->info->op.id,"<") == 0){
-			if(root->left->type == 0 && root->mid->type == 0){
-				checkType(root->left);
-				checkType(root->mid);
-			}else{
-				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
-	            exit(1);
-			}
-		}
-		if(strcmp(root->info->op.id, "!") == 0 || strcmp(root->info->op.id,"negativo") == 0){
-			if(root->type == root->left->type){
-				checkType(root->left);
-			}else{
-				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
-	            exit(1);
-			}
-		}
-        if(strcmp(root->info->op.id, ";") == 0){
-            checkType(root->left);
-            checkType(root->mid);
-        }
-	}
+    	}
+    }
 }

@@ -20,9 +20,12 @@ DIR=../test/test_semantico
 printf "Si al correr los test usted puede ver un mensaje de color ${RED}${BOLD}rojo${RESET} "
 printf "significa que alguno de sus test falló,\nsi no ve ningun mensaje sus test "
 printf "pasaron ${GREEN}correctamente${RESET}.\n"
-printf "${CYAN}Sus test iniciaran en 3 segundos${RESET}\n\n"
-sleep 3
-
+printf "${CYAN}Sus test iniciaran en 3 segundos...${RESET}"
+sleep 1
+printf "${CYAN}2 segundos...${RESET}"
+sleep 1
+printf "${CYAN}1 segundo...${RESET}\n\n"
+sleep 1
 for i in $(ls $DIR)
 do
     printf "\n"

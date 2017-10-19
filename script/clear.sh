@@ -9,24 +9,31 @@ RESET='\033[0m'
 GREEN='\033[0;32m'
 
 cd src/
+for i in $( ls )
+do
+    case $i in
+        lex.yy.c)
+            rm lex.yy.c
+            ;;
+        c-tds-sintaxis.output)
+            rm  c-tds-sintaxis.output
+            ;;
+        c-tds-sintaxis.tab.h)
+            rm c-tds-sintaxis.tab.h
+            ;;
+        c-tds-sintaxis.tab.c)
+            rm c-tds-sintaxis.tab.c
+            ;;
+        *.out)
+            rm $i
+            ;;
+        *)
+            if [[ -x "$i" ]]; then
+                rm $i
+            fi
+            ;;
+        esac
 
-if [[ -f lex.yy.c ]]; then
-    rm lex.yy.c
-fi
-if [[ -f c-tds-sintaxis.output ]]; then
-    rm  c-tds-sintaxis.output
-fi
+done
 
-if [[ -f c-tds-sintaxis.tab.h ]]; then
-    rm c-tds-sintaxis.tab.h
-fi
-
-if [[ -f c-tds-sintaxis.tab.c ]]; then
-    rm c-tds-sintaxis.tab.c
-fi
-
-if [[ -f run.out ]]; then
-    rm run.out
-fi
-
-echo -e "${GREEN}Clean directory${RESET}"
+echo -e "${GREEN}Clean directory ✔︎${RESET}"

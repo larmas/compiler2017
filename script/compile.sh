@@ -20,9 +20,9 @@ FLEXRES=$( flex c-tds-lexico.l )
 BISONRES=$( bison -v -d c-tds-sintaxis.y )
 GCCRES=$( gcc -o run.out lex.yy.c c-tds-sintaxis.tab.c )
 
-echo -e "${CYAN}\n-----COMPILE FLEX-----${RESET}"
+echo -e "${CYAN}${BOLD}\n-----COMPILE FLEX-----${RESET}"
 if [ "$FLEXRES" == '' ]; then
-    echo -e "${GREEN} Success ✔ ${RESET}\n"
+    echo -e "${GREEN}${ITALIC} Success ✔ ${RESET}\n"
 else
     echo -e "${RED} $FLEXRES ${RESET}\n"
 fi

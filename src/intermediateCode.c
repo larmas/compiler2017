@@ -179,19 +179,25 @@ Node *generateIC(Node *root){
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "return") == 0){
-            char tempId[20];
-            char aux[20];
-            sprintf(aux,"%d",tempCount);
-            strcpy(tempId,"T");
-            strcat(tempId,aux);
-            tempCount++;
-            Node *newTemporal = newVar(tempId,root->type,0,0);
-            NodeCI *new = newNodeCI("RETURN",NULL,NULL, newTemporal);
-            ciList = insertLastCI(ciList,new);
-            //tempCount++;
-            return newTemporal;
+            if (root->left->tag == 0){
+                NodeCI *new = newNodeCI("RETURN",NULL,NULL, root->left);
+                ciList = insertLastCI(ciList,new);
+            }else{
+                char tempId[20];
+                char aux[20];
+                sprintf(aux,"%d",tempCount);
+                strcpy(tempId,"T");
+                strcat(tempId,aux);
+                tempCount++;
+                Node *newTemporal = newVar(tempId,root->type,0,0);
+                NodeCI *new = newNodeCI("RETURN",NULL,NULL, newTemporal);
+                ciList = insertLastCI(ciList,new);
+                tempCount++;
+                return newTemporal;
+            }
+            return NULL;
         }
-        if (strcmp(root->info->op.id, "returnVoid") == 0){  
+        if (strcmp(root->info->op.id, "returnVoid") == 0){
             NodeCI *new = newNodeCI("RETURNV",NULL,NULL, NULL);
             ciList = insertLastCI(ciList,new);
             //tempCount++;
@@ -264,6 +270,7 @@ Node *generateIC(Node *root){
             return NULL;
         }
         if (strcmp(root->info->op.id, "function") == 0){
+
             List *par = root->mid->info->func.param;
             while(par != NULL){
                 NodeCI *load = newNodeCI("LOAD",par->node,NULL,NULL);
@@ -282,9 +289,16 @@ Node *generateIC(Node *root){
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "functionVoid") == 0){
-            NodeCI *callF = newNodeCI("CALL",root->left,NULL,NULL);
+            char tempId[20];
+            char aux[20];
+            sprintf(aux,"%d",tempCount);
+            strcpy(tempId,"T");
+            strcat(tempId,aux);
+            Node *newTemporal = newVar(tempId,root->left->type,0,0);
+            NodeCI *callF = newNodeCI("CALL",root->left,NULL,newTemporal);
             ciList = insertLastCI(ciList,callF);
-            return NULL;
+            tempCount++;
+            return newTemporal;
         }
         if (strcmp(root->info->op.id, ";") == 0){
             generateIC(root->left);

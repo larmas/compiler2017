@@ -62,9 +62,9 @@ case $1 in
         echo -e "${RED} Invalid argument $1${RESET}"
         echo -e "${CYAN} Possible arguments: ${RESET}"
         echo -e "${CYAN} -o <name>                    : for rename the executable <name>. ${RESET}"
-        echo -e "${CYAN} -target <stage>              : <stage> is a scan, parse, codinter, or assembly.\c"
-        echo -e "The compilation proceeds to the given stage. ${RESET}"
-        echo -e "${CYAN} -opt [list of optimizations] : Make the list of optimizations.\c"
-        echo -e "The all option performs all the supported optimizations. ${RESET}\n"
+        echo -e "${CYAN} -target <stage>              : <stage> is a scan, parse, codinter, or assembly.\
+ The compilation proceeds to the given stage. ${RESET}"
+        echo -e "${CYAN} -opt [list of optimizations] : Make the list of optimizations.\
+ The all option performs all the supported optimizations. ${RESET}\n"
         ;;
     esac

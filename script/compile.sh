@@ -16,14 +16,27 @@ CYAN='\033[0;36m'
 #Cambio al directorio src
 cd src/
 
-printf "${CYAN}\n-----COMPILE FLEX-----${RESET}"
+FLEXRES=$( flex c-tds-lexico.l )
+BISONRES=$( bison -v -d c-tds-sintaxis.y )
+GCCRES=$( gcc -o run.out lex.yy.c c-tds-sintaxis.tab.c )
 
-flex c-tds-lexico.l
+echo -e "${CYAN}\n-----COMPILE FLEX-----${RESET}"
+if [ "$FLEXRES" == '' ]; then
+    echo -e "${GREEN} Success ✔ ${RESET}\n"
+else
+    echo -e "${RED} $FLEXRES ${RESET}\n"
+fi
 
-printf "\n\n${CYAN}-----COMPILE BISON-----${RESET}"
+echo -e "${CYAN}-----COMPILE BISON-----${RESET}"
+if [ "$BISONRES" == '' ]; then
+    echo -e "${GREEN} Success ✔ ${RESET}\n"
+else
+    echo -e "${RED} $BISONRES ${RESET}\n"
+fi
 
-bison -v -d c-tds-sintaxis.y
-
-printf "\n\n${CYAN}-----COMPILE GCC-----${RESET}\n"
-
-gcc -o run.out lex.yy.c c-tds-sintaxis.tab.c
+echo -e "${CYAN}-----COMPILE GCC-----${RESET}"
+if [ "$GCCRES" == '' ]; then
+    echo -e "${GREEN} Success ✔ ${RESET}\n"
+else
+    echo -e "${RED} $GCCRES ${RESET}\n"
+fi

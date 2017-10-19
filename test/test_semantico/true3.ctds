@@ -2,7 +2,7 @@
 boolean res;
 
 
-inte inc (int x) {
+int inc (int x) {
 	return x+1;
 }
 int resto(int x, int y) {
@@ -23,6 +23,8 @@ void printI(int i){
 }
 
 int main() {
+	int sd;
+	printI(sd);
     res = false;
     return 1;
 }

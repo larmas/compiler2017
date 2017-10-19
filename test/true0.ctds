@@ -1,0 +1,28 @@
+/* Test true completo */
+
+boolean a,b;
+boolean c;
+int x,y;
+int z;
+
+int funcion(boolean s, int a){
+    while(x>1){
+        x = x+1;
+    }
+    return z;
+}
+
+boolean funcion2(){
+    if(x == 1){
+        x = 2;
+    }else{
+        x = z+3;
+    }
+    return b;
+}
+
+void main(){
+    x = funcion(c,z);
+    a = funcion2();
+    return ;
+}

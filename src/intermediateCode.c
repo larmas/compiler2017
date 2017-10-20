@@ -31,7 +31,6 @@ Node *generateIC(Node *root){
             tempCount++;
             Node *newTemporal = newVar(tempId,0,0,0);
             NodeCI *new = newNodeCI("ADD",generateIC(root->left),generateIC(root->mid), newTemporal);
-            //tempCount++;
             ciList = insertLastCI(ciList,new);
             return newTemporal;
         }
@@ -45,7 +44,6 @@ Node *generateIC(Node *root){
             Node *newTemporal = newVar(tempId,0,0,0);
             NodeCI *new = newNodeCI("SUB",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
-            //tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "*") == 0){
@@ -58,7 +56,6 @@ Node *generateIC(Node *root){
             Node *newTemporal = newVar(tempId,0,0,0);
             NodeCI *new = newNodeCI("MULT",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
-            //tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "/") == 0){
@@ -71,7 +68,6 @@ Node *generateIC(Node *root){
             Node *newTemporal = newVar(tempId,0,0,0);
             NodeCI *new = newNodeCI("DIV",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
-            //tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "%") == 0){
@@ -84,7 +80,6 @@ Node *generateIC(Node *root){
             Node *newTemporal = newVar(tempId,0,0,0);
             NodeCI *new = newNodeCI("MOD",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
-            //tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, ">") == 0){
@@ -97,7 +92,6 @@ Node *generateIC(Node *root){
             Node *newTemporal = newVar(tempId,1,0,0);
             NodeCI *new = newNodeCI("MAY",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
-            //tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "<") == 0){
@@ -110,7 +104,6 @@ Node *generateIC(Node *root){
             Node *newTemporal = newVar(tempId,1,0,0);
             NodeCI *new = newNodeCI("MIN",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
-            //tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "&&") == 0){
@@ -123,7 +116,6 @@ Node *generateIC(Node *root){
             Node *newTemporal = newVar(tempId,1,0,0);
             NodeCI *new = newNodeCI("AND",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
-            //tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "||") == 0){
@@ -136,7 +128,6 @@ Node *generateIC(Node *root){
             Node *newTemporal = newVar(tempId,1,0,0);
             NodeCI *new = newNodeCI("OR",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
-            //tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "==") == 0){
@@ -149,7 +140,6 @@ Node *generateIC(Node *root){
             Node *newTemporal = newVar(tempId,root->type,0,0);
             NodeCI *new = newNodeCI("EQUAL",generateIC(root->left),generateIC(root->mid), newTemporal);
             ciList = insertLastCI(ciList,new);
-            //tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "!") == 0){
@@ -162,7 +152,6 @@ Node *generateIC(Node *root){
             Node *newTemporal = newVar(tempId,1,0,0);
             NodeCI *new = newNodeCI("NEGB",generateIC(root->left),NULL, newTemporal);
             ciList = insertLastCI(ciList,new);
-            //tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "negativo") == 0){
@@ -175,7 +164,6 @@ Node *generateIC(Node *root){
             Node *newTemporal = newVar(tempId,0,0,0);
             NodeCI *new = newNodeCI("NEGI",generateIC(root->left),NULL, newTemporal);
             ciList = insertLastCI(ciList,new);
-            //tempCount++;
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "return") == 0){
@@ -200,7 +188,6 @@ Node *generateIC(Node *root){
         if (strcmp(root->info->op.id, "returnVoid") == 0){
             NodeCI *new = newNodeCI("RETURNV",NULL,NULL, NULL);
             ciList = insertLastCI(ciList,new);
-            //tempCount++;
             return NULL;
         }
         if (strcmp(root->info->op.id, "if") == 0){
@@ -270,10 +257,13 @@ Node *generateIC(Node *root){
             return NULL;
         }
         if (strcmp(root->info->op.id, "function") == 0){
-
             List *par = root->mid->info->func.param;
             while(par != NULL){
-                NodeCI *load = newNodeCI("LOAD",par->node,NULL,NULL);
+            	Node* justParam = generateIC(par->node);
+            	if(justParam->tag != 0 && justParam->tag != 1 ){
+            		justParam = generateIC(justParam);
+            	}		
+                NodeCI *load = newNodeCI("LOAD",justParam,NULL,NULL);
                 ciList = insertLastCI(ciList,load);
                 par = par->next;
             }
@@ -289,16 +279,9 @@ Node *generateIC(Node *root){
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "functionVoid") == 0){
-            char tempId[20];
-            char aux[20];
-            sprintf(aux,"%d",tempCount);
-            strcpy(tempId,"T");
-            strcat(tempId,aux);
-            Node *newTemporal = newVar(tempId,root->left->type,0,0);
-            NodeCI *callF = newNodeCI("CALL",root->left,NULL,newTemporal);
+            NodeCI *callF = newNodeCI("CALL",root->left,NULL,NULL);
             ciList = insertLastCI(ciList,callF);
-            tempCount++;
-            return newTemporal;
+            return NULL;
         }
         if (strcmp(root->info->op.id, ";") == 0){
             generateIC(root->left);

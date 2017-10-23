@@ -167,21 +167,17 @@ Node *generateIC(Node *root){
             return newTemporal;
         }
         if (strcmp(root->info->op.id, "return") == 0){
-            if (root->left->tag == 0){
+            if (root->left->tag == 0 || root->left->tag == 1){
                 NodeCI *new = newNodeCI("RETURN",NULL,NULL, root->left);
                 ciList = insertLastCI(ciList,new);
             }else{
-                char tempId[20];
-                char aux[20];
-                sprintf(aux,"%d",tempCount);
-                strcpy(tempId,"T");
-                strcat(tempId,aux);
-                tempCount++;
-                Node *newTemporal = newVar(tempId,root->type,0,0);
-                NodeCI *new = newNodeCI("RETURN",NULL,NULL, newTemporal);
-                ciList = insertLastCI(ciList,new);
-                tempCount++;
-                return newTemporal;
+                Node* justParam = generateIC(root->left);
+                justParam = generateIC(justParam);
+                if(justParam->tag != 0 && justParam->tag != 1 ){
+                    justParam = generateIC(justParam);
+                }       
+                NodeCI *load = newNodeCI("RETURN",NULL,NULL,justParam);
+                ciList = insertLastCI(ciList,load);
             }
             return NULL;
         }

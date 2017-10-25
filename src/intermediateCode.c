@@ -20,7 +20,7 @@ Node *generateIC(Node *root){
     if(root->tag == 2){
         if (strcmp(root->info->op.id, "=") == 0){
              Node *dir2 = generateIC(root->mid);
-            
+
             NodeCI *new = newNodeCI("MOV",generateIC(root->left),dir2, NULL);
             ciList = insertLastCI(ciList,new);
         }
@@ -199,7 +199,7 @@ Node *generateIC(Node *root){
                 justParam = generateIC(justParam);
                 if(justParam->tag != 0 && justParam->tag != 1 ){
                     justParam = generateIC(justParam);
-                }       
+                }
                 NodeCI *load = newNodeCI("RETURN",NULL,NULL,justParam);
                 ciList = insertLastCI(ciList,load);
             }
@@ -234,6 +234,7 @@ Node *generateIC(Node *root){
             strcat(labelId,aux);
             Node *label0 = newVar(labelId,0,0,0);
             labelCount++;
+            sprintf(aux, "%d", labelCount);
             strcpy(labelId,"L");
             strcat(labelId,aux);
             Node *label1 = newVar(labelId,0,0,0);
@@ -282,7 +283,7 @@ Node *generateIC(Node *root){
             	Node* justParam = generateIC(par->node);
             	if(justParam->tag != 0 && justParam->tag != 1 ){
             		justParam = generateIC(justParam);
-            	}		
+            	}
                 NodeCI *load = newNodeCI("LOAD",justParam,NULL,NULL);
                 ciList = insertLastCI(ciList,load);
                 par = par->next;

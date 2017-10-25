@@ -23,7 +23,7 @@ for i in $( ls )
 do
     if [ $i = $1 ]; then
         cd $DIRSRC
-        echo -e "${CYAN} RUNNING...${RESET}"
+        echo -e "${CYAN} RUNNING FILE: $i ${RESET}"
         ./run.out $DIRTEST/$i
     fi
 done

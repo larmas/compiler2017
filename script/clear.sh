@@ -27,6 +27,9 @@ do
         *.out)
             rm $i
             ;;
+        *.s)
+            rm $i
+            ;;
         *)
             if [[ -x "$i" ]]; then
                 rm $i

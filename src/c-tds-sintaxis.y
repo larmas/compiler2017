@@ -6,6 +6,7 @@
 #include "list.c"
 #include "ciList.c"
 #include "intermediateCode.c"
+#include "assembly.c"
 
 #define COLOR_RED     "\x1b[31m"
 #define COLOR_GREEN   "\x1b[32m"
@@ -25,6 +26,7 @@ int typeRet;
 int countReturn;
 
 extern char yytext;
+extern char **argv;
 
 %}
 
@@ -98,7 +100,8 @@ program:
                                             printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
                                             exit(1);
                                         }
-                                        showCIList(ciList);
+                                        //showCIList(ciList);
+                                        generateAsm(ciList, argv[0]);
                                     }
 
     | list_method_decl  {
@@ -107,7 +110,7 @@ program:
                                 printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
                                 exit(1);
                             }
-                            showCIList(ciList);
+                            //showCIList(ciList);
                         }
 
     | list_var_decl     {
@@ -209,7 +212,7 @@ method_decl:
                                                     }
 ;
 
-method_aux1: 
+method_aux1:
     type ID {
                 Node *new = newFunc($2->id,$1,NULL,NULL,$2->noLine);
                 tds = pushTop(tds,new);

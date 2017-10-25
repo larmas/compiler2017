@@ -14,6 +14,8 @@
 #define COLOR_CYAN    "\x1b[36m"
 #define COLOR_RESET   "\x1b[0m"
 
+int argc;
+char **argv;
 
 %}
 
@@ -221,11 +223,13 @@ digit [0-9]
 
 void yyerror(){
 	printf("%s%d\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Error sintactico. Linea: ",yylineno);
-    
+
 }
 
 
-int main(int argc,char *argv[]){
+int main(int ac,char *av[]){
+    argc = ac;
+    argv = av;
 	++argv,--argc;
 	if (argc > 0)
 		yyin = fopen(argv[0],"r");

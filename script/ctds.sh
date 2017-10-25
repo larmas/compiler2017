@@ -24,6 +24,6 @@ do
     if [ $i = $1 ]; then
         cd $DIRSRC
         echo -e "${CYAN} RUNNING FILE: $i ${RESET}"
-        ./run.out $DIRTEST/$i
+        ./run.out $DIRTEST$i
     fi
 done

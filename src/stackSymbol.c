@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include "list.c"
 
+
 /**
  * Estructura que representa una lista que se comporta como una pila.
  */

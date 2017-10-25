@@ -279,14 +279,19 @@ Node *generateIC(Node *root){
         }
         if (strcmp(root->info->op.id, "function") == 0){
             List *par = root->mid->info->func.param;
+            CIList *list_aux = newCIList(list_aux);
             while(par != NULL){
             	Node* justParam = generateIC(par->node);
             	if(justParam->tag != 0 && justParam->tag != 1 ){
             		justParam = generateIC(justParam);
             	}
                 NodeCI *load = newNodeCI("LOAD",justParam,NULL,NULL);
-                ciList = insertLastCI(ciList,load);
+                list_aux = insertLastCI(list_aux,load);
                 par = par->next;
+            }
+            while(list_aux != NULL){
+                ciList = insertLastCI(ciList,list_aux->node);
+                list_aux = list_aux->next;
             }
             char tempId[20];
             char aux[20];

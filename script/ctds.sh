@@ -14,9 +14,9 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 CYAN='\033[0;36m'
 
-cd test/codeinter/
+cd test/test_codeinter/
 DIRSRC=../../src
-DIRTEST=../test/codeinter/
+DIRTEST=../test/test_codeinter/
 
 
 for i in $( ls )

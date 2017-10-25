@@ -1,0 +1,14 @@
+/* Caso de prueba */
+boolean a,b,c,d,e;
+boolean f;
+int g,h,i,j;
+int k;
+
+int example(int x, int y){
+    return x;
+}
+
+void main(){
+    example(12,example(example(1,2),1));
+    return ;
+}

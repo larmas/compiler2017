@@ -209,7 +209,7 @@ method_decl:
                                                     }
 ;
 
-method_aux1: /* retorna el nodo func */
+method_aux1: 
     type ID {
                 Node *new = newFunc($2->id,$1,NULL,NULL,$2->noLine);
                 tds = pushTop(tds,new);
@@ -222,7 +222,7 @@ method_aux1: /* retorna el nodo func */
                 }
 ;
 
-method_aux2: /* retorna la lista de parametros */
+method_aux2:
     {
         tds = pushNewLevel(tds);
     } TypeID    {
@@ -230,7 +230,7 @@ method_aux2: /* retorna la lista de parametros */
                 }
 ;
 
-method_aux3: /* retorna el AST del block */
+method_aux3:
     block_aux   {
                     $$ = $1;
                 }
@@ -342,7 +342,7 @@ statament:
                         $$ = root;
                     }
     | ';'   {
-                Node *root = newOp("skip", 3, -1);  //*** hacer que ; retorne noLine
+                Node *root = newOp("skip", 3, -1);
                 insertTree(root, NULL, NULL, NULL);
                 $$ = root;
             }

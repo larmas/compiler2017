@@ -35,12 +35,74 @@ void generateAsm(CIList *list, char path[]){
     file = fopen(fileName,"w+");
 
     CIList *index = ciList;
+    while(index != NULL){
+        if(strcmp(index->node->codOp, "BEGIN") == 0){
+            char *str = strcat(index->node->firstOp->info->var.id, ":");
+            fprintf(file, "%s\n", str);
+            fprintf(file, "\n" );
+        }
+        if(strcmp(index->node->codOp, "END") == 0){
+            fprintf(file, "\n\n" );
+        }
+        if(strcmp(index->node->codOp, "ADD") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "SUB") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "MULT") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "DIV") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "MOD") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "MAY") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "MIN") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "AND") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "OR") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "EQUAL") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "NEGB") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "NEGI") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "RETURN") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "RETURNV") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "IFF") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "JMP") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "LABEL") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "LOAD") == 0){
+
+        }
+        if(strcmp(index->node->codOp, "CALL") == 0){
+            
+        }
+        index = index->next;
+    }
 
     fclose(file);
 }
-/*
-int main(int argc, char *argv[]) {
-    generateAsm(ciList,argv[1]);
-
-    return 0;
-}*/

@@ -319,11 +319,11 @@ Node *generateIC(Node *root){
 }
 
 void insertInitIC(Node *root){
-    NodeCI *beginF = newNodeCI("BEGIN ",root,NULL,NULL);
+    NodeCI *beginF = newNodeCI("BEGIN",root,NULL,NULL);
     ciList = insertLastCI(ciList,beginF);
 }
 
 void insertEndIC(Node *root){
-    NodeCI *endF = newNodeCI("END ",root,NULL,NULL);
+    NodeCI *endF = newNodeCI("END",root,NULL,NULL);
     ciList = insertLastCI(ciList,endF);
 }

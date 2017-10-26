@@ -111,6 +111,7 @@ program:
                                 exit(1);
                             }
                             //showCIList(ciList);
+                            generateAsm(ciList, argv[0]);
                         }
 
     | list_var_decl     {

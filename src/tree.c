@@ -15,6 +15,7 @@ typedef struct node Node;
 typedef struct variable{
   char id[20];
   int value;
+  int offset;
 }TVar;
 
 /**
@@ -24,6 +25,7 @@ typedef struct variable{
  */
 typedef struct funcion{
   char id[20];
+  int offset;
   struct list *param;
   Node *AST;
 }TFunc;
@@ -56,7 +58,7 @@ typedef union info{
 /**
  *  Nodo utilizado para representar variables, constantes, operadores y funciones.
  *  El tag de un nodo indica si es una variable (tag=0), una constante (tag=1),
- *  un operador (tag=2) o una funcion (tag=3).
+ *  un operador (tag=2), una funcion (tag=3) o un temporal (tag=4).
  *  Type indica el tipo del elemento, int = 0, boolean = 1 y void = 2.
  *  Mark es una marca utilizada en la funcion dfs para identificar nodos visitados (mark=-1)
  *  y no visitados (mark=0).
@@ -75,6 +77,8 @@ struct node{
 /*PROTOTIPOS*/
 // Inicializacion de un nodo variable.
 Node *newVar(char xId[], int xType, int xValue, int xLine);
+// Inicializacion de un nodo temporal.
+Node *newTemp(char xId[], int xType, int xValue, int xLine);
 // Inicializacion de un nodo constante.
 Node *newConst(int xType, int xValue, int xLine);
 // Inicializacion de un nodo operador.
@@ -111,6 +115,24 @@ Node *newVar(char xId[], int xType, int xValue, int xLine){
     TInfo *i = (TInfo *) malloc(sizeof(TInfo));
     strcpy( i->var.id , xId );
     i->var.value = xValue;
+    i->var.offset = 0;
+    new->info = i;
+    return new;
+}
+
+Node *newTemp(char xId[], int xType, int xValue, int xLine){
+	Node *new = (Node *) malloc(sizeof(Node));
+    new->mark = 0;
+    new->tag = 4;
+    new->type = xType;
+    new->noline = xLine;
+    new->left = NULL;
+    new->mid = NULL;
+    new->right = NULL;
+    TInfo *i = (TInfo *) malloc(sizeof(TInfo));
+    strcpy( i->var.id , xId );
+    i->var.value = xValue;
+    i->var.offset = 0;
     new->info = i;
     return new;
 }
@@ -158,6 +180,7 @@ Node *newFunc(char xId[], int xType, struct list *xParam, Node *xAST, int xLine)
     i = (TInfo *) malloc(sizeof(TInfo));
     strcpy( i->func.id , xId );
     i->func.param = xParam;
+    i->var.offset = 0;
     i->func.AST = xAST;
     new->info = i;
 	return new;

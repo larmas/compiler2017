@@ -27,7 +27,6 @@ char *getBaseName(char *path) {
     return retstr;
 }
 
-// char path[] => argv[n] name of test file
 void generateAsm(CIList *list, char path[]){
     char *fileName = getBaseName(path);
     FILE *file;
@@ -99,7 +98,7 @@ void generateAsm(CIList *list, char path[]){
 
         }
         if(strcmp(index->node->codOp, "CALL") == 0){
-            
+
         }
         index = index->next;
     }

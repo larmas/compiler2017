@@ -33,7 +33,7 @@ Node *generateIC(Node *root){
             strcpy(tempId,"T");
             strcat(tempId,aux);
             tempCount++;
-            Node *newTemporal = newVar(tempId,0,0,0);
+            Node *newTemporal = newTemp(tempId,0,0,0);
             NodeCI *new = newNodeCI("ADD",dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -47,7 +47,7 @@ Node *generateIC(Node *root){
             strcpy(tempId,"T");
             strcat(tempId,aux);
             tempCount++;
-            Node *newTemporal = newVar(tempId,0,0,0);
+            Node *newTemporal = newTemp(tempId,0,0,0);
             NodeCI *new = newNodeCI("SUB",dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -61,7 +61,7 @@ Node *generateIC(Node *root){
             strcpy(tempId,"T");
             strcat(tempId,aux);
             tempCount++;
-            Node *newTemporal = newVar(tempId,0,0,0);
+            Node *newTemporal = newTemp(tempId,0,0,0);
             NodeCI *new = newNodeCI("MULT", dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -75,7 +75,7 @@ Node *generateIC(Node *root){
             strcpy(tempId,"T");
             strcat(tempId,aux);
             tempCount++;
-            Node *newTemporal = newVar(tempId,0,0,0);
+            Node *newTemporal = newTemp(tempId,0,0,0);
             NodeCI *new = newNodeCI("DIV",dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -89,7 +89,7 @@ Node *generateIC(Node *root){
             strcpy(tempId,"T");
             strcat(tempId,aux);
             tempCount++;
-            Node *newTemporal = newVar(tempId,0,0,0);
+            Node *newTemporal = newTemp(tempId,0,0,0);
             NodeCI *new = newNodeCI("MOD", dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -103,7 +103,7 @@ Node *generateIC(Node *root){
             strcpy(tempId,"T");
             strcat(tempId,aux);
             tempCount++;
-            Node *newTemporal = newVar(tempId,1,0,0);
+            Node *newTemporal = newTemp(tempId,1,0,0);
             NodeCI *new = newNodeCI("MAY", dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -117,7 +117,7 @@ Node *generateIC(Node *root){
             strcpy(tempId,"T");
             strcat(tempId,aux);
             tempCount++;
-            Node *newTemporal = newVar(tempId,1,0,0);
+            Node *newTemporal = newTemp(tempId,1,0,0);
             NodeCI *new = newNodeCI("MIN", dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -131,7 +131,7 @@ Node *generateIC(Node *root){
             strcpy(tempId,"T");
             strcat(tempId,aux);
             tempCount++;
-            Node *newTemporal = newVar(tempId,1,0,0);
+            Node *newTemporal = newTemp(tempId,1,0,0);
             NodeCI *new = newNodeCI("AND", dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -145,7 +145,7 @@ Node *generateIC(Node *root){
             strcpy(tempId,"T");
             strcat(tempId,aux);
             tempCount++;
-            Node *newTemporal = newVar(tempId,1,0,0);
+            Node *newTemporal = newTemp(tempId,1,0,0);
             NodeCI *new = newNodeCI("OR", dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -159,7 +159,7 @@ Node *generateIC(Node *root){
             strcpy(tempId,"T");
             strcat(tempId,aux);
             tempCount++;
-            Node *newTemporal = newVar(tempId,root->type,0,0);
+            Node *newTemporal = newTemp(tempId,root->type,0,0);
             NodeCI *new = newNodeCI("EQUAL", dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -172,7 +172,7 @@ Node *generateIC(Node *root){
             strcpy(tempId,"T");
             strcat(tempId,aux);
             tempCount++;
-            Node *newTemporal = newVar(tempId,1,0,0);
+            Node *newTemporal = newTemp(tempId,1,0,0);
             NodeCI *new = newNodeCI("NEGB", dir1 , NULL, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -185,7 +185,7 @@ Node *generateIC(Node *root){
             strcpy(tempId,"T");
             strcat(tempId,aux);
             tempCount++;
-            Node *newTemporal = newVar(tempId,0,0,0);
+            Node *newTemporal = newTemp(tempId,0,0,0);
             NodeCI *new = newNodeCI("NEGI", dir1, NULL, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -298,7 +298,7 @@ Node *generateIC(Node *root){
             sprintf(aux,"%d",tempCount);
             strcpy(tempId,"T");
             strcat(tempId,aux);
-            Node *newTemporal = newVar(tempId,root->left->type,0,0);
+            Node *newTemporal = newTemp(tempId,root->left->type,0,0);
             NodeCI *callF = newNodeCI("CALL",root->left,NULL,newTemporal);
             ciList = insertLastCI(ciList,callF);
             tempCount++;

@@ -24,6 +24,8 @@ List *list;
 CIList *ciList;
 int typeRet;
 int countReturn;
+int offsetCount;
+int oldOffset;
 
 extern char yytext;
 extern char **argv;
@@ -90,7 +92,10 @@ initial:
     {
         tds = newStack(tds);
         ciList = newCIList(ciList);
-    } program
+
+    } program   {
+                    printf("%s%i\n","MAX OFFSET: ",offsetCount);
+                }
 ;
 
 program:
@@ -101,6 +106,7 @@ program:
                                             exit(1);
                                         }
                                         //showCIList(ciList);
+
                                         generateAsm(ciList, argv[0]);
                                     }
 
@@ -128,6 +134,7 @@ list_var_decl:
                         tds = pushTop(tds,index->node);
                         index = index->next;
                     }
+
                 }
     |  list_var_decl var_decl   {
                                     List *index = $2;
@@ -135,6 +142,7 @@ list_var_decl:
                                         tds = pushTop(tds,index->node);
                                         index = index->next;
                                     }
+
                                 }
 ;
 
@@ -146,12 +154,16 @@ list_method_decl:
 var_decl:
     type ID';'  {
                     Node *new = newVar($2->id, $1, 0, $2->noLine);
+                    setOffset(new,(offsetCount-8));
+                    offsetCount -= 8;
                     List *newL = newList(newL);
                     newL = insertLast(newL,new);
                     $$ = newL;
                 }
     | type ID',' AuxId  {
                             Node *new = newVar($2->id, $1, 0, $2->noLine);
+                            setOffset(new,(offsetCount-8));
+                            offsetCount -= 8;
                             List *newL = newList(newL);
                             newL = insertLast(newL,new);
                             List *index = $4;
@@ -161,18 +173,23 @@ var_decl:
                                 index = index->next;
                             }
                             $$ = newL;
+
                         }
 ;
 
 AuxId:
     ID';'   {
                 Node *new = newVar($1->id, -10, 0, $1->noLine);
+                setOffset(new,(offsetCount-8));
+                offsetCount -= 8;
                 List *newL = newList(newL);
                 newL = insertFirst(newL,new);
                 $$ = newL;
             }
     | ID',' AuxId  {
                         Node *new = newVar($1->id, -10, 0, $1->noLine);
+                        setOffset(new,(offsetCount-8));
+                        offsetCount -= 8;
                         List *newL = insertFirst($3,new);
                         $$ = newL;
                     }
@@ -191,6 +208,8 @@ method_decl:
                                                 printf("%s%s%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
                                                 exit(1);
                                             }
+                                            setOffset($1,offsetCount);
+                                            offsetCount -= 8;
                                             insertInitIC($1);
                                             generateIC($1->info->func.AST);
                                             insertEndIC($1);
@@ -207,6 +226,8 @@ method_decl:
                                                             printf("%s%s%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
                                                             exit(1);
                                                         }
+                                                        setOffset($1,offsetCount);
+                                                        offsetCount -= 8;
                                                         insertInitIC($1);
                                                         generateIC($1->info->func.AST);
                                                         insertEndIC($1);
@@ -215,11 +236,13 @@ method_decl:
 
 method_aux1:
     type ID {
+                offsetCount = 0;
                 Node *new = newFunc($2->id,$1,NULL,NULL,$2->noLine);
                 tds = pushTop(tds,new);
                 $$ = new;
             }
     | VOID ID   {
+                    offsetCount = 0;
                     Node *new = newFunc($2->id,2,NULL,NULL,$2->noLine);
                     tds = pushTop(tds,new);
                     $$ = new;

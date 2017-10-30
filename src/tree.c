@@ -100,7 +100,9 @@ void mark(Node *node);
 // Implementacion de un recorrido depth first search.
 void dfs(Node *root);
 // Reccore el arbol realizando el chequeo de tipos.
-void checkType(Node * root);
+void checkType(Node *root);
+// Setea el offset de una variable o de una funcion.
+void setOffset(Node *root, int xOffset);
 
 
 Node *newVar(char xId[], int xType, int xValue, int xLine){
@@ -180,7 +182,7 @@ Node *newFunc(char xId[], int xType, struct list *xParam, Node *xAST, int xLine)
     i = (TInfo *) malloc(sizeof(TInfo));
     strcpy( i->func.id , xId );
     i->func.param = xParam;
-    i->var.offset = 0;
+    i->func.offset = 0;
     i->func.AST = xAST;
     new->info = i;
 	return new;
@@ -276,8 +278,11 @@ void showNode(Node *p){
         case 2:
             showOp(p);
             break;
-        default:
+        case 3:
             showFunc(p);
+            break;
+        default:
+            showVar(p);
             break;
         }
     }
@@ -303,6 +308,14 @@ void dfs(Node *root){
     }
 }
 
+void setOffset(Node *root, int xOffset){
+    if (root != NULL){
+        if(root->tag == 0 || root->tag == 4)
+            root->info->var.offset = xOffset;
+        if (root->tag == 3)
+            root->info->func.offset = xOffset;
+    }
+}
 
 /*
 int main(int argc, char const *argv[]) {

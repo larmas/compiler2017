@@ -36,12 +36,17 @@ void generateAsm(CIList *list, char path[]){
     CIList *index = ciList;
     while(index != NULL){
         if(strcmp(index->node->codOp, "BEGIN") == 0){
-            char *str = strcat(index->node->firstOp->info->var.id, ":");
-            fprintf(file, "%s\n", str);
+            char *str = strcat(index->node->firstOp->info->func.id, ":");
+            fprintf(file, "%s\n",str);
+            fprintf(file, "\n" );
+            int aux = abs(index->node->firstOp->info->func.offset);
+            fprintf(file, "%s%i%s\n", "    enter $",aux,", $0");
             fprintf(file, "\n" );
         }
         if(strcmp(index->node->codOp, "END") == 0){
-            fprintf(file, "\n\n" );
+            fprintf(file, "%s\n", "    leave");
+            fprintf(file, "%s\n", "    ret");
+            fprintf(file, "\n" );
         }
         if(strcmp(index->node->codOp, "ADD") == 0){
 
@@ -80,7 +85,16 @@ void generateAsm(CIList *list, char path[]){
 
         }
         if(strcmp(index->node->codOp, "RETURN") == 0){
+            switch (index->node->temp->tag) {
+                case 0:
 
+                case 1:
+                    fprintf(file,"%s%i%s\n", "    movq $",index->node->temp->info->cons.value,", \%eax");
+                case 4:
+
+                default:
+                    break;
+            }
         }
         if(strcmp(index->node->codOp, "RETURNV") == 0){
 

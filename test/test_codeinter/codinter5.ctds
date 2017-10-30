@@ -1,0 +1,19 @@
+/* Caso de prueba */
+
+int g,h;
+
+void main(){
+    int j;
+    boolean a;
+    return ;
+}
+
+boolean before(){
+    return true;
+}
+
+boolean after(){
+    boolean a;
+    a = before();
+    return true;
+}

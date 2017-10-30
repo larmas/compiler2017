@@ -13,14 +13,13 @@ Node *generateIC(Node *root){
     static int tempCount = 0;
     static int labelCount = 0;
 
-    if((root->tag == 0)||(root->tag == 1)){
+    if((root->tag == 0)||(root->tag == 1) || (root->tag == 4)){
         return root;
     }
 
     if(root->tag == 2){
         if (strcmp(root->info->op.id, "=") == 0){
-             Node *dir2 = generateIC(root->mid);
-
+            Node *dir2 = generateIC(root->mid);
             NodeCI *new = newNodeCI("MOV",generateIC(root->left),dir2, NULL);
             ciList = insertLastCI(ciList,new);
         }
@@ -197,7 +196,7 @@ Node *generateIC(Node *root){
             }else{
                 Node* justParam = generateIC(root->left);
                 justParam = generateIC(justParam);
-                if(justParam->tag != 0 && justParam->tag != 1 ){
+                if(justParam->tag != 0 && justParam->tag != 1 && justParam->tag != 4){
                     justParam = generateIC(justParam);
                 }
                 NodeCI *load = newNodeCI("RETURN",NULL,NULL,justParam);
@@ -282,7 +281,7 @@ Node *generateIC(Node *root){
             CIList *list_aux = newCIList(list_aux);
             while(par != NULL){
             	Node* justParam = generateIC(par->node);
-            	if(justParam->tag != 0 && justParam->tag != 1 ){
+            	if(justParam->tag != 0 && justParam->tag != 1 && justParam->tag != 4){
             		justParam = generateIC(justParam);
             	}
                 NodeCI *load = newNodeCI("LOAD",justParam,NULL,NULL);

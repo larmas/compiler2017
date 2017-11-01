@@ -90,20 +90,20 @@ void generateAsm(CIList *list, char path[]){
         }
         if(strcmp(index->node->codOp, "RETURN") == 0){
             int aux;
+            int offSet;
             switch (index->node->temp->tag) {
-                case 0:            
-                	/*int offSet = index->node->temp->info->var.offset;
-                	char aux1[20];
-            		sprintf(aux,"%d",offSet);
-            		aux =   strcat(aux,"(%rbp)");
-                	fprintf(file,"%s%i%s\n", "    mov ",aux,", \%eax");
-                	*/
-                	break;               
+                case 0:                         	
+                	offSet= index->node->temp->info->var.offset;
+                	fprintf(file,"%s%i%s\n", "    mov ",offSet,"(%rbp), \%eax");  	
+                	break; 
+
                 case 1:
                     aux = index->node->temp->info->cons.value;
                     fprintf(file,"%s%i%s\n", "    movq $",aux,", %rax");
                     break;
                 case 4:
+                	offSet= index->node->temp->info->var.offset;
+                	fprintf(file,"%s%i%s\n", "    mov ",offSet,"(%rbp), \%eax");  	
                     break;
                 default:
                     break;
@@ -120,7 +120,10 @@ void generateAsm(CIList *list, char path[]){
 
         }
         if(strcmp(index->node->codOp, "LABEL") == 0){
-        	char *str = strcat(index->node->temp->info->var.id, ":");
+        	char str[256];
+        	strcpy(str,"");
+        	strcat(str, index->node->temp->info->var.id);
+        	strcat(str,":");
         	fprintf(file, "%s\n",str);
         }
         if(strcmp(index->node->codOp, "LOAD") == 0){

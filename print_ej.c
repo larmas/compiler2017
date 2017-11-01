@@ -4,7 +4,7 @@
 int main() {
 	printf("%i\n",1 );
 	return 1;
-}	
+}
 
 /*Assembly*/
 
@@ -17,20 +17,19 @@ int main() {
 	.type	main, @function
 main:
 .LFB2:
-	
+
 	pushq	%rbp			//Enter
-	movq	%rsp, %rbp 
+	movq	%rsp, %rbp
 
 	movl	$1, %eax		//return 1
 
-	movl	%eax, %esi		//printf
-	movl	$.LC0, %edi		//.
-	movl	$0, %eax		//.
-	call	printf 			//.
-	
+	movl	%eax, %esi		
+	movl	$.LC0, %edi
+	movl	$0, %eax
+	call	printf
+
 	popq	%rbp			//Leave
 	ret
-	
+
 .LFE2:
 	.size	main, .-main
-

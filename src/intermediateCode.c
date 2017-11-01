@@ -5,6 +5,7 @@
 #include "ciList.c"
 
 extern CIList *ciList;
+extern int offsetCount;
 
 /**
  * Funcion utilizada para generar codigo intermedio a partir de un arbols sintactico.
@@ -12,6 +13,7 @@ extern CIList *ciList;
 Node *generateIC(Node *root){
     static int tempCount = 0;
     static int labelCount = 0;
+
 
     if((root->tag == 0)||(root->tag == 1) || (root->tag == 4)){
         return root;
@@ -33,6 +35,8 @@ Node *generateIC(Node *root){
             strcat(tempId,aux);
             tempCount++;
             Node *newTemporal = newTemp(tempId,0,0,0);
+            setOffset(newTemporal,offsetCount - 8);
+            offsetCount -= 8;
             NodeCI *new = newNodeCI("ADD",dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -47,6 +51,8 @@ Node *generateIC(Node *root){
             strcat(tempId,aux);
             tempCount++;
             Node *newTemporal = newTemp(tempId,0,0,0);
+            setOffset(newTemporal,offsetCount - 8);
+            offsetCount -= 8;
             NodeCI *new = newNodeCI("SUB",dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -61,6 +67,8 @@ Node *generateIC(Node *root){
             strcat(tempId,aux);
             tempCount++;
             Node *newTemporal = newTemp(tempId,0,0,0);
+            setOffset(newTemporal,offsetCount - 8);
+            offsetCount -= 8;
             NodeCI *new = newNodeCI("MULT", dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -75,6 +83,8 @@ Node *generateIC(Node *root){
             strcat(tempId,aux);
             tempCount++;
             Node *newTemporal = newTemp(tempId,0,0,0);
+            setOffset(newTemporal,offsetCount - 8);
+            offsetCount -= 8;
             NodeCI *new = newNodeCI("DIV",dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -89,6 +99,8 @@ Node *generateIC(Node *root){
             strcat(tempId,aux);
             tempCount++;
             Node *newTemporal = newTemp(tempId,0,0,0);
+            setOffset(newTemporal,offsetCount - 8);
+            offsetCount -= 8;
             NodeCI *new = newNodeCI("MOD", dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -103,6 +115,8 @@ Node *generateIC(Node *root){
             strcat(tempId,aux);
             tempCount++;
             Node *newTemporal = newTemp(tempId,1,0,0);
+            setOffset(newTemporal,offsetCount - 8);
+            offsetCount -= 8;
             NodeCI *new = newNodeCI("MAY", dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -117,6 +131,8 @@ Node *generateIC(Node *root){
             strcat(tempId,aux);
             tempCount++;
             Node *newTemporal = newTemp(tempId,1,0,0);
+            setOffset(newTemporal,offsetCount - 8);
+            offsetCount -= 8;
             NodeCI *new = newNodeCI("MIN", dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -131,6 +147,8 @@ Node *generateIC(Node *root){
             strcat(tempId,aux);
             tempCount++;
             Node *newTemporal = newTemp(tempId,1,0,0);
+            setOffset(newTemporal,offsetCount - 8);
+            offsetCount -= 8;
             NodeCI *new = newNodeCI("AND", dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -145,6 +163,8 @@ Node *generateIC(Node *root){
             strcat(tempId,aux);
             tempCount++;
             Node *newTemporal = newTemp(tempId,1,0,0);
+            setOffset(newTemporal,offsetCount - 8);
+            offsetCount -= 8;
             NodeCI *new = newNodeCI("OR", dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -159,6 +179,8 @@ Node *generateIC(Node *root){
             strcat(tempId,aux);
             tempCount++;
             Node *newTemporal = newTemp(tempId,root->type,0,0);
+            setOffset(newTemporal,offsetCount - 8);
+            offsetCount -= 8;
             NodeCI *new = newNodeCI("EQUAL", dir1, dir2, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -172,6 +194,8 @@ Node *generateIC(Node *root){
             strcat(tempId,aux);
             tempCount++;
             Node *newTemporal = newTemp(tempId,1,0,0);
+            setOffset(newTemporal,offsetCount - 8);
+            offsetCount -= 8;
             NodeCI *new = newNodeCI("NEGB", dir1 , NULL, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -185,6 +209,8 @@ Node *generateIC(Node *root){
             strcat(tempId,aux);
             tempCount++;
             Node *newTemporal = newTemp(tempId,0,0,0);
+            setOffset(newTemporal,offsetCount - 8);
+            offsetCount -= 8;
             NodeCI *new = newNodeCI("NEGI", dir1, NULL, newTemporal);
             ciList = insertLastCI(ciList,new);
             return newTemporal;
@@ -298,6 +324,8 @@ Node *generateIC(Node *root){
             strcpy(tempId,"T");
             strcat(tempId,aux);
             Node *newTemporal = newTemp(tempId,root->left->type,0,0);
+            setOffset(newTemporal,offsetCount - 8);
+            offsetCount -= 8;
             NodeCI *callF = newNodeCI("CALL",root->left,NULL,newTemporal);
             ciList = insertLastCI(ciList,callF);
             tempCount++;

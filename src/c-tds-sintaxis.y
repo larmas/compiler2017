@@ -25,7 +25,6 @@ CIList *ciList;
 int typeRet;
 int countReturn;
 int offsetCount;
-int oldOffset;
 
 extern char yytext;
 extern char **argv;
@@ -93,9 +92,7 @@ initial:
         tds = newStack(tds);
         ciList = newCIList(ciList);
 
-    } program   {
-                    printf("%s%i\n","MAX OFFSET: ",offsetCount);
-                }
+    } program 
 ;
 
 program:

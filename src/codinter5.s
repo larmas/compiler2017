@@ -1,6 +1,7 @@
     .globl example
 example:
-    enter $0, $0
+    enter $8, $0
+.L0:
     mov $1, %eax
     leave
     ret

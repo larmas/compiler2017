@@ -53,13 +53,30 @@ void generateAsm(CIList *list, char path[]){
             fprintf(file, "\n" );
         }
         if(strcmp(index->node->codOp, "ADD") == 0){
+        	Node *first  = index->node->firstOp;
+        	Node *second = index->node->secondOp;
+        	/*if(first->tag == 1 && first->tag == 1){   Optimizado!
+        		int result =  first->info->cons.value + second->info->cons.value;
+        		int offSet =  index->node->temp->info->var.offset;
+        		fprintf(file,"%s%i%s%i%s\n", "    movq  $",result,", ",offSet,"(%rbp)"); 	
+        	}*/
+        	if(first->tag == 1 && first->tag == 1){ //Ambos operandos son constantes
+        		int op1 = first->info->cons.value;
+        		int op2 = second->info->cons.value;
+        		int offSet =  index->node->temp->info->var.offset;
+        		fprintf(file,"%s%i%s\n", "    mov  $",op1,", \%eax"); 
+        		fprintf(file,"%s%i%s\n", "    add  $",op2,", \%eax"); 
+        		fprintf(file,"%s%i%s\n", "    mov  \%eax ,",offSet,"(%rbp)"); 
+        	}	
+
+        
 
         }
         if(strcmp(index->node->codOp, "SUB") == 0){
 
         }
         if(strcmp(index->node->codOp, "MULT") == 0){
-
+        	
         }
         if(strcmp(index->node->codOp, "DIV") == 0){
 
@@ -131,7 +148,7 @@ void generateAsm(CIList *list, char path[]){
         }
         if(strcmp(index->node->codOp, "CALL") == 0){
         	char str[256];
-        	strcpy(str,"_");
+        	strcpy(str,"_"); // solo para MAC
         	strcat(str,index->node->firstOp->info->func.id);
 			fprintf(file,"%s%s\n", "    call ",str);
         }

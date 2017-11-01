@@ -1,23 +1,18 @@
-main:
-
-    enter $16, $0
-
-    leave
-    ret
-
-before:
+    .globl _example
+_example:
 
     enter $0, $0
 
-    movq $1, %eax
+    movq $1, %rax
     leave
     ret
 
-after:
+    .globl _main
+_main:
 
-    enter $8, $0
+    enter $0, $0
 
-    movq $1, %eax
+    movq $10, %rax
     leave
     ret
 

@@ -36,7 +36,11 @@ void generateAsm(CIList *list, char path[]){
     CIList *index = ciList;
     while(index != NULL){
         if(strcmp(index->node->codOp, "BEGIN") == 0){
-            char *str = strcat(index->node->firstOp->info->func.id, ":");
+            char str[256];
+            strcpy(str,"_");
+            strcat(str,index->node->firstOp->info->func.id);
+            fprintf(file, "%s%s\n", "    .globl ",str);
+            strcat(str,":");
             fprintf(file, "%s\n",str);
             fprintf(file, "\n" );
             int aux = abs(index->node->firstOp->info->func.offset);
@@ -85,6 +89,7 @@ void generateAsm(CIList *list, char path[]){
 
         }
         if(strcmp(index->node->codOp, "RETURN") == 0){
+            int aux;
             switch (index->node->temp->tag) {
                 case 0:            
                 	/*int offSet = index->node->temp->info->var.offset;
@@ -92,12 +97,14 @@ void generateAsm(CIList *list, char path[]){
             		sprintf(aux,"%d",offSet);
             		aux =   strcat(aux,"(%rbp)");
                 	fprintf(file,"%s%i%s\n", "    mov ",aux,", \%eax");
-                	break;*/
-
+                	*/
+                	break;               
                 case 1:
-                    fprintf(file,"%s%i%s\n", "    mov $",index->node->temp->info->cons.value,", \%eax");
+                    aux = index->node->temp->info->cons.value;
+                    fprintf(file,"%s%i%s\n", "    movq $",aux,", %rax");
+                    break;
                 case 4:
-
+                    break;
                 default:
                     break;
             }

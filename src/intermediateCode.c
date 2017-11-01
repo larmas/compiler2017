@@ -213,7 +213,7 @@ Node *generateIC(Node *root){
             char labelId[20];
             char aux[20];
             sprintf(aux, "%d", labelCount);
-            strcpy(labelId,"L");
+            strcpy(labelId,".L");
             strcat(labelId,aux);
             Node *label0 = newVar(labelId,0,0,0);
             labelCount++;
@@ -229,12 +229,12 @@ Node *generateIC(Node *root){
             char labelId[20];
             char aux[20];
             sprintf(aux, "%d", labelCount);
-            strcpy(labelId,"L");
+            strcpy(labelId,".L");
             strcat(labelId,aux);
             Node *label0 = newVar(labelId,0,0,0);
             labelCount++;
             sprintf(aux, "%d", labelCount);
-            strcpy(labelId,"L");
+            strcpy(labelId,".L");
             strcat(labelId,aux);
             Node *label1 = newVar(labelId,0,0,0);
             labelCount++;
@@ -255,12 +255,12 @@ Node *generateIC(Node *root){
             char labelId[20];
             char aux[20];
             sprintf(aux, "%d", labelCount);
-            strcpy(labelId,"L");
+            strcpy(labelId,".L");
             strcat(labelId,aux);
             Node *label0 = newVar(labelId,0,0,0);
             labelCount++;
             sprintf(aux, "%d", labelCount);
-            strcpy(labelId,"L");
+            strcpy(labelId,".L");
             strcat(labelId,aux);
             Node *label1 = newVar(labelId,0,0,0);
             labelCount++;

@@ -95,14 +95,8 @@ void generateAsm(CIList *list, char path[]){
         if(strcmp(index->node->codOp, "RETURN") == 0){
             int aux;
             switch (index->node->temp->tag) {
-                case 0:            
-                	/*int offSet = index->node->temp->info->var.offset;
-                	char aux1[20];
-            		sprintf(aux,"%d",offSet);
-            		aux =   strcat(aux,"(%rbp)");
-                	fprintf(file,"%s%i%s\n", "    mov ",aux,", \%eax");
-                	*/
-                	break;               
+                case 0:
+                    break;
                 case 1:
                     aux = index->node->temp->info->cons.value;
                     fprintf(file,"%s%i%s\n", "    mov $",aux,", %eax");
@@ -114,27 +108,22 @@ void generateAsm(CIList *list, char path[]){
             }
         }
         if(strcmp(index->node->codOp, "RETURNV") == 0){
-        	//no hago nada
+
         }
         if(strcmp(index->node->codOp, "IFF") == 0){
 
         }
         if(strcmp(index->node->codOp, "JMP") == 0){
-        	fprintf(file,"%s%s\n", "    jmp ",index->node->temp->info->var.id);
 
         }
         if(strcmp(index->node->codOp, "LABEL") == 0){
-        	char *str = strcat(index->node->temp->info->var.id, ":");
-        	fprintf(file, "%s\n",str);
+
         }
         if(strcmp(index->node->codOp, "LOAD") == 0){
 
         }
         if(strcmp(index->node->codOp, "CALL") == 0){
-        	char str[256];
-        	strcpy(str,"_");
-        	strcat(str,index->node->firstOp->info->func.id);
-			fprintf(file,"%s%s\n", "    call ",str);
+
         }
         index = index->next;
     }

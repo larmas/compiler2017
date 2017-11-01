@@ -4,7 +4,7 @@ int g,h;
 boolean example(){
     int x;
     if (x == 10){
-        x = x + 1;
+        x = 1 + 1;
     }
     return true;
 }

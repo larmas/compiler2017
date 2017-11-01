@@ -1,19 +1,9 @@
 /* Caso de prueba */
 
 int g,h;
-
-void main(){
-    int j;
-    boolean a;
-    return ;
-}
-
-boolean before(){
+boolean example(){
     return true;
 }
-
-boolean after(){
-    boolean a;
-    a = before();
-    return true;
+int main(){
+    return 10;
 }

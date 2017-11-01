@@ -37,15 +37,19 @@ void generateAsm(CIList *list, char path[]){
     while(index != NULL){
         if(strcmp(index->node->codOp, "BEGIN") == 0){
             char str[256];
-            strcpy(str,"_");
-            strcat(str,index->node->firstOp->info->func.id);
-            fprintf(file, "%s%s\n", "    .globl ",str);
-            strcat(str,":");
+            if(strcmp(index->node->firstOp->info->func.id, "main") == 0){
+                strcpy(str,"_");
+                strcat(str,index->node->firstOp->info->func.id);
+                fprintf(file, "%s%s\n", "    .globl ",str);
+                strcat(str,":");
+            }else{
+                strcpy(str,index->node->firstOp->info->func.id);
+                fprintf(file, "%s%s\n", "    .globl ",str);
+                strcat(str,":");
+            }
             fprintf(file, "%s\n",str);
-            fprintf(file, "\n" );
             int aux = abs(index->node->firstOp->info->func.offset);
             fprintf(file, "%s%i%s\n", "    enter $",aux,", $0");
-            fprintf(file, "\n" );
         }
         if(strcmp(index->node->codOp, "END") == 0){
             fprintf(file, "%s\n", "    leave");
@@ -95,7 +99,7 @@ void generateAsm(CIList *list, char path[]){
                     break;
                 case 1:
                     aux = index->node->temp->info->cons.value;
-                    fprintf(file,"%s%i%s\n", "    movq $",aux,", %rax");
+                    fprintf(file,"%s%i%s\n", "    mov $",aux,", %eax");
                     break;
                 case 4:
                     break;

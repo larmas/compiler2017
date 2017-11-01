@@ -1,18 +1,14 @@
-    .globl _example
-_example:
-
+    .globl example
+example:
     enter $0, $0
-
-    movq $1, %rax
+    mov $1, %eax
     leave
     ret
 
     .globl _main
 _main:
-
     enter $0, $0
-
-    movq $10, %rax
+    mov $10, %eax
     leave
     ret
 

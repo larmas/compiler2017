@@ -92,7 +92,7 @@ initial:
         tds = newStack(tds);
         ciList = newCIList(ciList);
 
-    } program 
+    } program
 ;
 
 program:
@@ -102,7 +102,7 @@ program:
                                             printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
                                             exit(1);
                                         }
-                                        //showCIList(ciList);
+                                        showCIList(ciList);
 
                                         generateAsm(ciList, argv[0]);
                                     }
@@ -113,7 +113,7 @@ program:
                                 printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
                                 exit(1);
                             }
-                            //showCIList(ciList);
+                            showCIList(ciList);
                             generateAsm(ciList, argv[0]);
                         }
 
@@ -177,7 +177,7 @@ var_decl:
 AuxId:
     ID';'   {
                 Node *new = newVar($1->id, -10, 0, $1->noLine);
-                setOffset(new,(offsetCount-8));
+                setOffset(new,(offsetCount));
                 offsetCount -= 8;
                 List *newL = newList(newL);
                 newL = insertFirst(newL,new);
@@ -185,7 +185,7 @@ AuxId:
             }
     | ID',' AuxId  {
                         Node *new = newVar($1->id, -10, 0, $1->noLine);
-                        setOffset(new,(offsetCount-8));
+                        setOffset(new,(offsetCount));
                         offsetCount -= 8;
                         List *newL = insertFirst($3,new);
                         $$ = newL;

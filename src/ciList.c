@@ -101,6 +101,11 @@ void showCiNode(Node *a){
             printf(" %s ",a->info->func.id);
         }
         break;
+    case 4:
+        if(a != NULL){
+            printf(" %s ",a->info->var.id);
+        }
+        break;
     default:
         printf(" LISTA VACIA ");
     }

@@ -91,6 +91,7 @@ initial:
     {
         tds = newStack(tds);
         ciList = newCIList(ciList);
+        offsetCount = 0;
 
     } program
 ;
@@ -177,7 +178,7 @@ var_decl:
 AuxId:
     ID';'   {
                 Node *new = newVar($1->id, -10, 0, $1->noLine);
-                setOffset(new,(offsetCount));
+                setOffset(new,(offsetCount-8));
                 offsetCount -= 8;
                 List *newL = newList(newL);
                 newL = insertFirst(newL,new);
@@ -185,7 +186,7 @@ AuxId:
             }
     | ID',' AuxId  {
                         Node *new = newVar($1->id, -10, 0, $1->noLine);
-                        setOffset(new,(offsetCount));
+                        setOffset(new,(offsetCount-8));
                         offsetCount -= 8;
                         List *newL = insertFirst($3,new);
                         $$ = newL;
@@ -206,7 +207,7 @@ method_decl:
                                                 exit(1);
                                             }
                                             setOffset($1,offsetCount);
-                                            offsetCount -= 8;
+                                            //offsetCount -= 8;
                                             insertInitIC($1);
                                             generateIC($1->info->func.AST);
                                             insertEndIC($1);
@@ -224,7 +225,7 @@ method_decl:
                                                             exit(1);
                                                         }
                                                         setOffset($1,offsetCount);
-                                                        offsetCount -= 8;
+                                                        //offsetCount -= 8;
                                                         insertInitIC($1);
                                                         generateIC($1->info->func.AST);
                                                         insertEndIC($1);

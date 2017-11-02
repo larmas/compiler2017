@@ -197,6 +197,7 @@ void insertTree(Node *root, Node *leafL, Node *leafM, Node *leafR){
 void showVar(Node *a){
     if(a != NULL){
         printf("id: %s\n",a->info->var.id);
+        printf("offset: %d\n", a->info->var.offset);
         /*if (a->type == 0){
             printf("type: integer\n");
             //printf("\nvalue:%i\n",a->info->var.value);

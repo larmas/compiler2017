@@ -1,10 +1,12 @@
     .globl example
 example:
-    enter $8, $0
-    mov  $1, %eax
-    add  $1, %eax
-    mov  %eax ,-24(%rbp)
-.L0:
+    enter $16, $0
+    mov $1, %eax
+    add $1, %eax
+    mov %eax ,-16(%ebp)
+    mov 0(%ebp), %eax
+    add $1, %eax
+    mov %eax ,-16(%ebp)
     mov $1, %eax
     leave
     ret

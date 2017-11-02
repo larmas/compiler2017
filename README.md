@@ -22,7 +22,7 @@ ____
 * *Si quiere correr un archivo unico:*\
  `./script/ctds.sh <nombre_del_archivo>`
 
-##### ACLARACIÓN:
+##### IMPORTANTE:
 ###### Para correr un archivo unico, el mismo debe estar ubicado en la carpeta
 ###### test/test_codeinter y en el comando se debe pasar el nombre del archivo
 ###### sin el path.

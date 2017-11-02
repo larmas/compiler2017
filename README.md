@@ -19,6 +19,8 @@ ____
  `./script/runTestSintactico.sh`
 * *Si quiere correr casos de test semánticos:*\
  `./script/runTestSemantico.sh`
+* *Si quiere correr casos de test para codigo intermedio:*\
+ `./script/runTestCodeInter.sh`
 * *Si quiere correr un archivo unico:*\
  `./script/ctds.sh <nombre_del_archivo>`
 

@@ -84,21 +84,41 @@ void generateAsm(CIList *list, char path[]){
 				//movl	-24(%rbp), %eax
 				//addl	%edx, %eax
 				//movl	%eax, -4(%rbp)
-
-
-
         	}
+            if(first->tag != 0 || first->tag != 0){
+                if(first->tag != 0){
+                    int op2 = second->info->cons.value;
+                    int offSet1 =  first->info->var.offset;
+                    int offSetTemp =  index->node->temp->info->var.offset; 
+                    fprintf(file,"%s%i%s\n", "    mov  ",offSet1,"(%rbp), \%eax"); 
+                    fprintf(file,"%s%i%s\n", "    add  $",op2,", \%eax"); 
+                    fprintf(file,"%s%i%s\n", "    mov  \%eax ,",offSetTemp,"(%rbp)");
 
-        	/*
-			movl	-4(%rbp), %eax  // y = 1 + x;
-			addl	$1, %eax
-			movl	%eax, -8(%rbp)
+                    // y = x + 2;
+                    // movl    -4(%rbp), %eax  
+                    // addl    $2, %eax
+                    // movl    %eax, -8(%rbp)
+            
+                }
+                else{
+                    int op1 = first->info->cons.value; 
+                    int offSet2 =  second->info->var.offset;
+                    int offSetTemp =  index->node->temp->info->var.offset;
+                    fprintf(file,"%s%i%s\n", "    mov  ",offSet2,"(%rbp), \%eax"); 
+                    fprintf(file,"%s%i%s\n", "    add  $",op1,", \%eax"); 
+                    fprintf(file,"%s%i%s\n", "    mov  \%eax ,",offSetTemp,"(%rbp)");
+
+                    // y = 1 + x;
+                    // movl    -4(%rbp), %eax  
+                    // addl    $1, %eax
+                    // movl    %eax, -8(%rbp)
+                }
+            }    
 
 
-			movl	-4(%rbp), %eax  // y = x + 2;
-			addl	$2, %eax
-			movl	%eax, -8(%rbp)
-        	*/
+        	
+
+			
 
 
 

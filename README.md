@@ -12,12 +12,19 @@ ____
 ### Como correr los tests? ###
 ____
 ##### Situado en la raíz del proyecto ejecute los siguientes comandos: #####
+
 * *Compilar el proyecto:*\
  `./script/compile.sh`
 * *Si quiere correr casos de test sintácticos:*\
  `./script/runTestSintactico.sh`
 * *Si quiere correr casos de test semánticos:*\
  `./script/runTestSemantico.sh`
+* *Si quiere correr un archivo unico:*\
+ `./script/ctds.sh <nombre_del_archivo>`
+
+##### ACLARACIÓN:\
+###### Para el caso de correr un archivo unico, el mismo debe estar ubicado en la carpeta
+###### test/test_codeinter\
 
 ### Como eliminar archivos generados en la etapa de compilación? ###
 ____

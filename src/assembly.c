@@ -95,7 +95,7 @@ void generateAsm(CIList *list, char path[]){
                     if(first->tag != 0 && first->tag != 4){ //primer operando es una constante (puede ser funcion?)
                         int op1 = first->info->cons.value;
                         int offSet2 =  second->info->var.offset;
-                        int offSetTemp =  index->node->temp->info->var.offset;
+                        int offSetTemp =  temp->info->var.offset;
                         fprintf(file,"%s%i%s\n", "    mov ",offSet2,"(%ebp), %eax");
                         fprintf(file,"%s%i%s\n", "    add $",op1,", %eax");
                         fprintf(file,"%s%i%s\n", "    mov %eax ,",offSetTemp,"(%ebp)");
@@ -108,7 +108,7 @@ void generateAsm(CIList *list, char path[]){
                     else{ //segundo operando es una constante
                         int op2 = second->info->cons.value;
                         int offSet1 =  first->info->var.offset;
-                        int offSetTemp =  index->node->temp->info->var.offset;
+                        int offSetTemp =  temp->info->var.offset;
                         fprintf(file,"%s%i%s\n", "    mov ",offSet1,"(%ebp), %eax");
                         fprintf(file,"%s%i%s\n", "    add $",op2,", %eax");
                         fprintf(file,"%s%i%s\n", "    mov %eax ,",offSetTemp,"(%ebp)");
@@ -122,30 +122,130 @@ void generateAsm(CIList *list, char path[]){
             }
         }    
 
+
         if(strcmp(index->node->codOp, "SUB") == 0){
-        	Node *first  = index->node->firstOp;
-        	Node *second = index->node->secondOp;
-        	if(first->tag == 1 && second->tag == 1){ //Ambos operandos son constantes
-        		int op1 = first->info->cons.value;
-        		int op2 = second->info->cons.value;
-        		int offSet =  index->node->temp->info->var.offset;
-        		fprintf(file,"%s%i%s\n", "    mov $",op1,", %eax");
-        		fprintf(file,"%s%i%s\n", "    sub $",op2,", %eax");
-        		fprintf(file,"%s%i%s\n", "    mov %eax ,",offSet,"(%ebp)");
-        	}
-        }
+            Node *first  = index->node->firstOp;
+            Node *second = index->node->secondOp;
+            Node *temp = index->node->temp;
+            // Ambos operandos son variables o temporales
+            if((first->tag == 0 || first->tag == 4) && (second->tag == 0 || second->tag == 4)){ 
+                int op1 = first->info->var.value;
+                int op2 = second->info->var.value;
+                int offSet1 = first->info->var.offset;
+                int offSet2 = second->info->var.offset;
+                int offSetTemp = temp->info->var.offset;
+                fprintf(file,"%s%i%s\n", "    mov ",offSet1,"(%ebp), %edx");
+                fprintf(file,"%s%i%s\n", "    mov ",offSet2,"(%ebp), %eax");
+                fprintf(file,"%s\n","    sub %edx, %eax");
+                fprintf(file,"%s%i%s\n", "    mov %eax ,",offSetTemp,"(%ebp)");
+
+                //movl  -20(%rbp), %edx  z = x + y;
+                //movl  -24(%rbp), %eax
+                //sub  %edx, %eax
+                //movl  %eax, -4(%rbp)
+            }       
+            if((first->tag != 0 && first->tag != 4) || (second->tag != 0 && second->tag != 4)){
+                if(first->tag == 1 && second->tag == 1){ //Ambos operandos son constantes
+                    int op1 = first->info->cons.value;
+                    int op2 = second->info->cons.value;
+                    int offSet =  temp->info->var.offset;
+                    fprintf(file,"%s%i%s\n", "    mov $",op1,", %eax");
+                    fprintf(file,"%s%i%s\n", "    sub $",op2,", %eax");
+                    fprintf(file,"%s%i%s\n", "    mov %eax ,",offSet,"(%ebp)");
+                }
+                else{
+                    if(first->tag != 0 && first->tag != 4){ //primer operando es una constante (puede ser funcion?)
+                        int op1 = first->info->cons.value;
+                        int offSet2 =  second->info->var.offset;
+                        int offSetTemp =  temp->info->var.offset;
+                        fprintf(file,"%s%i%s\n", "    mov ",offSet2,"(%ebp), %eax");
+                        fprintf(file,"%s%i%s\n", "    sub $",op1,", %eax");
+                        fprintf(file,"%s%i%s\n", "    mov %eax ,",offSetTemp,"(%ebp)");
+    
+                        // y = 1 - x;
+                        // movl    -4(%rbp), %eax
+                        // sub    $1, %eax
+                        // movl    %eax, -8(%rbp)
+                    }
+                    else{ //segundo operando es una constante
+                        int op2 = second->info->cons.value;
+                        int offSet1 =  first->info->var.offset;
+                        int offSetTemp =  temp->info->var.offset;
+                        fprintf(file,"%s%i%s\n", "    mov ",offSet1,"(%ebp), %eax");
+                        fprintf(file,"%s%i%s\n", "    sub $",op2,", %eax");
+                        fprintf(file,"%s%i%s\n", "    mov %eax ,",offSetTemp,"(%ebp)");
+
+                        // y = x - 2;
+                        // movl    -4(%rbp), %eax
+                        // sub    $2, %eax
+                        // movl    %eax, -8(%rbp)
+                    }
+                }
+            }
+        }        	
+
+
+
         if(strcmp(index->node->codOp, "MULT") == 0){
-        	Node *first  = index->node->firstOp;
-        	Node *second = index->node->secondOp;
-        	if(first->tag == 1 && second->tag == 1){ //Ambos operandos son constantes
-        		int op1 = first->info->cons.value;
-        		int op2 = second->info->cons.value;
-        		int offSet =  index->node->temp->info->var.offset;
-        		fprintf(file,"%s%i%s\n", "    mov $",op1,", %eax");
-        		fprintf(file,"%s%i%s\n", "    imul $",op2,", %eax");
-        		fprintf(file,"%s%i%s\n", "    mov %eax ,",offSet,"(%ebp)");
-        	}
-        }
+            Node *first  = index->node->firstOp;
+            Node *second = index->node->secondOp;
+            Node *temp = index->node->temp;
+            // Ambos operandos son variables o temporales
+            if((first->tag == 0 || first->tag == 4) && (second->tag == 0 || second->tag == 4)){ 
+                int op1 = first->info->var.value;
+                int op2 = second->info->var.value;
+                int offSet1 = first->info->var.offset;
+                int offSet2 = second->info->var.offset;
+                int offSetTemp = temp->info->var.offset;
+                fprintf(file,"%s%i%s\n", "    mov ",offSet1,"(%ebp), %edx");
+                fprintf(file,"%s%i%s\n", "    mov ",offSet2,"(%ebp), %eax");
+                fprintf(file,"%s\n","    imul %edx, %eax");
+                fprintf(file,"%s%i%s\n", "    mov %eax ,",offSetTemp,"(%ebp)");
+
+                //movl  -20(%rbp), %edx  z = x + y;
+                //movl  -24(%rbp), %eax
+                //imul  %edx, %eax
+                //movl  %eax, -4(%rbp)
+            }       
+            if((first->tag != 0 && first->tag != 4) || (second->tag != 0 && second->tag != 4)){
+                if(first->tag == 1 && second->tag == 1){ //Ambos operandos son constantes
+                    int op1 = first->info->cons.value;
+                    int op2 = second->info->cons.value;
+                    int offSet =  temp->info->var.offset;
+                    fprintf(file,"%s%i%s\n", "    mov $",op1,", %eax");
+                    fprintf(file,"%s%i%s\n", "    imul $",op2,", %eax");
+                    fprintf(file,"%s%i%s\n", "    mov %eax ,",offSet,"(%ebp)");
+                }
+                else{
+                    if(first->tag != 0 && first->tag != 4){ //primer operando es una constante (puede ser funcion?)
+                        int op1 = first->info->cons.value;
+                        int offSet2 =  second->info->var.offset;
+                        int offSetTemp =  temp->info->var.offset;
+                        fprintf(file,"%s%i%s\n", "    mov ",offSet2,"(%ebp), %eax");
+                        fprintf(file,"%s%i%s\n", "    imul $",op1,", %eax");
+                        fprintf(file,"%s%i%s\n", "    mov %eax ,",offSetTemp,"(%ebp)");
+    
+                        // y = 1 + x;
+                        // movl    -4(%rbp), %eax
+                        // imul    $1, %eax
+                        // movl    %eax, -8(%rbp)
+                    }
+                    else{ //segundo operando es una constante
+                        int op2 = second->info->cons.value;
+                        int offSet1 =  first->info->var.offset;
+                        int offSetTemp =  temp->info->var.offset;
+                        fprintf(file,"%s%i%s\n", "    mov ",offSet1,"(%ebp), %eax");
+                        fprintf(file,"%s%i%s\n", "    imul $",op2,", %eax");
+                        fprintf(file,"%s%i%s\n", "    mov %eax ,",offSetTemp,"(%ebp)");
+
+                        // y = x + 2;
+                        // movl    -4(%rbp), %eax
+                        // imul    $2, %eax
+                        // movl    %eax, -8(%rbp)
+                    }
+                }
+            }
+        }        
         if(strcmp(index->node->codOp, "DIV") == 0){
 
         }

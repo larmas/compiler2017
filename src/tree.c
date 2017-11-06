@@ -13,7 +13,7 @@ typedef struct node Node;
  * Representacion de un nodo que contiene una variable.
  */
 typedef struct variable{
-  char id[20];
+  char id[256];
   int value;
   int offset;
 }TVar;
@@ -24,7 +24,7 @@ typedef struct variable{
  * una funcion.
  */
 typedef struct funcion{
-  char id[20];
+  char id[256];
   int offset;
   struct list *param;
   Node *AST;
@@ -41,7 +41,7 @@ typedef struct constante{
  * Representacion de un nodo que contiene un operador.
  */
 typedef struct operador{
-  char id[5];
+  char id[20];
 }TOpe;
 
 /**

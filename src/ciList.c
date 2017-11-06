@@ -10,7 +10,7 @@
  * Estructura que representa un codigo de 3 direcciones.
  */
 typedef struct nodeCI{
-    char codOp[20];
+    char codOp[256];
     Node *firstOp;
     Node *secondOp;
     Node *temp;

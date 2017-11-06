@@ -1,0 +1,24 @@
+/* RETURN TEST */
+
+
+boolean x1(){
+    return true;
+}
+/*
+boolean return_boolean_var(){
+    boolean t;
+    return t;
+}
+
+int return_integer_literal(){
+    return 10
+}
+
+int return_integer_var(){
+    int x;
+    return x;
+}
+*/
+void main(){
+    return ;
+}

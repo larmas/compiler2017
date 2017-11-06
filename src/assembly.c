@@ -35,20 +35,23 @@ void generateAsm(CIList *list, char path[]){
 
     CIList *index = ciList;
     while(index != NULL){
+        Node *first  = index->node->firstOp;
+        Node *second = index->node->secondOp;
+        Node *temp = index->node->temp;
         if(strcmp(index->node->codOp, "BEGIN") == 0){
             char str[256];
-            if(strcmp(index->node->firstOp->info->func.id, "main") == 0){
+            if(strcmp(first->info->func.id, "main") == 0){
                 strcpy(str,"_");
-                strcat(str,index->node->firstOp->info->func.id);
+                strcat(str,first->info->func.id);
                 fprintf(file, "%s%s\n", "    .globl ",str);
                 strcat(str,":");
             }else{
-                strcpy(str,index->node->firstOp->info->func.id);
+                strcpy(str,first->info->func.id);
                 fprintf(file, "%s%s\n", "    .globl ",str);
                 strcat(str,":");
             }
             fprintf(file, "%s\n",str);
-            int aux = abs(index->node->firstOp->info->func.offset);
+            int aux = abs(first->info->func.offset);
             fprintf(file, "%s%i%s\n", "    enter $",aux,", $0");
         }
         if(strcmp(index->node->codOp, "END") == 0){
@@ -57,9 +60,6 @@ void generateAsm(CIList *list, char path[]){
             fprintf(file, "\n" );
         }
         if(strcmp(index->node->codOp, "ADD") == 0){
-            Node *first  = index->node->firstOp;
-        	Node *second = index->node->secondOp;
-            Node *temp = index->node->temp;
         	/*if(first->tag == 1 && first->tag == 1){   Optimizado!
         		int result =  first->info->cons.value + second->info->cons.value;
         		int offSet =  index->node->temp->info->var.offset;
@@ -73,7 +73,7 @@ void generateAsm(CIList *list, char path[]){
         		fprintf(file,"%s%i%s\n", "    add $",op2,", %eax");
         		fprintf(file,"%s%i%s\n", "    mov %eax ,",offSet,"(%ebp)");
         	}
-        	if(first->tag == 0 && first->tag == 0){ // Ambos operandos variables
+        	if((first->tag == 0 && first->tag == 0) && (first->tag == 4 && first->tag == 4)){ // Ambos operandos variables o temporales
         		int op1 = first->info->var.value;
         		int op2 = second->info->var.value;
         		int offSet1 = first->info->var.offset;
@@ -122,24 +122,20 @@ void generateAsm(CIList *list, char path[]){
 
         }
         if(strcmp(index->node->codOp, "SUB") == 0){
-        	Node *first  = index->node->firstOp;
-        	Node *second = index->node->secondOp;
         	if(first->tag == 1 && first->tag == 1){ //Ambos operandos son constantes
         		int op1 = first->info->cons.value;
         		int op2 = second->info->cons.value;
-        		int offSet =  index->node->temp->info->var.offset;
+        		int offSet =  temp->info->var.offset;
         		fprintf(file,"%s%i%s\n", "    mov $",op1,", %eax");
         		fprintf(file,"%s%i%s\n", "    sub $",op2,", %eax");
         		fprintf(file,"%s%i%s\n", "    mov %eax ,",offSet,"(%ebp)");
         	}
         }
         if(strcmp(index->node->codOp, "MULT") == 0){
-        	Node *first  = index->node->firstOp;
-        	Node *second = index->node->secondOp;
         	if(first->tag == 1 && first->tag == 1){ //Ambos operandos son constantes
         		int op1 = first->info->cons.value;
         		int op2 = second->info->cons.value;
-        		int offSet =  index->node->temp->info->var.offset;
+        		int offSet =  temp->info->var.offset;
         		fprintf(file,"%s%i%s\n", "    mov $",op1,", %eax");
         		fprintf(file,"%s%i%s\n", "    imul $",op2,", %eax");
         		fprintf(file,"%s%i%s\n", "    mov %eax ,",offSet,"(%ebp)");
@@ -177,15 +173,15 @@ void generateAsm(CIList *list, char path[]){
             int offSet;
             switch (index->node->temp->tag) {
                 case 0:
-                	offSet= index->node->temp->info->var.offset;
+                	offSet= temp->info->var.offset;
                 	fprintf(file,"%s%i%s\n", "    mov ",offSet,"(%ebp), %eax");
                 	break;
                 case 1:
-                    aux = index->node->temp->info->cons.value;
+                    aux = temp->info->cons.value;
                     fprintf(file,"%s%i%s\n", "    mov $",aux,", %eax");
                     break;
                 case 4:
-                	offSet= index->node->temp->info->var.offset;
+                	offSet= temp->info->var.offset;
                 	fprintf(file,"%s%i%s\n", "    mov ",offSet,"(%ebp), %eax");
                     break;
                 default:
@@ -203,7 +199,7 @@ void generateAsm(CIList *list, char path[]){
         }
         if(strcmp(index->node->codOp, "LABEL") == 0){
         	char str[256];
-        	strcpy(str, index->node->temp->info->var.id);
+        	strcpy(str, temp->info->var.id);
         	strcat(str,":");
         	fprintf(file, "%s\n",str);
         }
@@ -213,7 +209,7 @@ void generateAsm(CIList *list, char path[]){
         if(strcmp(index->node->codOp, "CALL") == 0){
         	char str[256];
         	strcpy(str,"_"); // solo para MAC y main
-        	strcat(str,index->node->firstOp->info->func.id);
+        	strcat(str,first->info->func.id);
 			fprintf(file,"%s%s\n", "    call ",str);
         }
         index = index->next;

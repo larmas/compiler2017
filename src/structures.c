@@ -3,6 +3,6 @@
 #include <ctype.h>
 
 typedef struct tokenLine{
-    char id[20];
+    char id[256];
     int noLine;
 }TokenLine;

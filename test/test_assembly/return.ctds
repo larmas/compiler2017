@@ -20,5 +20,7 @@ int return_integer_var(){
 }
 
 void main(){
+    returnBooleanLiteral();
+    return_integer_lit();
     return ;
 }

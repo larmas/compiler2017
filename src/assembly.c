@@ -52,6 +52,9 @@ void generateAsm(CIList *list, char path[]){
             }
             fprintf(file, "%s\n",str);
             int aux = abs(first->info->func.offset);
+            while( (aux % 16) != 0){
+                aux += 8;
+            }
             fprintf(file, "%s%i%s\n", "    enter $",aux,", $0");
         }
         if(strcmp(index->node->codOp, "END") == 0){
@@ -294,6 +297,11 @@ void generateAsm(CIList *list, char path[]){
                 default:
                     break;
             }
+            fprintf(file, "%s\n", "    leaq	L_.str(%rip), %rdi");
+            fprintf(file, "%s\n", "    movl	%eax, %esi");
+            fprintf(file, "%s\n", "    movl  $0, -4(%rbp)");
+            fprintf(file, "%s\n", "    movb	$0, %al");
+            fprintf(file, "%s\n", "    callq	_printf");
         }
         if(strcmp(index->node->codOp, "RETURNV") == 0){
             // NO DEBE HACER NADA
@@ -314,13 +322,14 @@ void generateAsm(CIList *list, char path[]){
 
         }
         if(strcmp(index->node->codOp, "CALL") == 0){
-        	char str[256];
-        	strcpy(str,"_"); // solo para MAC y main
-        	strcat(str,first->info->func.id);
-			fprintf(file,"%s%s\n", "    call ",str);
+			fprintf(file,"%s%s\n", "    call ",first->info->func.id);
         }
         index = index->next;
     }
 
+    //Para printf
+    fprintf(file, "%s\n", "    .section	__TEXT,__cstring,cstring_literals");
+    fprintf(file, "%s\n", "L_.str:");
+    fprintf(file, "%s\n", "    .asciz	\"%i\\n\"");
     fclose(file);
 }

@@ -414,7 +414,7 @@ void generateAsm(CIList *list, char path[]){
             strcat(label2,aux);
             labelCount++;
 
-            if(first->tag == 1){ //primer operando es constante
+            if(first->tag == 1){ //primer operando es una constante
                 int op1 = first->info->cons.value;
                 fprintf(file,"%s%i\n", "    cmp $1, $",op1);
                 fprintf(file,"%s%s\n", "    je ",label1); 
@@ -424,7 +424,7 @@ void generateAsm(CIList *list, char path[]){
                 fprintf(file,"%s%s\n",   "    je ",label1);
             }
 
-            if(second->tag == 1){ // segundo opetando es constante
+            if(second->tag == 1){ // segundo opetando es una constante
                 int op2 = second->info->cons.value;
                 fprintf(file,"%s%i\n", "    cmp $1, $",op2);
                 fprintf(file,"%s%s\n",   "    je ",label1);
@@ -486,12 +486,24 @@ void generateAsm(CIList *list, char path[]){
 
 
         if(strcmp(index->node->codOp, "NEGB") == 0){
-
+        	int offSetTemp = temp->info->var.offset;
+        	if(first->tag == 0 || first->tag == 4){ //primer operando es una variable
+        		int offSet1 =  first->info->var.offset;
+        		fprintf(file,"%s%i%s\n", "    cmp  $0,",offSet1,"(%ebp)");    
+        	}else{
+        		int op1 = first->info->cons.value;
+        		fprintf(file,"%s%i%s\n", "    mov $",op1,", %eax"); 
+                fprintf(file,"%s\n",     "    cmp $0, %eax");
+        	}
+     		fprintf(file,"%s\n",	"    sete	%al");
+     		fprintf(file,"%s\n",	"    movzbl  %al, %eax");
+     		fprintf(file,"%s%i%s\n","    mov  %eax,",offSetTemp,"(%ebp)");                      
         }
 
         if(strcmp(index->node->codOp, "NEGI") == 0){
 
         }
+
         if(strcmp(index->node->codOp, "RETURN") == 0){
             int aux;
             int offSet;
@@ -531,15 +543,32 @@ void generateAsm(CIList *list, char path[]){
         	strcat(str,":");
         	fprintf(file, "%s\n",str);
         }
+
+
         if(strcmp(index->node->codOp, "LOAD") == 0){
 
         }
+
+
         if(strcmp(index->node->codOp, "CALL") == 0){
         	char str[256];
         	strcpy(str,"_"); // solo para MAC y main
         	strcat(str,first->info->func.id);
 			fprintf(file,"%s%s\n", "    call ",str);
         }
+
+        if(strcmp(index->node->codOp, "MOV") == 0){
+        	int offSet1 =  first->info->var.offset;
+        	if(second->tag == 0 || second->tag == 4){ //primer operando es una variable
+        		int offSet2 =  second->info->var.offset;
+				fprintf(file,"%s%i%s\n", "    mov ",offSet2,"(%ebp), %eax");
+				fprintf(file,"%s%i%s\n", "    mov %eax ",offSet1,"(%ebp)");
+        	}else{
+        		int op2 = second->info->cons.value;
+        		fprintf(file,"%s%i%s%i%s\n", "    mov $",op2," ",offSet1,"(%ebp)");
+        	}
+        }
+
         index = index->next;
     }
 

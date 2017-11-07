@@ -414,7 +414,7 @@ void generateAsm(CIList *list, char path[]){
             strcat(label2,aux);
             labelCount++;
 
-            if(first->tag == 1){
+            if(first->tag == 1){ //primer operando es constante
                 int op1 = first->info->cons.value;
                 fprintf(file,"%s%i\n", "    cmp $1, $",op1);
                 fprintf(file,"%s%s\n", "    je ",label1); 
@@ -424,7 +424,7 @@ void generateAsm(CIList *list, char path[]){
                 fprintf(file,"%s%s\n",   "    je ",label1);
             }
 
-            if(second->tag == 1){
+            if(second->tag == 1){ // segundo opetando es constante
                 int op2 = second->info->cons.value;
                 fprintf(file,"%s%i\n", "    cmp $1, $",op2);
                 fprintf(file,"%s%s\n",   "    je ",label1);
@@ -441,12 +441,54 @@ void generateAsm(CIList *list, char path[]){
             strcat(label2,":");
             fprintf(file,"%s\n",label2);
         }
-        if(strcmp(index->node->codOp, "EQUAL") == 0){
 
+
+        if(strcmp(index->node->codOp, "EQUAL") == 0){
+        	Node *first  = index->node->firstOp;
+            Node *second = index->node->secondOp;
+            Node *temp = index->node->temp;
+            int offSetTemp = temp->info->var.offset;
+            // Ambos operandos son variables o temporales
+            if((first->tag == 0 || first->tag == 4) && (second->tag == 0 || second->tag == 4)){ 
+                int offSet1 = first->info->var.offset;
+                int offSet2 = second->info->var.offset;
+                fprintf(file,"%s%i%s\n", "    mov ",offSet1,"(%ebp), %eax"); 
+                fprintf(file,"%s%i%s\n", "    cmp ",offSet2,"(%ebp), %eax"); 
+            }
+            if((first->tag != 0 && first->tag != 4) || (second->tag != 0 && second->tag != 4)){
+                if(first->tag == 1 && second->tag == 1){ //Ambos operandos son constantes
+                    int op1 = first->info->cons.value;
+                    int op2 = second->info->cons.value;
+                    fprintf(file,"%s%i%s\n", "    mov $",op1,", %eax"); 
+                	fprintf(file,"%s%i%s\n", "    cmp $",op2,", %eax"); 
+
+                }
+                else{
+                    if(first->tag != 0 && first->tag != 4){ //primer operando es una constante (puede ser funcion?)
+                        int op1 = first->info->cons.value;
+                        int offSet2 =  second->info->var.offset;
+               		    fprintf(file,"%s%i%s\n", "    mov ",offSet2,"(%ebp), %eax");  
+               		    fprintf(file,"%s%i%s\n", "    cmp $",op1,", %eax");                      
+
+                    }
+                    else{ //segundo operando es una constante
+                        int op2 = second->info->cons.value;
+                        int offSet1 =  first->info->var.offset;
+               		    fprintf(file,"%s%i%s\n", "    mov ",offSet1,"(%ebp), %eax");  
+               		    fprintf(file,"%s%i%s\n", "    cmp $",op2,", %eax");   
+                    }
+                }
+            }
+     		fprintf(file,"%s\n",	"    sete	%al");
+     		fprintf(file,"%s\n",	"    movzbl  %al, %eax");
+     		fprintf(file,"%s%i%s\n","    mov  %eax,",offSetTemp,"(%ebp)");
         }
+
+
         if(strcmp(index->node->codOp, "NEGB") == 0){
 
         }
+
         if(strcmp(index->node->codOp, "NEGI") == 0){
 
         }
@@ -470,15 +512,19 @@ void generateAsm(CIList *list, char path[]){
                     break;
             }
         }
+
+
         if(strcmp(index->node->codOp, "RETURNV") == 0){
             // NO DEBE HACER NADA
         }
         if(strcmp(index->node->codOp, "IFF") == 0){
 
         }
-        if(strcmp(index->node->codOp, "JMP") == 0){
 
+        if(strcmp(index->node->codOp, "JMP") == 0){
+        	fprintf(file,"%s%s\n", "    jmp ",temp->info->var.id);
         }
+
         if(strcmp(index->node->codOp, "LABEL") == 0){
         	char str[256];
         	strcpy(str, temp->info->var.id);

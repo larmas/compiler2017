@@ -1,5 +1,10 @@
 /* RETURN TEST */
 
+boolean returnBooleanExpr(){
+    boolean x;
+    x = true;
+    return x && false;
+}
 
 int returnIntExpr(){
     return 1+2;
@@ -26,6 +31,7 @@ int returnIntegerVar(){
 }
 
 void main(){
+    returnBooleanExpr();
     returnIntExpr();
     returnBooleanLiteral();
     returnBooleanVar();

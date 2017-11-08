@@ -412,21 +412,23 @@ void generateAsm(CIList *list, char path[]){
 
             if(first->tag == 1){
                 int op1 = first->info->cons.value;
-                fprintf(file,"%s%i\n", "    cmp $0, $",op1);
+                fprintf(file,"%s%i%s\n", "    movq $",op1,", %rax");
+                fprintf(file,"%s\n", "    cmpq $0, %rax");
                 fprintf(file,"%s%s\n", "    je ",label1);
             }else{
                 int offSet1 = first->info->var.offset;
-                fprintf(file,"%s%i%s\n", "    cmp $0, ",offSet1,"(%rbp)");
+                fprintf(file,"%s%i%s\n", "    cmpq $0, ",offSet1,"(%rbp)");
                 fprintf(file,"%s%s\n",   "    je ",label1);
             }
 
             if(second->tag == 1){
                 int op2 = second->info->cons.value;
-                fprintf(file,"%s%i\n", "    cmp $0, $",op2);
+                fprintf(file,"%s%i%s\n", "    movq $",op2,", %rax");
+                fprintf(file,"%s\n", "    cmpq $0, %rax");
                 fprintf(file,"%s%s\n",   "    je ",label1);
             }else{
                 int offSet2 = second->info->var.offset;
-                fprintf(file,"%s%i%s\n", "    cmp $0, ",offSet2,"(%rbp)");
+                fprintf(file,"%s%i%s\n", "    cmpq $0, ",offSet2,"(%rbp)");
                 fprintf(file,"%s%s\n",   "    je ",label1);
             }
             strcat(label1,":");
@@ -455,7 +457,8 @@ void generateAsm(CIList *list, char path[]){
 
             if(first->tag == 1){ //primer operando es una constante
                 int op1 = first->info->cons.value;
-                fprintf(file,"%s%i\n", "    cmp $1, $",op1);
+                fprintf(file,"%s%i%s\n", "    movq $",op1,", %rax");
+                fprintf(file,"%s\n", "    cmp $1, %rax");
                 fprintf(file,"%s%s\n", "    je ",label1);
             }else{
                 int offSet1 = first->info->var.offset;
@@ -465,7 +468,8 @@ void generateAsm(CIList *list, char path[]){
 
             if(second->tag == 1){ // segundo opetando es una constante
                 int op2 = second->info->cons.value;
-                fprintf(file,"%s%i\n", "    cmp $1, $",op2);
+                fprintf(file,"%s%i%s\n", "    movq $",op2,", %rax");
+                fprintf(file,"%s%i\n", "    cmp $1, %rax");
                 fprintf(file,"%s%s\n",   "    je ",label1);
             }else{
                 int offSet2 = second->info->var.offset;

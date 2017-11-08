@@ -6,8 +6,6 @@ int add_two_const(){
     return x;
 }
 
-/*
-
 int add_two_var(){
     int x,y,z;
     y = 1;
@@ -23,11 +21,9 @@ int add_combo(){
     return x;
 }
 
-*/
-
 void main(){
     add_two_const();
-    //add_two_var();
-    //add_combo();
+    add_two_var();
+    add_combo();
     return ;
 }

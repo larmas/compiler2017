@@ -206,11 +206,10 @@ method_decl:
                                                 printf("%s%s%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
                                                 exit(1);
                                             }
-                                            setOffset($1,offsetCount);
-                                            //offsetCount -= 8;
                                             insertInitIC($1);
                                             generateIC($1->info->func.AST);
                                             insertEndIC($1);
+                                            setOffset($1,offsetCount);
                                         }
     | method_aux1 '(' method_aux2 ')' method_aux3   {
                                                         tds = popLevel(tds);
@@ -224,11 +223,10 @@ method_decl:
                                                             printf("%s%s%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Return de metodo '",$1->info->func.id,"' no encontrado. Linea: ",$1->noline);
                                                             exit(1);
                                                         }
-                                                        setOffset($1,offsetCount);
-                                                        //offsetCount -= 8;
                                                         insertInitIC($1);
                                                         generateIC($1->info->func.AST);
                                                         insertEndIC($1);
+                                                        setOffset($1,offsetCount);
                                                     }
 ;
 

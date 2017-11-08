@@ -1,11 +1,13 @@
 /* ADD TEST */
 
 int add_two_const(){
-    //int x;
-    //x = 1 + 2;
-    return 1+2;
+    int x;
+    x = 1 + 2;
+    return x;
 }
+
 /*
+
 int add_two_var(){
     int x,y,z;
     y = 1;
@@ -20,7 +22,9 @@ int add_combo(){
     x = 1 + y;
     return x;
 }
+
 */
+
 void main(){
     add_two_const();
     //add_two_var();

@@ -537,7 +537,18 @@ void generateAsm(CIList *list, char path[]){
         }
 
         if(strcmp(index->node->codOp, "NEGI") == 0){
-
+        	int offSetTemp = temp->info->var.offset;
+        	if(first->tag == 0 || first->tag == 4){
+        		int offSet1 = first->info->var.offset;
+        		fprintf(file,"%s%i%s\n", "    movq ",offSet1,"(%rbp), %rax");
+    			fprintf(file,"%s\n",     "    imul $-1, %rax");
+    			fprintf(file,"%s%i%s\n", "    movq %rax ,",offSetTemp,"(%rbp)");
+			}else{
+				int op1 = first->info->cons.value;
+				fprintf(file,"%s%i%s\n", "    movq $",op1,", %rax");
+    			fprintf(file,"%s\n",     "    imul $-1, %rax");
+    			fprintf(file,"%s%i%s\n", "    movq %rax ,",offSetTemp,"(%rbp)");
+			}
         }
 
         if(strcmp(index->node->codOp, "RETURN") == 0){
@@ -589,8 +600,11 @@ void generateAsm(CIList *list, char path[]){
     		fprintf(file, "\n" );
         }
         if(strcmp(index->node->codOp, "IFF") == 0){
-
-        }
+	    	int cond = first->info->cons.value;
+	    	fprintf(file,"%s%i%s\n", "    mov $",cond,", %rax");
+	    	fprintf(file,"%s\n",     "    cmpq $0, %rax");   
+	    	fprintf(file,"%s%s\n",   "    je ", second->info->var.id);
+    	}
 
         if(strcmp(index->node->codOp, "JMP") == 0){
         	fprintf(file,"%s%s\n", "    jmp ",temp->info->var.id);

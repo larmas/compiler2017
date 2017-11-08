@@ -17,13 +17,20 @@ CYAN='\033[0;36m'
 cd test/test_assembly
 DIRSRC=../../src
 DIRTEST=../test/test_assembly
+UNAME="$( uname -s )"
+MACHINE=""
 
+case "$UNAME" in
+    Linux*)     MACHINE=Linux;;
+    Darwin*)    MACHINE=Mac;;
+    *)          MACHINE="UNKNOWN:$UNAME"
+esac
 
 for i in $( ls )
 do
     if [ $i = $1 ]; then
         cd $DIRSRC
         echo -e "${CYAN} RUNNING FILE: $i ${RESET}"
-        ./run.out $DIRTEST/$i
+        ./run.out $DIRTEST/$i $MACHINE
     fi
 done

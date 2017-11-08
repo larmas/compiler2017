@@ -469,7 +469,7 @@ void generateAsm(CIList *list, char path[]){
             if(second->tag == 1){ // segundo opetando es una constante
                 int op2 = second->info->cons.value;
                 fprintf(file,"%s%i%s\n", "    movq $",op2,", %rax");
-                fprintf(file,"%s%i\n", "    cmp $1, %rax");
+                fprintf(file,"%s\n",     "    cmp $1, %rax");
                 fprintf(file,"%s%s\n",   "    je ",label1);
             }else{
                 int offSet2 = second->info->var.offset;
@@ -540,6 +540,7 @@ void generateAsm(CIList *list, char path[]){
      		fprintf(file,"%s%i%s\n","    movq  %rax,",offSetTemp,"(%rbp)");
         }
 
+
         if(strcmp(index->node->codOp, "NEGI") == 0){
         	int offSetTemp = temp->info->var.offset;
         	if(first->tag == 0 || first->tag == 4){
@@ -554,6 +555,7 @@ void generateAsm(CIList *list, char path[]){
     			fprintf(file,"%s%i%s\n", "    movq %rax ,",offSetTemp,"(%rbp)");
 			}
         }
+
 
         if(strcmp(index->node->codOp, "RETURN") == 0){
             int aux;
@@ -603,6 +605,8 @@ void generateAsm(CIList *list, char path[]){
     		fprintf(file, "%s\n", "    ret");
     		fprintf(file, "\n" );
         }
+
+
         if(strcmp(index->node->codOp, "IFF") == 0){
 	    	int cond = first->info->cons.value;
 	    	fprintf(file,"%s%i%s\n", "    mov $",cond,", %rax");
@@ -610,9 +614,11 @@ void generateAsm(CIList *list, char path[]){
 	    	fprintf(file,"%s%s\n",   "    je ", second->info->var.id);
     	}
 
+
         if(strcmp(index->node->codOp, "JMP") == 0){
         	fprintf(file,"%s%s\n", "    jmp ",temp->info->var.id);
         }
+
 
         if(strcmp(index->node->codOp, "LABEL") == 0){
         	char str[256];
@@ -623,13 +629,86 @@ void generateAsm(CIList *list, char path[]){
 
 
         if(strcmp(index->node->codOp, "LOAD") == 0){
+            switch (second->info->cons.value) {
+                case 1:
+                    if(first->tag == 0 || first->tag == 4){
+                        int offSet1 = first->info->var.offset;
+                        fprintf(file,"%s%i%s\n","    movq ",offSet1,"(%rbp), %rdi");
 
+                    }else{
+                        int op1 = first->info->cons.value;
+                        fprintf(file,"%s%i%s\n","    movq $",op1,", %rdi");
+                    }
+                    break;
+                case 2:
+                    if(first->tag == 0 || first->tag == 4){
+                        int offSet1 = first->info->var.offset;
+                        fprintf(file,"%s%i%s\n","    movq ",offSet1,"(%rbp), %rsi");
+
+                    }else{
+                        int op1 = first->info->cons.value;
+                        fprintf(file,"%s%i%s\n","    movq $",op1,", %rsi");
+                    }                
+                    break;
+                case 3:
+                    if(first->tag == 0 || first->tag == 4){
+                        int offSet1 = first->info->var.offset;
+                        fprintf(file,"%s%i%s\n","    movq ",offSet1,"(%rbp), %rdx");
+
+                    }else{
+                        int op1 = first->info->cons.value;
+                        fprintf(file,"%s%i%s\n","    movq $",op1,", %rdx");
+                    }                
+                    break;
+                case 4:
+                    if(first->tag == 0 || first->tag == 4){
+                        int offSet1 = first->info->var.offset;
+                        fprintf(file,"%s%i%s\n","    movq ",offSet1,"(%rbp), %rcx");
+
+                    }else{
+                        int op1 = first->info->cons.value;
+                        fprintf(file,"%s%i%s\n","    movq $",op1,", %rcx");
+                    }                
+                    break;
+                case 5:
+                    if(first->tag == 0 || first->tag == 4){
+                        int offSet1 = first->info->var.offset;
+                        fprintf(file,"%s%i%s\n","    movq ",offSet1,"(%rbp), %r8");
+
+                    }else{
+                        int op1 = first->info->cons.value;
+                        fprintf(file,"%s%i%s\n","    movq $",op1,", %r8");
+                    }                
+         
+                    break;
+                case 6:
+                    if(first->tag == 0 || first->tag == 4){
+                        int offSet1 = first->info->var.offset;
+                        fprintf(file,"%s%i%s\n","    movq ",offSet1,"(%rbp), %r9");
+                        //fict.. si hay mas
+
+                    }else{
+                        int op1 = first->info->cons.value;
+                        fprintf(file,"%s%i%s\n","    movq $",op1,", %r9");
+                        //fict.. si hay mas
+                    }                
+                    break;                                                            
+                default:
+                    //NI IDEA QUE HACER...
+                    if(first->tag == 0 || first->tag == 4){
+                        fprintf(file,"%s\n","    pushq ");
+                    }else{
+                        fprintf(file,"%s\n","    pushq $");
+                    }                  
+                    break;
+            }
         }
 
 
         if(strcmp(index->node->codOp, "CALL") == 0){
 			fprintf(file,"%s%s\n", "    call ",first->info->func.id);
         }
+
 
         if(strcmp(index->node->codOp, "MOV") == 0){
         	int offSet1 =  first->info->var.offset;

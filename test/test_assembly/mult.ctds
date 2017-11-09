@@ -1,0 +1,39 @@
+/* MULT TEST*/
+
+int mult_two_const(){
+    return 2 * 3;
+}
+
+int mult_two_var(){
+    int x, y;
+    x = 3;
+    y = 2;
+    return x * y;
+}
+
+int mult_combo(){
+    int x;
+    x = 4;
+    return 2 * x;
+}
+
+int mult_negative(){
+    int x;
+    x = -2;
+    return 2 * x;
+}
+
+int mult_two_negative(){
+    int x;
+    x = -3;
+    return x * -2;
+}
+
+void main(){
+    mult_two_const();
+    mult_two_var();
+    mult_combo();
+    mult_negative();
+    mult_two_negative();
+    return ;
+}

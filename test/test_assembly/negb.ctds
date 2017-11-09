@@ -1,0 +1,27 @@
+/* BOOLEAN NEGATION TEST */
+
+boolean neg_boolean_lit(){
+    return !true;
+}
+
+boolean neg_boolean_lit_2(){
+    return !false;
+}
+
+boolean neg_boolean_expr(){
+    return ! (true && false);
+}
+
+boolean neg_boolean_var(){
+    boolean x;
+    x = false;
+    return !x;
+}
+
+void main(){
+    neg_boolean_lit();
+    neg_boolean_lit_2();
+    neg_boolean_expr();
+    neg_boolean_var();
+    return ;
+}

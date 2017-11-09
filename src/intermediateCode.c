@@ -304,14 +304,17 @@ Node *generateIC(Node *root){
         if (strcmp(root->info->op.id, "function") == 0){
             List *par = root->mid->info->func.param;
             CIList *list_aux = newCIList(list_aux);
+            int pos = 1;
             while(par != NULL){
             	Node* justParam = generateIC(par->node);
             	if(justParam->tag != 0 && justParam->tag != 1 && justParam->tag != 4){
             		justParam = generateIC(justParam);
             	}
-                NodeCI *load = newNodeCI("LOAD",justParam,NULL,NULL);
+                Node *position = newConst(0, pos, 0);
+                NodeCI *load = newNodeCI("LOAD",justParam,position,NULL);
                 list_aux = insertLastCI(list_aux,load);
                 par = par->next;
+                pos++;
             }
             while(list_aux != NULL){
                 ciList = insertLastCI(ciList,list_aux->node);

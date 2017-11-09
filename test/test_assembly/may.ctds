@@ -1,0 +1,41 @@
+/* MAY TEST */
+
+// Revisar condiciones, da los resultados inversos
+
+boolean may_two_const(){
+    return 2 > 3;
+}
+
+boolean may_two_var(){
+    int x, y;
+    x = 3;
+    y = 2;
+    return x > y;
+}
+
+boolean may_combo(){
+    int x;
+    x = -10;
+    return x > 10;
+}
+
+boolean may_negative(){
+    int x;
+    x = -2;
+    return 2 > x;
+}
+
+boolean may_two_negative(){
+    int x;
+    x = -3;
+    return x > -2;
+}
+
+void main(){
+    may_two_const();
+    may_two_var();
+    may_combo();
+    may_negative();
+    may_two_negative();
+    return ;
+}

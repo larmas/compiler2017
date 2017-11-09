@@ -1,0 +1,35 @@
+/* OR TEST */
+
+boolean or_two_lit(){
+    return true || false;
+}
+
+boolean or_two_lit_2(){
+    return true || true;
+}
+
+boolean or_two_lit_3(){
+    return false || false;
+}
+
+boolean or_two_var(){
+    boolean x,y;
+    x = false;
+    y = true;
+    return x || y;
+}
+
+boolean or_combo(){
+    boolean x;
+    x = true;
+    return false || x;
+}
+
+void main(){
+    or_two_lit();
+    or_two_lit_2();
+    or_two_lit_3();
+    or_two_var();
+    or_combo();
+    return ;
+}

@@ -1,0 +1,39 @@
+/* DIV TEST*/
+
+int div_two_const(){
+    return 4 / 2;
+}
+
+int div_two_var(){
+    int x, y;
+    x = 3;
+    y = 2;
+    return x / y;
+}
+
+int div_combo(){
+    int x;
+    x = 4;
+    return 2 / x;
+}
+
+int div_negative(){
+    int x;
+    x = -2;
+    return 2 / x;
+}
+
+int div_two_negative(){
+    int x;
+    x = -3;
+    return x / -2; // Debe dar 1 y da 2
+}
+
+void main(){
+    div_two_const();
+    div_two_var();
+    div_combo();
+    div_negative();
+    div_two_negative();
+    return ;
+}

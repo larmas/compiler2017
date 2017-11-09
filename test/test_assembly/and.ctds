@@ -1,0 +1,35 @@
+/* AND TEST */
+
+boolean and_two_lit(){
+    return true && false;
+}
+
+boolean and_two_lit_2(){
+    return true && true;
+}
+
+boolean and_two_lit_3(){
+    return false && false;
+}
+
+boolean and_two_var(){
+    boolean x,y;
+    x = false;
+    y = true;
+    return x && y;
+}
+
+boolean and_combo(){
+    boolean x;
+    x = true;
+    return false && x;
+}
+
+void main(){
+    and_two_lit();
+    and_two_lit_2();
+    and_two_lit_3();
+    and_two_var();
+    and_combo();
+    return ;
+}

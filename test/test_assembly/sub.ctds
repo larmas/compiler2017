@@ -1,0 +1,37 @@
+/* SUB TEST */
+
+/* No calcula bien los resultados */
+
+int sub_two_negative(){
+    int x,y;
+    x = -2;
+    y = -1;
+    return x - y; // Debe ser -1 y da 1
+}
+
+int sub_two_const(){
+    return 1 - 2; // Es correcto
+}
+
+int sub_two_var(){
+    int x,y,z;
+    y = 1;
+    z = 2;
+    x = y - z;
+    return x;  // Debe ser -1 y da 1
+}
+
+int sub_combo(){
+    int x,y;
+    y = 2;
+    x = 1 - y;
+    return x;  // Debe ser -1 y da 1
+}
+
+void main(){
+    sub_two_negative();
+    sub_two_const();
+    sub_two_var();
+    sub_combo();
+    return ;
+}

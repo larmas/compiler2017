@@ -1,0 +1,27 @@
+/* INTEGER NEGATION TEST */
+
+int neg_integer_lit(){
+    return -10;
+}
+
+int neg_integer_lit_2(){
+    return --10;
+}
+
+int neg_integer_expr(){
+    return - (2 * 2);
+}
+
+int neg_integer_var(){
+    int x;
+    x = 100;
+    return -x;
+}
+
+void main(){
+    neg_integer_lit();
+    neg_integer_lit_2();
+    neg_integer_expr();
+    neg_integer_var();
+    return ;
+}

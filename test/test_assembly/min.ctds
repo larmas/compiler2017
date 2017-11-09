@@ -1,0 +1,41 @@
+/* MIN TEST */
+
+// Revisar condiciones, da los resultados inversos
+
+boolean min_two_const(){
+    return 2 < 3;
+}
+
+boolean min_two_var(){
+    int x, y;
+    x = 3;
+    y = 2;
+    return x < y;
+}
+
+boolean min_combo(){
+    int x;
+    x = 4;
+    return 2 < x;   // Debe dar true y da false
+}
+
+boolean min_negative(){
+    int x;
+    x = -2;
+    return 2 < x;       // Debe dar false y da true
+}
+
+boolean min_two_negative(){
+    int x;
+    x = -3;
+    return x < -2;
+}
+
+void main(){
+    min_two_const();
+    min_two_var();
+    min_combo();
+    min_negative();
+    min_two_negative();
+    return ;
+}

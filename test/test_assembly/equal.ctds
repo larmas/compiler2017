@@ -1,0 +1,48 @@
+/* EQUAL TEST */
+
+boolean and_two_boolean_lit(){
+    return true == false;
+}
+
+boolean and_two_boolean_lit_2(){
+    return true == true;
+}
+
+boolean and_two_integer_lit(){
+    return 1 == 1;
+}
+
+boolean and_two_integer_lit_2(){
+    return -10 == 10;
+}
+
+boolean and_two_boolean_var(){
+    boolean x,y;
+    x = false;
+    y = true;
+    return x == y;
+}
+
+boolean and_two_integer_var(){
+    int x,y;
+    x = 10;
+    y = 11;
+    return x == y;
+}
+
+boolean and_combo(){
+    boolean x;
+    x = true;
+    return true == x;
+}
+
+void main(){
+    and_two_boolean_lit();
+    and_two_boolean_lit_2();
+    and_two_integer_lit();
+    and_two_integer_lit_2();
+    and_two_boolean_var();
+    and_two_integer_var();
+    and_combo();
+    return ;
+}

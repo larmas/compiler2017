@@ -1,6 +1,16 @@
 /* MIN TEST */
 
 // Revisar condiciones, da los resultados inversos
+/*
+
+Salida:
+    1
+    0
+    1
+    0
+    1
+
+ */
 
 boolean min_two_const(){
     return 2 < 3;

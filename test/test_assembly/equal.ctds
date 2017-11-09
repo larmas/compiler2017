@@ -1,5 +1,18 @@
 /* EQUAL TEST */
 
+/*
+
+Salida: 0=false 1=TRUE
+    0
+    1
+    1
+    0
+    0
+    0
+    1
+
+ */
+
 boolean and_two_boolean_lit(){
     return true == false;
 }

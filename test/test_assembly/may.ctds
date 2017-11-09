@@ -1,7 +1,14 @@
 /* MAY TEST */
 
-// Revisar condiciones, da los resultados inversos
-// Salida: 0; 1; 0; 1; 0;
+/*
+Salida:
+    0
+    1
+    0
+    1
+    0
+
+ */
 
 boolean may_two_const(){
     return 2 > 3;
@@ -22,14 +29,14 @@ boolean may_combo(){
 
 boolean may_negative(){
     int x;
-    x = -2;
+    x = -1;
     return 2 > x;
 }
 
 boolean may_two_negative(){
     int x;
     x = -3;
-    return x > -2;
+    return x > -2;  // Debe devolver 1 y devuelve 2
 }
 
 void main(){

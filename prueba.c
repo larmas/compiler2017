@@ -3,10 +3,9 @@
 #include <string.h>
 
 int function2(){
-    int x,y;
-    y = 2;
-    x = 1 - y;
-    return x;
+    int x;
+    x = -1;
+    return -2 > x;
 }
 int main(int argc, char const *argv[]) {
     printf("%i\n", function2());

@@ -1,14 +1,24 @@
 /* ADD TEST */
 
+/*
+Salida:
+    3
+    -2
+    12
+    3
+ */
+
 int add_two_const(){
-    int x;
-    x = 1 + 2;
-    return x;
+    return 1 + 2;
+}
+
+int add_two_const_2(){
+    return -3 + 1;
 }
 
 int add_two_var(){
     int x,y,z;
-    y = 1;
+    y = 10;
     z = 2;
     x = y + z;
     return x;
@@ -23,6 +33,7 @@ int add_combo(){
 
 void main(){
     add_two_const();
+    add_two_const_2();
     add_two_var();
     add_combo();
     return ;

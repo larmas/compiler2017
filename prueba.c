@@ -3,12 +3,12 @@
 #include <string.h>
 
 int function2(){
-    return 2;
-}
-int function(){
-    return 1;
+    int x,y;
+    y = 2;
+    x = 1 - y;
+    return x;
 }
 int main(int argc, char const *argv[]) {
-
+    printf("%i\n", function2());
     return 0;
 }

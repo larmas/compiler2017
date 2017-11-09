@@ -1,6 +1,7 @@
 /* MAY TEST */
 
 // Revisar condiciones, da los resultados inversos
+// Salida: 0; 1; 0; 1; 0;
 
 boolean may_two_const(){
     return 2 > 3;

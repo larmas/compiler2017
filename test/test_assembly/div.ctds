@@ -1,5 +1,16 @@
 /* DIV TEST*/
 
+/*
+
+Salida:
+    2
+    1
+    0
+    -1
+    1
+
+ */
+
 int div_two_const(){
     return 4 / 2;
 }
@@ -26,7 +37,7 @@ int div_negative(){
 int div_two_negative(){
     int x;
     x = -3;
-    return x / -2; // Debe dar 1 y da 2
+    return x / -2;
 }
 
 void main(){

@@ -1,16 +1,16 @@
 /* SUB TEST */
 
-/* No calcula bien los resultados */
+/* No calcula bien todos los resultados */
 
 int sub_two_negative(){
     int x,y;
-    x = -2;
+    x = -4;
     y = -1;
-    return x - y; // Debe ser -1 y da 1
+    return x - y;
 }
 
 int sub_two_const(){
-    return 1 - 2; // Es correcto
+    return 10 - 2;
 }
 
 int sub_two_var(){
@@ -18,14 +18,14 @@ int sub_two_var(){
     y = 1;
     z = 2;
     x = y - z;
-    return x;  // Debe ser -1 y da 1
+    return x;
 }
 
 int sub_combo(){
     int x,y;
-    y = 2;
+    y = 4;
     x = 1 - y;
-    return x;  // Debe ser -1 y da 1
+    return x;
 }
 
 void main(){

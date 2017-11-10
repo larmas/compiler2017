@@ -1,5 +1,16 @@
 /* OR TEST */
 
+/*
+
+Salida:
+    1
+    1
+    0
+    1
+    1
+
+ */
+
 boolean or_two_lit(){
     return true || false;
 }

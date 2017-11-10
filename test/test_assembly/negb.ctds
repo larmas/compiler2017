@@ -1,5 +1,15 @@
 /* BOOLEAN NEGATION TEST */
 
+/*
+
+Salida:
+    0
+    1
+    1
+    1
+
+ */
+
 boolean neg_boolean_lit(){
     return !true;
 }

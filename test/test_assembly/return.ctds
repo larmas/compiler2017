@@ -1,5 +1,17 @@
 /* RETURN TEST */
 
+/*
+
+Salida:
+    0
+    3
+    1
+    0
+    10
+    10
+
+ */
+
 boolean returnBooleanExpr(){
     boolean x;
     x = true;

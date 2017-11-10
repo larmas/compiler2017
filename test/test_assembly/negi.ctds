@@ -1,5 +1,15 @@
 /* INTEGER NEGATION TEST */
 
+/*
+
+Salida:
+    -10
+    10
+    -4
+    -100
+
+ */
+
 int neg_integer_lit(){
     return -10;
 }

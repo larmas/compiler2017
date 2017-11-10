@@ -1,5 +1,17 @@
 /* MULT TEST*/
 
+/*
+
+Salida:
+    6
+    6
+    8
+    -4
+    6
+    22
+
+ */
+
 int mult_two_const(){
     return 2 * 3;
 }
@@ -29,11 +41,18 @@ int mult_two_negative(){
     return x * -2;
 }
 
+int mult_two_negative_2(){
+    int x;
+    x = -11;
+    return -2 * x;
+}
+
 void main(){
     mult_two_const();
     mult_two_var();
     mult_combo();
     mult_negative();
     mult_two_negative();
+    mult_two_negative_2();
     return ;
 }

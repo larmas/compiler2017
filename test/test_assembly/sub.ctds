@@ -1,6 +1,15 @@
 /* SUB TEST */
 
 /* No calcula bien todos los resultados */
+/*
+
+Salida:
+    -3
+    8
+    -1
+    -3
+
+ */
 
 int sub_two_negative(){
     int x,y;

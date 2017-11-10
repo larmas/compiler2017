@@ -1,0 +1,42 @@
+/* MOD TEST */
+
+/*
+
+Salida:
+    1
+    0
+    1
+    1
+
+ */
+
+int mod_two_const(){
+    return 3 % 2;
+}
+
+int mod_two_var(){
+    int x,y;
+    x = 4;
+    y = 2;
+    return x % y;
+}
+
+int mod_combo(){
+    int x;
+    x = 4;
+    return x % 3;
+}
+
+int mod_var_negative(){
+    int x;
+    x = 3;
+    return -4 % x;
+}
+
+void main(){
+    mod_two_const();
+    mod_two_var();
+    mod_combo();
+    mod_var_negative();
+    return ;
+}

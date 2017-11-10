@@ -36,7 +36,7 @@ boolean may_negative(){
 boolean may_two_negative(){
     int x;
     x = -3;
-    return x > -2;  // Debe devolver 0 y devuelve 1
+    return x > -2;
 }
 
 void main(){

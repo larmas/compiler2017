@@ -319,8 +319,8 @@ void generateAsm(CIList *list, char path[], char machine[]){
                     if(first->tag != 0 && first->tag != 4){ //primer operando es una constante (puede ser funcion?)
                         int op1 = first->info->cons.value;
                         int offSet2 =  second->info->var.offset;
-               		    fprintf(file,"%s%i%s\n", "    movq ",offSet2,"(%rbp), %rax");
-               		    fprintf(file,"%s%i%s\n", "    cmpq $",op1,", %rax");
+               		    fprintf(file,"%s%i%s\n", "    movq $",op1,", %rax");
+               		    fprintf(file,"%s%i%s\n", "    cmpq ",offSet2,"(%rbp), %rax");
 
                     }
                     else{ //segundo operando es una constante

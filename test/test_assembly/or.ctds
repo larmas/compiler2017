@@ -8,6 +8,7 @@ Salida:
     0
     1
     1
+    1
 
  */
 
@@ -36,11 +37,18 @@ boolean or_combo(){
     return false || x;
 }
 
+boolean or_combo_2(){
+    boolean x;
+    x = true;
+    return x || false;
+}
+
 void main(){
     or_two_lit();
     or_two_lit_2();
     or_two_lit_3();
     or_two_var();
     or_combo();
+    or_combo_2();
     return ;
 }

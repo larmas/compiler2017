@@ -13,9 +13,9 @@ Salida:
  */
 
 boolean returnBooleanExpr(){
-    boolean x;
-    x = true;
-    return x && false;
+    int x;
+    x = 10;
+    return !(x == 10);
 }
 
 int returnIntExpr(){

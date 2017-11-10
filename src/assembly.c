@@ -115,8 +115,6 @@ void generateAsm(CIList *list, char path[], char machine[]){
         if(strcmp(index->node->codOp, "SUB") == 0){
             // Ambos operandos son variables o temporales
             if((first->tag == 0 || first->tag == 4) && (second->tag == 0 || second->tag == 4)){
-                int op1 = first->info->cons.value;
-                int op2 = second->info->cons.value;
                 int offSet1 = first->info->var.offset;
                 int offSet2 = second->info->var.offset;
                 int offSetTemp = temp->info->var.offset;
@@ -144,10 +142,10 @@ void generateAsm(CIList *list, char path[], char machine[]){
                     }
                     else{ //segundo operando es una constante
                         int offSet1 =  first->info->var.offset;
-                        int offSet2 =  second->info->var.offset;
+                        int op2 =  second->info->cons.value;
                         int offSetTemp =  temp->info->var.offset;
-                        fprintf(file,"%s%i%s\n", "    movq ",offSet2,"(%rbp), %rax");
-                        fprintf(file,"%s%i%s\n", "    subq ",offSet1,"(%rbp), %rax");
+                        fprintf(file,"%s%i%s\n", "    movq ",offSet1,"(%rbp), %rax");
+                        fprintf(file,"%s%i%s\n", "    subq $",op2,", %rax");
                         fprintf(file,"%s%i%s\n", "    movq %rax ,",offSetTemp,"(%rbp)");
                     }
                 }
@@ -206,8 +204,9 @@ void generateAsm(CIList *list, char path[], char machine[]){
                 int offSet2 = second->info->var.offset;
                 int offSetTemp = temp->info->var.offset;
                 fprintf(file,"%s%i%s\n", "    movq ",offSet1,"(%rbp), %rax");
-                fprintf(file,"%s\n",     "    movq $0, %rdx");
-                fprintf(file,"%s%i%s\n", "    idivq ",offSet2,"(%rbp)");
+                fprintf(file,"%s\n",     "    cqto");
+                fprintf(file, "%s%i%s\n", "    movq ",offSet2,"(%rbp), %rbx");
+                fprintf(file,"%s\n", "    idivq %rbx");
                 fprintf(file,"%s%i%s\n", "    movq %rax ,",offSetTemp,"(%rbp)");
                 /*
                 División sin signo %rdx:%rax por S
@@ -221,9 +220,9 @@ void generateAsm(CIList *list, char path[], char machine[]){
                     int op2 = second->info->cons.value;
                     int offSetTemp = temp->info->var.offset;
                     fprintf(file,"%s%i%s\n", "    movq $",op1,", %rax");
-                    fprintf(file,"%s\n",     "    movq $0, %rdx");
-                    fprintf(file,"%s%i%s\n", "    movq $",op2,", %r10");
-                    fprintf(file,"%s\n",     "    idivq %r10");
+                    fprintf(file,"%s\n",     "    cqto");
+                    fprintf(file,"%s%i%s\n", "    movq $",op2,", %rbx");
+                    fprintf(file,"%s\n",     "    idivq %rbx");
                     fprintf(file,"%s%i%s\n", "    movq %rax ,",offSetTemp,"(%rbp)");
                 }
                 else{
@@ -232,8 +231,9 @@ void generateAsm(CIList *list, char path[], char machine[]){
                         int offSet2 = second->info->var.offset;
                         int offSetTemp = temp->info->var.offset;
                         fprintf(file,"%s%i%s\n", "    movq $",op1,", %rax");
-                        fprintf(file,"%s\n",     "    movq $0, %rdx");
-                        fprintf(file,"%s%i%s\n", "    idivq ",offSet2,"(%rbp)");
+                        fprintf(file,"%s\n",     "    cqto");
+                        fprintf(file, "%s%i%s\n", "    movq ",offSet2,"(%rbp), %rbx");
+                        fprintf(file,"%s\n", "    idivq %rbx");
                         fprintf(file,"%s%i%s\n", "    movq %rax ,",offSetTemp,"(%rbp)");
 
                     }
@@ -242,9 +242,9 @@ void generateAsm(CIList *list, char path[], char machine[]){
                         int offSet1 = first->info->var.offset;
                         int offSetTemp = temp->info->var.offset;
                         fprintf(file,"%s%i%s\n", "    movq ",offSet1,"(%rbp), %rax");
-                        fprintf(file,"%s\n",     "    movq $0, %rdx");
-                        fprintf(file, "%s%i%s\n", "    movq $",op2,", %r10");
-                        fprintf(file,"%s\n",     "    idivq %r10");
+                        fprintf(file,"%s\n",     "    cqto");
+                        fprintf(file, "%s%i%s\n", "    movq $",op2,", %rbx");
+                        fprintf(file,"%s\n",     "    idivq %rbx");
                         fprintf(file,"%s%i%s\n", "    movq %rax ,",offSetTemp,"(%rbp)");
                     }
                 }
@@ -259,9 +259,10 @@ void generateAsm(CIList *list, char path[], char machine[]){
                 int offSet2 = second->info->var.offset;
                 int offSetTemp = temp->info->var.offset;
                 fprintf(file,"%s%i%s\n", "    movq ",offSet1,"(%rbp), %rax");
-                fprintf(file,"%s\n",     "    movq $0, %rdx");
-                fprintf(file,"%s%i%s\n", "    idivq ",offSet2,"(%rbp)");
-                fprintf(file,"%s%i%s\n", "    movq %rdx ,",offSetTemp,"(%rbp)");
+                fprintf(file,"%s\n",     "    cqto");
+                fprintf(file, "%s%i%s\n", "    movq ",offSet2,"(%rbp), %rbx");
+                fprintf(file,"%s\n", "    idivq %rbx");
+                fprintf(file,"%s%i%s\n", "    movq %rdx , ",offSetTemp,"(%rbp)");
             }
             if((first->tag != 0 && first->tag != 4) || (second->tag != 0 && second->tag != 4)){
                 if(first->tag == 1 && second->tag == 1){ //Ambos operandos son constantes
@@ -269,10 +270,10 @@ void generateAsm(CIList *list, char path[], char machine[]){
                     int op2 = second->info->cons.value;
                     int offSetTemp = temp->info->var.offset;
                     fprintf(file,"%s%i%s\n", "    movq $",op1,", %rax");
-                    fprintf(file,"%s\n", "    movq $0, %rdx");
-                    fprintf(file, "%s%i%s\n", "    movq $",op2,", %r10");
-                    fprintf(file,"%s\n", "    idivq %r10");
-                    fprintf(file,"%s%i%s\n", "    movq %rdx ,",offSetTemp,"(%rbp)");
+                    fprintf(file,"%s\n", "    cqto");
+                    fprintf(file, "%s%i%s\n", "    movq $",op2,", %rbx");
+                    fprintf(file,"%s\n", "    idivq %rbx");
+                    fprintf(file,"%s%i%s\n", "    movq %rdx , ",offSetTemp,"(%rbp)");
                 }
                 else{
                     if(first->tag != 0 && first->tag != 4){ //primer operando es una constante (puede ser funcion?)
@@ -280,9 +281,10 @@ void generateAsm(CIList *list, char path[], char machine[]){
                         int offSet2 = second->info->var.offset;
                         int offSetTemp = temp->info->var.offset;
                         fprintf(file,"%s%i%s\n", "    movq $",op1,", %rax");
-                        fprintf(file,"%s\n", "    movq $0, %rdx");
-                        fprintf(file,"%s%i%s\n", "    idivq ",offSet2,"(%rbp)");
-                        fprintf(file,"%s%i%s\n", "    movq %rdx ,",offSetTemp,"(%rbp)");
+                        fprintf(file,"%s\n", "    cqto");
+                        fprintf(file, "%s%i%s\n", "    movq ",offSet2,"(%rbp), %rbx");
+                        fprintf(file,"%s\n", "    idivq %rbx");
+                        fprintf(file,"%s%i%s\n", "    movq %rdx , ",offSetTemp,"(%rbp)");
 
                     }
                     else{ //segundo operando es una constante
@@ -290,10 +292,10 @@ void generateAsm(CIList *list, char path[], char machine[]){
                         int op2 = second->info->cons.value;
                         int offSetTemp = temp->info->var.offset;
                         fprintf(file, "%s%i%s\n", "    movq ",offSet1,"(%rbp), %rax");
-                        fprintf(file,"%s\n", "    movq $0, %rdx");
-                        fprintf(file, "%s%i%s\n", "    movq $",op2,", %r10");
-                        fprintf(file,"%s\n", "    idivq %r10");
-                        fprintf(file,"%s%i%s\n", "    movq %rdx ,",offSetTemp,"(%rbp)");
+                        fprintf(file,"%s\n", "    cqto");
+                        fprintf(file, "%s%i%s\n", "    movq $",op2,", %rbx");
+                        fprintf(file,"%s\n", "    idivq %rbx");
+                        fprintf(file,"%s%i%s\n", "    movq %rdx , ",offSetTemp,"(%rbp)");
                     }
                 }
             }
@@ -334,9 +336,8 @@ void generateAsm(CIList *list, char path[], char machine[]){
             }
 
      		fprintf(file,"%s\n",	"    setg	%cl");
-            fprintf(file, "%s\n", "    andb $1, %cl");
      		fprintf(file,"%s\n",	"    movzbq  %cl, %rax");
-     		fprintf(file,"%s%i%s\n","    movq  %rax,",offSetTemp,"(%rbp)");
+     		fprintf(file,"%s%i%s\n","    movq  %rax, ",offSetTemp,"(%rbp)");
         }
 
         if(strcmp(index->node->codOp, "MIN") == 0){
@@ -587,8 +588,13 @@ void generateAsm(CIList *list, char path[], char machine[]){
 
 
         if(strcmp(index->node->codOp, "IFF") == 0){
-	    	int cond = first->info->cons.value;
-	    	fprintf(file,"%s%i%s\n", "    movq $",cond,", %rax");
+            if (first->tag == 1){
+                int cond = first->info->cons.value;
+                fprintf(file,"%s%i%s\n", "    movq $",cond,", %rax");
+            }else{
+                int offsetRes = first->info->var.offset;
+	    	    fprintf(file, "%s%i%s\n", "    movq ",offsetRes,"(%rbp), %rax");
+            }
 	    	fprintf(file,"%s\n",     "    cmpq $0, %rax");
 	    	fprintf(file,"%s%s\n",   "    je ", second->info->var.id);
     	}

@@ -4,8 +4,8 @@
 
 int function2(){
     int x;
-    x = -1;
-    return -2 > x;
+    x = -3;
+    return x / -2;
 }
 int main(int argc, char const *argv[]) {
     printf("%i\n", function2());

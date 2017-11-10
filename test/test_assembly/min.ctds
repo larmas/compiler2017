@@ -6,7 +6,7 @@ Salida:
     1
     0
     1
-    0
+    1
     1
 
  */
@@ -31,7 +31,7 @@ boolean min_combo(){
 boolean min_negative(){
     int x;
     x = -2;
-    return 2 < x;
+    return x < 2;
 }
 
 boolean min_two_negative(){

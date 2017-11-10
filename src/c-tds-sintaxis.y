@@ -103,6 +103,7 @@ program:
                                             printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
                                             exit(1);
                                         }
+                                        showCIList(ciList);
                                         if (argv[1] != NULL)
                                             generateAsm(ciList, argv[0], argv[1]);
                                         else
@@ -115,6 +116,7 @@ program:
                                 printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
                                 exit(1);
                             }
+                            showCIList(ciList);
                             if (argv[1] != NULL)
                                 generateAsm(ciList, argv[0], argv[1]);
                             else

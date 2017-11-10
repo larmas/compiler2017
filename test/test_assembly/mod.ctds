@@ -30,14 +30,14 @@ int mod_combo(){
 
 int mod_var_negative(){
     int x;
-    x = 3;
-    return -4 % x;  // Debe dar 1 y da 0
+    x = -3;
+    return 4 % x;
 }
 
 int mod_var_negative_2(){
     int x;
     x = -4;
-    return x % -3; // Debe dar 1 y da 0
+    return x % -3;
 }
 
 void main(){

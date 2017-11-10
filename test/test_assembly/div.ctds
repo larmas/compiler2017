@@ -37,7 +37,7 @@ int div_negative(){
 int div_two_negative(){
     int x;
     x = -3;
-    return x / -2;  // Debe dar 1 y da 2
+    return x / -2;
 }
 
 void main(){

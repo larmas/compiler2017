@@ -8,6 +8,7 @@ Salida: 0=false 1=true
     0
     0
     0
+    1
 
  */
 
@@ -36,11 +37,18 @@ boolean and_combo(){
     return false && x;
 }
 
+boolean and_combo_2(){
+    boolean x;
+    x = true;
+    return x && true;
+}
+
 void main(){
     and_two_lit();
     and_two_lit_2();
     and_two_lit_3();
     and_two_var();
     and_combo();
+    and_combo_2();
     return ;
 }

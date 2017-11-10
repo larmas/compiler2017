@@ -32,7 +32,7 @@ int mult_combo(){
 int mult_negative(){
     int x;
     x = -2;
-    return 2 * x;
+    return x * 2;
 }
 
 int mult_two_negative(){

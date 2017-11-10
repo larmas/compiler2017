@@ -25,13 +25,13 @@ boolean min_two_var(){
 boolean min_combo(){
     int x;
     x = 4;
-    return 2 < x;   // Debe dar true y da false
+    return 2 < x;
 }
 
 boolean min_negative(){
     int x;
     x = -2;
-    return 2 < x;       // Debe dar false y da true
+    return 2 < x;
 }
 
 boolean min_two_negative(){

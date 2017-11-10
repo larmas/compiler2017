@@ -243,7 +243,8 @@ void generateAsm(CIList *list, char path[], char machine[]){
                         int offSetTemp = temp->info->var.offset;
                         fprintf(file,"%s%i%s\n", "    movq ",offSet1,"(%rbp), %rax");
                         fprintf(file,"%s\n",     "    movq $0, %rdx");
-                        fprintf(file,"%s%i\n",     "    idivq $",op2);
+                        fprintf(file, "%s%i%s\n", "    movq $",op2,", %r10");
+                        fprintf(file,"%s\n",     "    idivq %r10");
                         fprintf(file,"%s%i%s\n", "    movq %rax ,",offSetTemp,"(%rbp)");
                     }
                 }

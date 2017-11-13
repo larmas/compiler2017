@@ -1,9 +1,11 @@
 #!/bin/bash
 # -*- ENCODING: UTF-8 -*-
 
-#Script utilizado para eliminar todos los archivos de compilacion
-#Usage: Situado en la raiz del proyecto correr el comando..
-# $ ./script/clear.sh
+# Script utilizado para eliminar todos los archivos de compilacion y los archivos
+# de codigo assembler en /assembly.
+#Uso:
+#   Situado en la raiz del proyecto correr el comando..
+#   $ ./script/clear.sh
 
 RESET='\033[0m'
 GREEN='\033[0;32m'
@@ -38,5 +40,20 @@ do
         esac
 
 done
+cd ../assembly
+for i in $( ls )
+do
+    case $i in
+        *.s)
+            rm $i
+            ;;
+        *)
+            if [[ -x "$i" ]]; then
+                rm $i
+            fi
+            ;;
+        esac
+done
+
 
 echo -e "${GREEN}Clean directory ✔︎${RESET}"

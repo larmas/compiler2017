@@ -1,0 +1,13 @@
+int factorial(int n) {
+    int r;
+    if (n == 1){
+        return 1;
+    }
+    r = n*factorial( n-1 ) ;
+    return ( r ) ;
+}
+
+void main(){
+    factorial(2);
+    return ;
+}

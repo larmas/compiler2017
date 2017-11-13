@@ -1,9 +1,10 @@
 #!/bin/bash
 # -*- ENCODING: UTF-8 -*-
 
-#Script utilizado para compilar el proyecto
-#Usage: Situado en la raiz del proyecto correr el comando..
-# $ ./script/compile.sh
+# Script utilizado para compilar el proyecto
+# Uso:
+#   Situado en la raiz del proyecto correr el comando..
+#   $ ./script/compile.sh
 
 RESET='\033[0m'
 BOLD='\033[1m'

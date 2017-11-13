@@ -316,27 +316,14 @@ Node *generateIC(Node *root){
                 par = par->next;
                 pos++;
             }
-            int countParam = 0;
-            int offsetParam = 16;
+
             while(list_aux != NULL){
-                if (countParam<6){
-                    setOffset(list_aux->node->firstOp, offsetParam);
-                    offsetParam += 8;
-                }else{
-                    setOffset(list_aux->node->firstOp, offsetCount-8);
-                    offsetCount -= 8;
-                }
-                countParam ++;
+
                 ciList = insertLastCI(ciList,list_aux->node);
                 list_aux = list_aux->next;
             }
-            /*
             List *index = root->mid->info->func.param;
-            while (index != NULL){
-                printf("%s%s%s%i\n","Offset param ",index->node->info->var.id,": ",index->node->info->var.offset);
-                index = index->next;
-            }
-            */
+            
             char tempId[20];
             char aux[20];
             sprintf(aux,"%d",tempCount);

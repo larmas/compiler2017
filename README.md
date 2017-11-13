@@ -21,6 +21,8 @@ ____
  `./script/runTestSemantico.sh`
 * *Si quiere correr casos de test para codigo intermedio:*\
  `./script/runTestCodeInter.sh`
+* *Si quiere correr casos de test para generacion de codigo assembler:*\
+  `./script/runTestAssembly.sh`
 * *Si quiere correr un archivo unico:*\
  `./script/ctds.sh <nombre_del_archivo>`
 

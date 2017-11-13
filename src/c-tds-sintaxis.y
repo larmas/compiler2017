@@ -103,7 +103,7 @@ program:
                                             printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
                                             exit(1);
                                         }
-                                        showCIList(ciList);
+                                        //showCIList(ciList);
                                         if (argv[1] != NULL)
                                             generateAsm(ciList, argv[0], argv[1]);
                                         else
@@ -116,7 +116,7 @@ program:
                                 printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
                                 exit(1);
                             }
-                            showCIList(ciList);
+                            //showCIList(ciList);
                             if (argv[1] != NULL)
                                 generateAsm(ciList, argv[0], argv[1]);
                             else
@@ -255,6 +255,18 @@ method_aux2:
         tds = pushNewLevel(tds);
     } TypeID    {
                     $$ = $2;
+                    List *index = $2;
+                    while (index != NULL ){
+                        setOffset(index->node, offsetCount-8);
+                        offsetCount -= 8;
+                        index = index->next;
+                    }
+                    List *aux = $2;
+                    printf("PARAMETROS FUNC:\n" );
+                    while (aux != NULL){
+                        printf("%s%s%s%i\n","Offset param ",aux->node->info->var.id,": ",aux->node->info->var.offset);
+                        aux = aux->next;
+                    }
                 }
 ;
 

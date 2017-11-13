@@ -17,7 +17,8 @@ MACHINE=""
 
 cd src/
 
-DIR=../test/test_assembly
+DIR_TEST=../test/test_assembly
+DIR_ASM=../assembly
 
 printf "Si al correr los test usted puede ver un mensaje de color ${RED}${BOLD}rojo${RESET} "
 printf "significa que alguno de sus test falló,\nsi no ve ningun mensaje sus test "
@@ -35,9 +36,9 @@ case "$UNAME" in
     *)          MACHINE="UNKNOWN:$UNAME"
 esac
 
-for i in $(ls $DIR)
+for i in $(ls $DIR_TEST)
 do
     printf "\n"
     echo -e "${GREEN}${BOLD}In file: ${RESET}${GREEN}'"$i"'${RESET}"
-    ./run.out $DIR/$i $MACHINE
+    ./run.out $DIR_TEST/$i $MACHINE
 done

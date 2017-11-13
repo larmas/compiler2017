@@ -254,19 +254,13 @@ method_aux2:
     {
         tds = pushNewLevel(tds);
     } TypeID    {
-                    $$ = $2;
                     List *index = $2;
                     while (index != NULL ){
                         setOffset(index->node, offsetCount-8);
                         offsetCount -= 8;
                         index = index->next;
                     }
-                    List *aux = $2;
-                    printf("PARAMETROS FUNC:\n" );
-                    while (aux != NULL){
-                        printf("%s%s%s%i\n","Offset param ",aux->node->info->var.id,": ",aux->node->info->var.offset);
-                        aux = aux->next;
-                    }
+                    $$ = $2;
                 }
 ;
 
@@ -447,7 +441,7 @@ expr:
                     $$ = $1;
                 }
 
-    | expr MAS expr     {   
+    | expr MAS expr     {
                             if($1->tag == 1 && $3->tag == 1){
                                 int value = $1->info->cons.value + $3->info->cons.value;
                                 Node *root = newConst(0, value, $2->noLine);
@@ -456,7 +450,7 @@ expr:
                                 Node *root = newOp("+", 0, $2->noLine);
                                 insertTree(root, $1, $3, NULL);
                                 $$ = root;
-                            }    
+                            }
                         }
 
     | expr MULT expr    {
@@ -464,11 +458,11 @@ expr:
                                 int value = $1->info->cons.value * $3->info->cons.value;
                                 Node *root = newConst(0, value, $2->noLine);
                                 $$ = root;
-                            }else{        
+                            }else{
                                 Node *root = newOp("*", 0, $2->noLine);
                                 insertTree(root, $1, $3, NULL);
                                 $$ = root;
-                            }    
+                            }
                         }
 
     | expr MENOS expr   {
@@ -476,11 +470,11 @@ expr:
                                 int value = $1->info->cons.value - $3->info->cons.value;
                                 Node *root = newConst(0, value, $2->noLine);
                                 $$ = root;
-                            }else{        
+                            }else{
                                 Node *root = newOp("-", 0, $2->noLine);
                                 insertTree(root, $1, $3, NULL);
                                 $$ = root;
-                            }    
+                            }
                         }
 
     | expr DIV expr     {
@@ -488,11 +482,11 @@ expr:
                                 int value = $1->info->cons.value / $3->info->cons.value;
                                 Node *root = newConst(0, value, $2->noLine);
                                 $$ = root;
-                            }else{        
+                            }else{
                                 Node *root = newOp("/", 0, $2->noLine);
                                 insertTree(root, $1, $3, NULL);
                                 $$ = root;
-                            }    
+                            }
                         }
 
     | expr MOD expr     {
@@ -500,11 +494,11 @@ expr:
                                 int value = $1->info->cons.value % $3->info->cons.value;
                                 Node *root = newConst(0, value, $2->noLine);
                                 $$ = root;
-                            }else{        
+                            }else{
                                 Node *root = newOp("%", 0, $2->noLine);
                                 insertTree(root, $1, $3, NULL);
                                 $$ = root;
-                            }    
+                            }
                         }
 
     | expr MENOR expr   {
@@ -512,11 +506,11 @@ expr:
                                 int value = $1->info->cons.value < $3->info->cons.value;
                                 Node *root = newConst(1, value, $2->noLine);
                                 $$ = root;
-                            }else{        
+                            }else{
                                 Node *root = newOp("<", 1, $2->noLine);
                                 insertTree(root, $1, $3, NULL);
                                 $$ = root;
-                            }    
+                            }
                         }
 
     | expr MAYOR expr   {
@@ -524,11 +518,11 @@ expr:
                                 int value = $1->info->cons.value > $3->info->cons.value;
                                 Node *root = newConst(1, value, $2->noLine);
                                 $$ = root;
-                            }else{        
+                            }else{
                                 Node *root = newOp(">", 1, $2->noLine);
                                 insertTree(root, $1, $3, NULL);
                                 $$ = root;
-                            }    
+                            }
                         }
 
     | expr OR expr      {
@@ -536,11 +530,11 @@ expr:
                                 int value = $1->info->cons.value || $3->info->cons.value;
                                 Node *root = newConst(1, value, $2->noLine);
                                 $$ = root;
-                            }else{        
+                            }else{
                                 Node *root = newOp("||", 1, $2->noLine);
                                 insertTree(root, $1, $3, NULL);
                                 $$ = root;
-                            }    
+                            }
                         }
 
     | expr AND expr     {
@@ -548,11 +542,11 @@ expr:
                                 int value = $1->info->cons.value && $3->info->cons.value;
                                 Node *root = newConst(1, value, $2->noLine);
                                 $$ = root;
-                            }else{        
+                            }else{
                                 Node *root = newOp("&&", 1, $2->noLine);
                                 insertTree(root, $1, $3, NULL);
                                 $$ = root;
-                            }    
+                            }
                         }
 
     | expr IGUAL expr   {
@@ -560,11 +554,11 @@ expr:
                                 int value = $1->info->cons.value == $3->info->cons.value;
                                 Node *root = newConst(1, value, $2->noLine);
                                 $$ = root;
-                            }else{        
+                            }else{
                                 Node *root = newOp("==", 1, $2->noLine);
                                 insertTree(root, $1, $3, NULL);
                                 $$ = root;
-                            }   
+                            }
                         }
 
     | MENOS expr %prec UMINUS   {
@@ -576,7 +570,7 @@ expr:
                                         Node *root = newOp("negativo", 0, $1->noLine);
                                         insertTree(root, $2, NULL, NULL);
                                         $$ = root;
-                                    }    
+                                    }
                                 }
 
     | NOT expr %prec UMINUS     {
@@ -584,11 +578,11 @@ expr:
                                         int value = !($2->info->cons.value);
                                         Node *root = newConst(1, value, $1->noLine);
                                         $$ = root;
-                                    }else{    
+                                    }else{
                                         Node *root = newOp("!", 1, $1->noLine);
                                         insertTree(root, $2, NULL, NULL);
                                         $$ = root;
-                                    }    
+                                    }
 
                                 }
     | '('expr')'    {

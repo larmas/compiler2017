@@ -578,10 +578,17 @@ void generateAsm(CIList *list, char path[], char machine[]){
                 case 0:
                 	offSet= temp->info->var.offset;
                 	fprintf(file,"%s%i%s\n\n", "    movq ",offSet,"(%rbp), %rax");
-                    fprintf(file, "%s\n",      "    leaq L_.str(%rip), %rdi");
-                    fprintf(file, "%s\n",      "    movq %rax, %rsi");
-                    fprintf(file, "%s\n",      "    movb $0, %al");
-                    fprintf(file, "%s\n\n",    "    callq _printf");
+                    if ( strcmp(machine, "Mac") == 0 ){
+                        fprintf(file, "%s\n",   "    leaq L_.str(%rip), %rdi");
+                        fprintf(file, "%s\n",   "    movq %rax, %rsi");
+                        fprintf(file, "%s\n",   "    movb $0, %al");
+                        fprintf(file, "%s\n\n", "    callq _printf");
+                    } else {
+                    	fprintf(file, "%s\n", "    movq	%rax, %rsi");
+                    	fprintf(file, "%s\n", "    movq	$.LC0, %rdi");
+                    	fprintf(file, "%s\n", "    movq	$0, %rax");
+                    	fprintf(file, "%s\n", "    call	printf");	
+                    }
                 	fprintf(file, "%s\n",      "    leave");
             		fprintf(file, "%s\n",      "    ret");
             		fprintf(file, "\n" );
@@ -589,10 +596,17 @@ void generateAsm(CIList *list, char path[], char machine[]){
                 case 1:
                     aux = temp->info->cons.value;
                     fprintf(file,"%s%i%s\n\n", "    movq $",aux,", %rax");
-                    fprintf(file, "%s\n",      "    leaq L_.str(%rip), %rdi");
-                    fprintf(file, "%s\n",      "    movq %rax, %rsi");
-                    fprintf(file, "%s\n",      "    movb $0, %al");
-                    fprintf(file, "%s\n\n",    "    callq _printf");
+                    if ( strcmp(machine, "Mac") == 0 ){
+                        fprintf(file, "%s\n",   "    leaq L_.str(%rip), %rdi");
+                        fprintf(file, "%s\n",   "    movq %rax, %rsi");
+                        fprintf(file, "%s\n",   "    movb $0, %al");
+                        fprintf(file, "%s\n\n", "    callq _printf");
+                    } else {
+                    	fprintf(file, "%s\n", "    movq	%rax, %rsi");
+                    	fprintf(file, "%s\n", "    movq	$.LC0, %rdi");
+                    	fprintf(file, "%s\n", "    movq	$0, %rax");
+                    	fprintf(file, "%s\n", "    call	printf");	
+                    }
                     fprintf(file, "%s\n",      "    leave");
             		fprintf(file, "%s\n",      "    ret");
             		fprintf(file, "\n" );
@@ -606,9 +620,9 @@ void generateAsm(CIList *list, char path[], char machine[]){
                         fprintf(file, "%s\n",   "    movb $0, %al");
                         fprintf(file, "%s\n\n", "    callq _printf");
                     } else {
-                    	fprintf(file, "%s\n", "    movl	%eax, %esi");
-                    	fprintf(file, "%s\n", "    movl	$.LC0, %edi");
-                    	fprintf(file, "%s\n", "    movl	$0, %eax");
+                    	fprintf(file, "%s\n", "    movq	%rax, %rsi");
+                    	fprintf(file, "%s\n", "    movq	$.LC0, %rdi");
+                    	fprintf(file, "%s\n", "    movq	$0, %rax");
                     	fprintf(file, "%s\n", "    call	printf");	
                     }
                 	fprintf(file, "%s\n", "    leave");
@@ -752,8 +766,8 @@ void generateAsm(CIList *list, char path[], char machine[]){
         fprintf(file, "%s\n", "L_.str:");
         fprintf(file, "%s\n", "    .asciz	\"%i\\n\"");
     } else {
-    	fprintf(file, "%s\n", "LC0:");
-    	fprintf(file, "%s\n", "    .string	\"%d\n\"");
+    	fprintf(file, "%s\n", ".LC0:");
+    	fprintf(file, "%s\n", "    .string	\"%d\\n\"");
     }
     fclose(file);
 }

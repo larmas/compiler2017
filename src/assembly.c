@@ -62,7 +62,39 @@ void generateAsm(CIList *list, char path[], char machine[]){
                 aux += 8;
             }
             fprintf(file, "%s%i%s\n", "    enter $", aux, ", $0");
+
+            if(strcmp(first->info->func.id, "main") != 0){
+				int longParam = longList(first->info->func.param);
+				List *param = first->info->func.param;
+				for (int i = 0; i < longParam; ++i){
+					int offSet = param->node->info->var.offset;
+		            switch (i) {
+		                case 0:
+		                    fprintf(file,"%s%i%s\n","    movq %rdi, ",offSet,"(%rbp)");
+		                    break;
+		                case 1:
+		                    fprintf(file,"%s%i%s\n","    movq %rsi, ",offSet,"(%rbp)");
+		                    break;
+		                case 2:
+		                    fprintf(file,"%s%i%s\n","    movq %rdx, ",offSet,"(%rbp)");
+		                    break;
+		                case 3:
+		                    fprintf(file,"%s%i%s\n","    movq %rcx, ",offSet,"(%rbp)");
+		                    break;
+		                case 4:
+		                    fprintf(file,"%s%i%s\n","    movq %r8, ",offSet,"(%rbp)");
+		                    break;
+		                case 5:
+		                    fprintf(file,"%s%i%s\n","    movq %r9, ",offSet,"(%rbp)");
+		                    break;
+		                default:
+		                    break;
+		            }
+		            param = param->next;
+	            }
+	        }
         }
+
         if(strcmp(index->node->codOp, "END") == 0){
             //NO SE DEBE HACER NADA
         }

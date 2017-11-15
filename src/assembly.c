@@ -544,6 +544,7 @@ void generateAsm(CIList *list, char path[], char machine[]){
                     	fprintf(file, "%s\n", "    movq	$0, %rax");
                     	fprintf(file, "%s\n", "    call	printf");
                     }
+                    fprintf(file,"%s%i%s\n\n", "    movq ",offSet,"(%rbp), %rax");
                 	fprintf(file, "%s\n", "    leave");
             		fprintf(file, "%s\n", "    ret");
             		fprintf(file, "\n" );
@@ -562,6 +563,7 @@ void generateAsm(CIList *list, char path[], char machine[]){
                     	fprintf(file, "%s\n", "    movq	$0, %rax");
                     	fprintf(file, "%s\n", "    call	printf");
                     }
+                    fprintf(file,"%s%i%s\n\n", "    movq $",aux,", %rax");
                     fprintf(file, "%s\n", "    leave");
             		fprintf(file, "%s\n", "    ret");
             		fprintf(file, "\n" );
@@ -580,6 +582,7 @@ void generateAsm(CIList *list, char path[], char machine[]){
                     	fprintf(file, "%s\n", "    movq	$0, %rax");
                     	fprintf(file, "%s\n", "    call	printf");
                     }
+                    fprintf(file,"%s%i%s\n\n", "    movq ",offSet,"(%rbp), %rax");
                 	fprintf(file, "%s\n", "    leave");
             		fprintf(file, "%s\n", "    ret");
             		fprintf(file, "\n" );
@@ -695,7 +698,7 @@ void generateAsm(CIList *list, char path[], char machine[]){
             if ( temp != NULL){
                 int offsetTemp = temp->info->var.offset;
         		fprintf(file,"%s%s\n", "    call ",first->info->func.id);
-                fprintf(file, "%s%i%s\n", "    movq ",offsetTemp,"(%rbp), %rax");
+                fprintf(file, "%s%i%s\n", "    movq %rax, ",offsetTemp,"(%rbp) ");
             } else {
                 fprintf(file,"%s%s\n", "    call ",first->info->func.id);
             }

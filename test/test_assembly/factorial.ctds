@@ -3,11 +3,11 @@ int factorial(int n) {
     if (n == 1){
         return 1;
     }
-    r = n*factorial( n-1 ) ;
-    return ( r ) ;
+    r = n * factorial( n-1 );
+    return r;
 }
 
 void main(){
-    factorial(2);
+    factorial(4);
     return ;
 }

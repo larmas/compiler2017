@@ -38,3 +38,5 @@ ____
 ____
 ##### Situado en la raíz del proyecto ejecute el siguiente comando: #####
 * `./script/clear.sh`
+##### IMPORTANTE:
+###### Este comando eliminará todos aquellos archivos con extension `.s` y tambien todos los ejecutables, tanto en el directorio `/src` como en el directorio `/assembly`.

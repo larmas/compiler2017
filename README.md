@@ -23,11 +23,15 @@ ____
  `./script/runTestCodeInter.sh`
 * *Si quiere correr casos de test para generacion de codigo assembler:*\
   `./script/runTestAssembly.sh`
-* *Si quiere correr un archivo unico:*\
+* *Si quiere compilar un archivo unico:*\
  `./script/ctds.sh <nombre_del_archivo>`
 
 ##### IMPORTANTE:
 ###### Para correr un archivo unico, el mismo debe estar ubicado en la carpeta test/test_assembly y en el comando se debe pasar el nombre del archivo sin el path.
+###### Luego de compilar un archivo único, tendremos como resultado un archivo que
+contiene el codigo assembler y un ejecutable, ambos ubicados en la carpeta /assembly
+y con el mismo nombre del archivo que se compiló.
+
 
 ### Como eliminar archivos generados en la etapa de compilación? ###
 ____

@@ -5,9 +5,9 @@
 # Uso:
 #   Situado en la raiz del proyecto correr el comando...
 #   $ ./script/ctds.sh <archivo.ctds>
-#   El archivo a correr debe estar en la carpeta test/test_assembly y el archivo
-#   que contiene el codigo assembler correspondiente al caso de test estará
-#   ubicado en el directorio /assembly.
+#   El archivo a correr debe estar en la carpeta test/test_assembly y, tanto
+#   el archivo que contiene el codigo assembler correspondiente al caso de test
+#   como su ejecutable, estará ubicado en el directorio /assembly.
 
 RESET='\033[0m'
 BOLD='\033[1m'
@@ -22,13 +22,9 @@ cd test/test_assembly
 DIR_SRC=../../src
 DIR_TEST=../test/test_assembly
 DIR_ASM=../assembly
-UNAME="$( uname -s )"
-MACHINE=""
-NAME=""
-RUN=" "
 FLAG=false
 
-case "$UNAME" in
+case "$( uname -s )" in
     Linux*)     MACHINE=Linux;;
     Darwin*)    MACHINE=Mac;;
     *)          MACHINE="UNKNOWN:$UNAME"
@@ -38,16 +34,23 @@ for i in $( ls )
 do
     if [ $i = $1 ]; then
         cd $DIR_SRC
-        RUN=`./run.out $DIR_TEST/$i $MACHINE`
-        if [[ $RUN != "" ]]; then
+        RUN_ASM=$( ./run.out $DIR_TEST/$i $MACHINE )
+        NAME=${i%.*}
+        if [ "$RUN_ASM" != "" ]; then
             printf "\n"
             echo -e "${CYAN}IN FILE: $i ${RESET}"
-            echo -e "${RED} $RUN ${RESET}"
+            echo -e "${RED} $RUN_ASM ${RESET}"
         else
-            echo -e "${GREEN}OK!! ${RESET}"
+            RUN_EXE= $( gcc -o $NAME $NAME".s" )
+            if [ "$RUN_EXE" != "" ]; then
+                echo -e "${CYAN}IN FILE: $NAME".s" ${RESET}"
+                echo -e "${RED} $RUN_EXE ${RESET}"
+            else
+                echo -e "${GREEN}OK!! ${RESET}"
+            fi
         fi
-        NAME=${i%.*}
         mv $NAME".s" $DIR_ASM
+        mv $NAME $DIR_ASM
         FLAG=true
     fi
 done

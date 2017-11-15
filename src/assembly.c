@@ -59,6 +59,7 @@ void generateAsm(CIList *list, char path[], char machine[]){
                 fprintf(file, "%s%s\n", "    .globl ",str);
                 strcat(str, ":");
             }
+
             fprintf(file, "%s\n",str);
             int aux = abs(first->info->func.offset);
             while( (aux % 16) != 0){

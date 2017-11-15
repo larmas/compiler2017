@@ -28,9 +28,7 @@ ____
 
 ##### IMPORTANTE:
 ###### Para correr un archivo unico, el mismo debe estar ubicado en la carpeta test/test_assembly y en el comando se debe pasar el nombre del archivo sin el path.
-###### Luego de compilar un archivo único, tendremos como resultado un archivo que
-contiene el codigo assembler y un ejecutable, ambos ubicados en la carpeta /assembly
-y con el mismo nombre del archivo que se compiló.
+###### Luego de compilar un archivo único, tendremos como resultado un archivo que contiene el codigo assembler y un ejecutable, ambos ubicados en la carpeta /assembly y con el mismo nombre del archivo que se compiló.
 
 
 ### Como eliminar archivos generados en la etapa de compilación? ###

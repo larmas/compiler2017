@@ -25,21 +25,24 @@ typedef struct ciList{
 }CIList;
 
 /*PROTOTIPOS*/
-// Inicializa una lista de codigo de 3 direcciones.
 CIList *newCIList(CIList *l);
-// Inicializa un nodo que representa un codigo de 3 direcciones.
 NodeCI *newNodeCI(char _codOp[], Node *_firstOp, Node *_secondOp, Node *_temp);
-// Inserta un elemento al final de la lista.
 CIList *insertLastCI(CIList *l, NodeCI *_node);
-// Muestra por pantalla una lista.
+void showCiNode(Node *a);
 void showCIList(CIList *l);
 
+/**
+ * Inicializa una lista de codigo de 3 direcciones en NULL.
+ */
 CIList *newCIList(CIList *l) {
     l = (CIList *) malloc(sizeof(CIList));
     l = NULL;
     return l;
 }
 
+/**
+ * Inicializa un nodo que representa un codigo de 3 direcciones.
+ */
 NodeCI *newNodeCI(char _codOp[], Node *_firstOp, Node *_secondOp, Node *_temp){
     NodeCI *new = (NodeCI *)malloc(sizeof(NodeCI));
     strcpy(new->codOp, _codOp);
@@ -49,6 +52,9 @@ NodeCI *newNodeCI(char _codOp[], Node *_firstOp, Node *_secondOp, Node *_temp){
     return new;
 }
 
+/**
+ * Inserta un elemento al final de la lista.
+ */
 CIList *insertLastCI(CIList *l, NodeCI *_node){
     if(l != NULL){
     	CIList *p,*q;
@@ -70,6 +76,9 @@ CIList *insertLastCI(CIList *l, NodeCI *_node){
     return l;
 }
 
+/**
+ * Muestra por pantalla un nodo que representa un codigo de tres direcciones.
+ */
 void showCiNode(Node *a){
     switch ( a->tag ) {
     case 0:
@@ -77,7 +86,6 @@ void showCiNode(Node *a){
             printf(" %s ",a->info->var.id);
         }
         break;
-
     case 1:
         if(a != NULL){
             if (a->type == 0){
@@ -107,10 +115,13 @@ void showCiNode(Node *a){
         }
         break;
     default:
-        printf(" LISTA VACIA ");
+        break;
     }
 }
 
+/**
+ * Muestra por pantalla una lista de codigo intermedio.
+ */
 void showCIList(CIList *l){
     CIList *p;
     p = l;

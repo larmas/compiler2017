@@ -84,7 +84,7 @@ digit [0-9]
                 return VOID;
             }
 
-"while"     {//Prueba de token con numero de linea
+"while"     {
                 yylval.tokenLine = (TokenLine *)malloc(sizeof(TokenLine));
                 strcpy(yylval.tokenLine->id, "WHILE");
                 yylval.tokenLine->noLine = yylineno;
@@ -183,9 +183,6 @@ digit [0-9]
                         strcpy(yylval.tokenLine->id,yytext);
                         yylval.tokenLine->noLine = yylineno;
                         return INT_LITERAL;
-
-                        //yylval.i = atoi(yytext);
-                        //return INT_LITERAL;
                     }
 
 
@@ -198,7 +195,6 @@ digit [0-9]
                                 }
 
 [;,(){}]    {
-                //printf("%s\n",yytext);
                 return *yytext;
             }
 (\n|\t|" ")*    {
@@ -212,7 +208,7 @@ digit [0-9]
 <comment>\n
 <comment>"*"+"/"    BEGIN(INITIAL);
 
-"//".*\n  ; /* Ignore rest of line */
+"//".*\n  ;
 
 .       {
             printf("%s%s%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Simbolo no valido ",yytext,". Linea: ",yylineno);

@@ -92,7 +92,6 @@ initial:
         tds = newStack(tds);
         ciList = newCIList(ciList);
         offsetCount = 0;
-
     } program
 ;
 
@@ -103,7 +102,6 @@ program:
                                             printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
                                             exit(1);
                                         }
-                                        //showCIList(ciList);
                                         if (argv[1] != NULL)
                                             generateAsm(ciList, argv[0], argv[1]);
                                         else
@@ -116,7 +114,6 @@ program:
                                 printf("%s\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Metodo main no existe.");
                                 exit(1);
                             }
-                            //showCIList(ciList);
                             if (argv[1] != NULL)
                                 generateAsm(ciList, argv[0], argv[1]);
                             else
@@ -440,7 +437,6 @@ expr:
     | literal   {
                     $$ = $1;
                 }
-
     | expr MAS expr     {
                             if($1->tag == 1 && $3->tag == 1){
                                 int value = $1->info->cons.value + $3->info->cons.value;
@@ -452,7 +448,6 @@ expr:
                                 $$ = root;
                             }
                         }
-
     | expr MULT expr    {
                             if($1->tag == 1 && $3->tag == 1){
                                 int value = $1->info->cons.value * $3->info->cons.value;
@@ -464,7 +459,6 @@ expr:
                                 $$ = root;
                             }
                         }
-
     | expr MENOS expr   {
                             if($1->tag == 1 && $3->tag == 1){
                                 int value = $1->info->cons.value - $3->info->cons.value;
@@ -476,7 +470,6 @@ expr:
                                 $$ = root;
                             }
                         }
-
     | expr DIV expr     {
                             if($1->tag == 1 && $3->tag == 1){
                                 int value = $1->info->cons.value / $3->info->cons.value;
@@ -488,7 +481,6 @@ expr:
                                 $$ = root;
                             }
                         }
-
     | expr MOD expr     {
                             if($1->tag == 1 && $3->tag == 1){
                                 int value = $1->info->cons.value % $3->info->cons.value;
@@ -500,7 +492,6 @@ expr:
                                 $$ = root;
                             }
                         }
-
     | expr MENOR expr   {
                             if($1->tag == 1 && $3->tag == 1){
                                 int value = $1->info->cons.value < $3->info->cons.value;
@@ -512,7 +503,6 @@ expr:
                                 $$ = root;
                             }
                         }
-
     | expr MAYOR expr   {
                             if($1->tag == 1 && $3->tag == 1){
                                 int value = $1->info->cons.value > $3->info->cons.value;
@@ -524,7 +514,6 @@ expr:
                                 $$ = root;
                             }
                         }
-
     | expr OR expr      {
                             if($1->tag == 1 && $3->tag == 1){
                                 int value = $1->info->cons.value || $3->info->cons.value;
@@ -536,7 +525,6 @@ expr:
                                 $$ = root;
                             }
                         }
-
     | expr AND expr     {
                             if($1->tag == 1 && $3->tag == 1){
                                 int value = $1->info->cons.value && $3->info->cons.value;
@@ -548,7 +536,6 @@ expr:
                                 $$ = root;
                             }
                         }
-
     | expr IGUAL expr   {
                             if($1->tag == 1 && $3->tag == 1){
                                 int value = $1->info->cons.value == $3->info->cons.value;
@@ -560,7 +547,6 @@ expr:
                                 $$ = root;
                             }
                         }
-
     | MENOS expr %prec UMINUS   {
                                     if($2->tag == 1){
                                         int value = -1*($2->info->cons.value);
@@ -572,7 +558,6 @@ expr:
                                         $$ = root;
                                     }
                                 }
-
     | NOT expr %prec UMINUS     {
                                     if($2->tag == 1){
                                         int value = !($2->info->cons.value);
@@ -583,7 +568,6 @@ expr:
                                         insertTree(root, $2, NULL, NULL);
                                         $$ = root;
                                     }
-
                                 }
     | '('expr')'    {
                         $$ = $2;
@@ -614,6 +598,9 @@ bool_literal:
 
 
 %%
+/**
+ * Metodo utilizado para chequear los tipos de una condicion booleana.
+ */
 void checkBoolCondition(Node *root){
     if ( root->type != 1){
         printf("%s%i\n", COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
@@ -621,9 +608,18 @@ void checkBoolCondition(Node *root){
     }
 }
 
+/**
+ *  Metodo recursivo que realiza el chequeo de tipos de un AST.
+ *  Si en algun nodo del AST aparecen inconsistencias en tipos o cantidad y tipos
+ *  parametros de una funcion, el metodo interrumpe la recursión con un mensaje
+ *  de error, en caso contrario, la recursión cubrira todos los nodos del AST
+ *  y en este caso el chequeo de tipos será correcto.
+ *  Tags utilizados durante la ejecución:
+ *      tag = 2 -> Operador
+ */
 void checkType(Node * root){
     if(root != NULL){
-    	if(root->tag == 2){ // es operador
+    	if(root->tag == 2){
     		if(strcmp(root->info->op.id, "=") == 0){
     			if(root->left->type != root->mid->type){
     				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
@@ -631,6 +627,7 @@ void checkType(Node * root){
     			}
     			checkType(root->mid);
     		}
+
     		if(strcmp(root->info->op.id, "function") == 0){
                 if( (root->mid != NULL)&&(root->left->info->func.param != NULL) ){ // ninguno es null
                     if ( longList(root->left->info->func.param) == longList(root->mid->info->func.param) ){    // tienen la misma cantidad de param
@@ -640,51 +637,57 @@ void checkType(Node * root){
         					if(a_param->node->type != b_param->node->type){
         						printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos de parametros incompatibles. Linea: ",root->noline);
         	        			exit(1);
-        					}else{
+        					} else {
         						a_param = a_param->next;
         						b_param = b_param->next;
         					}
         				}
-        			}else{
+        			} else {
         				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Cantidad de parametros incorrecta. Linea: ",root->noline);
         	        	exit(1);
         			}
-        		}else{
+        		} else {
         				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Cantidad de parametros incorrecta. Linea: ",root->noline);
         	        	exit(1);
         		}
     		}
+
     		if(strcmp(root->info->op.id, "functionVoid") == 0){
     			if( (root->mid != NULL)||(root->left->info->func.param != NULL) ){  // alguno no es null
                 		printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos de parametros incompatibles. Linea: ",root->noline);
         	        	exit(1);
                 }
             }
+
     		if(strcmp(root->info->op.id, "if") == 0){
                 checkBoolCondition(root->left);
     			checkType(root->left);
     			checkType(root->mid);
     		}
+
     		if(strcmp(root->info->op.id, "ifElse") == 0){
                 checkBoolCondition(root->left);
     			checkType(root->left);
     			checkType(root->mid);
     			checkType(root->right);
     		}
+
     		if(strcmp(root->info->op.id, "while") == 0){
                 checkBoolCondition(root->left);
     			checkType(root->left);
     			checkType(root->mid);
     		}
+
     		if(strcmp(root->info->op.id, "return") == 0){
                 countReturn++;
                 if(root->type == typeRet){
                     checkType(root->left);
-                }else{
+                } else {
                     printf("%s%i\n", COLOR_RED"[ERROR]"COLOR_MAGENTA" Valor de retorno incorrecto. Linea: ",root->noline);
                     exit(1);
                 }
     		}
+
     		if(strcmp(root->info->op.id, "returnVoid") == 0){
                 countReturn++;
                 if(root->type != typeRet){
@@ -692,6 +695,7 @@ void checkType(Node * root){
                     exit(1);
                 }
     		}
+
             if(strcmp(root->info->op.id, "+") == 0 ||
                strcmp(root->info->op.id, "*") == 0 ||
                strcmp(root->info->op.id, "-") == 0 ||
@@ -701,11 +705,12 @@ void checkType(Node * root){
     			if(root->left->type == root->mid->type){
     				checkType(root->left);
     				checkType(root->mid);
-    			}else{
+    			} else {
     				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
     	            exit(1);
     			}
             }
+
             if(strcmp(root->info->op.id, "&&") == 0 ||
                strcmp(root->info->op.id, "||") == 0 ||
                strcmp(root->info->op.id, "==") == 0 )
@@ -713,28 +718,31 @@ void checkType(Node * root){
             	if(root->left->type == root->mid->type){
     				checkType(root->left);
     				checkType(root->mid);
-    			}else{
+    			} else {
     				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
     	            exit(1);
     			}
             }
+
     		if(strcmp(root->info->op.id, ">") == 0 || strcmp(root->info->op.id,"<") == 0){
     			if(root->left->type == 0 && root->mid->type == 0){
     				checkType(root->left);
     				checkType(root->mid);
-    			}else{
+    			} else {
     				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
     	            exit(1);
     			}
     		}
+
     		if(strcmp(root->info->op.id, "!") == 0 || strcmp(root->info->op.id,"negativo") == 0){
     			if(root->type == root->left->type){
     				checkType(root->left);
-    			}else{
+    			} else {
     				printf("%s%i\n",COLOR_RED"[ERROR]"COLOR_MAGENTA" Tipos incompatibles. Linea: ",root->noline);
     	            exit(1);
     			}
     		}
+
             if(strcmp(root->info->op.id, ";") == 0){
                 checkType(root->left);
                 checkType(root->mid);

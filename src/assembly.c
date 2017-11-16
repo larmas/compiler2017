@@ -10,7 +10,9 @@
 void generateAsm(CIList *list, char path[], char machine[]);
 char *getBaseName(char *path);
 
-/* Obtiene el nombre base de un archivo sin la extension */
+/**
+ * Obtiene el nombre base de un archivo sin la extension.
+ */
 char *getBaseName(char *path) {
     char *path2 = strdup(path);
     path = basename(path2);
@@ -28,7 +30,22 @@ char *getBaseName(char *path) {
     return retstr;
 }
 
-/* Genera el codigo assembler equivalente a una lista de codigo intermedio */
+/**
+ * Genera el codigo assembler equivalente a una lista de codigo intermedio.
+ * El método toma los siguientes parámetros:
+ *  - Una lista de código intermedio CIList, base para construir el código
+ *  assembler.
+ *  - Un char path[] que representa el path del archivo utilizado para crear el
+ *  archivo de código assembler con el mismo nombre que el archivo que se
+ *  quiere compilar.
+ *  - Un char machine[] que indica la arquitectura de la maquina donde se esta
+ *  utilizando el compilador.
+ *  Tags utilizados durante la ejecución:
+ *      tag = 0 -> Variable
+ *      tag = 1 -> Constante
+ *      tag = 4 -> Temporal (Equivalente a un nodo Variable)
+ *  Tag 2 y 3 no serán necesarios en esta etapa.
+*/
 void generateAsm(CIList *list, char path[], char machine[]){
     static int labelCount = 0;
     char *fileName = getBaseName(path);

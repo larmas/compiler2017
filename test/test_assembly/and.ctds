@@ -1,14 +1,13 @@
-/* AND TEST */
-
 /*
+    AND TEST
 
-Salida: 0=false 1=true
-    0
-    1
-    0
-    0
-    0
-    1
+    Salida: 0=false 1=true
+        0
+        1
+        0
+        0
+        0
+        1
 
  */
 

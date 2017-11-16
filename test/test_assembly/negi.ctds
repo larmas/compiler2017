@@ -1,12 +1,11 @@
-/* INTEGER NEGATION TEST */
-
 /*
+    INTEGER NEGATION TEST
 
-Salida:
-    -10
-    10
-    -4
-    -100
+    Salida:
+        -10
+        10
+        -4
+        -100
 
  */
 

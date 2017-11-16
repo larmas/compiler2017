@@ -1,12 +1,11 @@
-/* BOOLEAN NEGATION TEST */
-
 /*
+    BOOLEAN NEGATION TEST
 
-Salida:
-    0
-    1
-    1
-    1
+    Salida:
+        0
+        1
+        1
+        1
 
  */
 

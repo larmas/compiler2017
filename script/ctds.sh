@@ -40,15 +40,18 @@ do
             printf "\n"
             echo -e "${CYAN}IN FILE: $i ${RESET}"
             echo -e "${RED} $RUN_ASM ${RESET}"
+            exit 0
         else
             RUN_EXE= $( gcc -o $NAME $NAME".s" )
             if [ "$RUN_EXE" != "" ]; then
                 echo -e "${CYAN}IN FILE: $NAME".s" ${RESET}"
                 echo -e "${RED} $RUN_EXE ${RESET}"
+                exit 0
             else
                 echo -e "${GREEN}OK!! ${RESET}"
             fi
         fi
+
         mv $NAME".s" $DIR_ASM
         mv $NAME $DIR_ASM
         FLAG=true

@@ -8,7 +8,18 @@ extern CIList *ciList;
 extern int offsetCount;
 
 /**
- * Funcion utilizada para generar codigo intermedio a partir de un arbols sintactico.
+ * Función recursiva utilizada para generar código intermedio a partir de un
+ * arbol sintáctico.
+ * El método tiene como entrada el nodo raiz del AST correspondiente a una
+ * funcion. Las instrucciones de tres direcciones que se generen se irán
+ * insertando al final de una lista (CIList *ciList) global. Esta acción se
+ * repite para todos los métodos definidos en el programa a compilar.
+ * Tags utilizados durante la ejecución:
+ *      tag = 0 -> Variable
+ *      tag = 1 -> Constante
+ *      tag = 4 -> Temporal (Equivalente a un nodo Variable)
+ *      tag = 2 -> Operador
+ * Tag 3 no será necesario en esta etapa.
  */
 Node *generateIC(Node *root){
     static int tempCount = 0;
@@ -20,13 +31,11 @@ Node *generateIC(Node *root){
 
     if(root->tag == 2){
 
-
         if (strcmp(root->info->op.id, "=") == 0){
             Node *dir2 = generateIC(root->mid);
             NodeCI *new = newNodeCI("MOV",generateIC(root->left),dir2, NULL);
             ciList = insertLastCI(ciList,new);
         }
-
 
         if (strcmp(root->info->op.id, "+") == 0){
             Node *dir2 = generateIC(root->mid);
@@ -45,7 +54,6 @@ Node *generateIC(Node *root){
             return newTemporal;
         }
 
-
         if (strcmp(root->info->op.id, "-") == 0){
             Node *dir2 = generateIC(root->mid);
             Node *dir1 = generateIC(root->left);
@@ -62,7 +70,6 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,new);
             return newTemporal;
         }
-
 
         if (strcmp(root->info->op.id, "*") == 0){
             Node *dir2 = generateIC(root->mid);
@@ -81,7 +88,6 @@ Node *generateIC(Node *root){
             return newTemporal;
         }
 
-
         if (strcmp(root->info->op.id, "/") == 0){
             Node *dir2 = generateIC(root->mid);
             Node *dir1 = generateIC(root->left);
@@ -98,7 +104,6 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,new);
             return newTemporal;
         }
-
 
         if (strcmp(root->info->op.id, "%") == 0){
             Node *dir2 = generateIC(root->mid);
@@ -117,7 +122,6 @@ Node *generateIC(Node *root){
             return newTemporal;
         }
 
-
         if (strcmp(root->info->op.id, ">") == 0){
             Node *dir2 = generateIC(root->mid);
             Node *dir1 = generateIC(root->left);
@@ -134,7 +138,6 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,new);
             return newTemporal;
         }
-
 
         if (strcmp(root->info->op.id, "<") == 0){
             Node *dir2 = generateIC(root->mid);
@@ -153,7 +156,6 @@ Node *generateIC(Node *root){
             return newTemporal;
         }
 
-
         if (strcmp(root->info->op.id, "&&") == 0){
             Node *dir2 = generateIC(root->mid);
             Node *dir1 = generateIC(root->left);
@@ -170,7 +172,6 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,new);
             return newTemporal;
         }
-
 
         if (strcmp(root->info->op.id, "||") == 0){
             Node *dir2 = generateIC(root->mid);
@@ -189,7 +190,6 @@ Node *generateIC(Node *root){
             return newTemporal;
         }
 
-
         if (strcmp(root->info->op.id, "==") == 0){
             Node *dir2 = generateIC(root->mid);
             Node *dir1 = generateIC(root->left);
@@ -207,7 +207,6 @@ Node *generateIC(Node *root){
             return newTemporal;
         }
 
-
         if (strcmp(root->info->op.id, "!") == 0){
             Node *dir1 = generateIC(root->left);
             char tempId[20];
@@ -223,7 +222,6 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,new);
             return newTemporal;
         }
-
 
         if (strcmp(root->info->op.id, "negativo") == 0){
             Node *dir1 = generateIC(root->left);
@@ -241,7 +239,6 @@ Node *generateIC(Node *root){
             return newTemporal;
         }
 
-
         if (strcmp(root->info->op.id, "return") == 0){
             if (root->left->tag == 0 || root->left->tag == 1){
                 NodeCI *new = newNodeCI("RETURN",NULL,NULL, root->left);
@@ -258,13 +255,11 @@ Node *generateIC(Node *root){
             return NULL;
         }
 
-
         if (strcmp(root->info->op.id, "returnVoid") == 0){
             NodeCI *new = newNodeCI("RETURNV",NULL,NULL, NULL);
             ciList = insertLastCI(ciList,new);
             return NULL;
         }
-
 
         if (strcmp(root->info->op.id, "if") == 0){
             char labelId[20];
@@ -282,7 +277,6 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,l0);
             return NULL;
         }
-
 
         if (strcmp(root->info->op.id, "ifElse") == 0){
             char labelId[20];
@@ -311,7 +305,6 @@ Node *generateIC(Node *root){
             return NULL;
         }
 
-
         if (strcmp(root->info->op.id, "while") == 0){
             char labelId[20];
             char aux[20];
@@ -337,7 +330,6 @@ Node *generateIC(Node *root){
             ciList = insertLastCI(ciList,l1);
             return NULL;
         }
-
 
         if (strcmp(root->info->op.id, "function") == 0){
             List *par = root->mid->info->func.param;
@@ -373,13 +365,11 @@ Node *generateIC(Node *root){
             return newTemporal;
         }
 
-
         if (strcmp(root->info->op.id, "functionVoid") == 0){
             NodeCI *callF = newNodeCI("CALL",root->left,NULL,NULL);
             ciList = insertLastCI(ciList,callF);
             return NULL;
         }
-
 
         if (strcmp(root->info->op.id, ";") == 0){
             generateIC(root->left);
